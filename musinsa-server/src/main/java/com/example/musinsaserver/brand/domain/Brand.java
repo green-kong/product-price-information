@@ -17,11 +17,11 @@ public class Brand {
         return new Brand(id, Name.from(name));
     }
 
-    public Long getId() {
-        return id;
+    public String getNameValue() {
+        return name.getName();
     }
 
-    public Name getName() {
-        return name;
+    public Long getId() {
+        return id;
     }
 }

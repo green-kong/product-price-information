@@ -26,7 +26,7 @@ class BrandTest {
         //then
         assertSoftly(softAssertions -> {
             assertThat(brand.getId()).isNull();
-            assertThat(brand.getName().getName()).isEqualTo(brandName);
+            assertThat(brand.getNameValue()).isEqualTo(brandName);
         });
     }
 
@@ -54,7 +54,7 @@ class BrandTest {
         //then
         assertSoftly(softAssertions -> {
             assertThat(brand.getId()).isEqualTo(id);
-            assertThat(brand.getName().getName()).isEqualTo(brandName);
+            assertThat(brand.getNameValue()).isEqualTo(brandName);
         });
     }
 
