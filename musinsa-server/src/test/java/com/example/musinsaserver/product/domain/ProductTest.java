@@ -124,7 +124,7 @@ class ProductTest {
         assertSoftly(softAssertions -> {
             assertThat(product.getCategory()).isEqualTo(Category.ACCESSORIES);
             assertThat(product.getPriceValue()).isEqualTo(20_000);
-            assertThat(product.getBrandId()).isEqualTo(2L);
+            assertThat(product.getBrandId()).isEqualTo(3L);
         });
     }
 

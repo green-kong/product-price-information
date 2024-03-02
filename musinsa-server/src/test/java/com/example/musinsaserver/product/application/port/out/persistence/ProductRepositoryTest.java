@@ -56,4 +56,30 @@ class ProductRepositoryTest {
         assertThat(foundProduct.getBrandId()).isEqualTo(brandId);
         assertThat(foundProduct.getCategory()).isEqualTo(category);
     }
+
+
+    @Test
+    @DisplayName("프로덕트를 업데이트 한다.")
+    void update() {
+        //given
+        final Product product = Product.createWithoutId(1_000, Category.PANTS, 1L);
+        final Product savedProduct = productRepository.save(product);
+
+        final int updatedPrice = 20_000;
+        final Category category = Category.HAT;
+        final long updatedBrandId = 3L;
+        savedProduct.update(updatedPrice, "hat", updatedBrandId);
+
+        //when
+        productRepository.update(savedProduct);
+
+        //then
+        final Product updatedProduct = productRepository.findById(savedProduct.getId()).get();
+        assertSoftly(softAssertions -> {
+            assertThat(updatedProduct.getId()).isEqualTo(savedProduct.getId());
+            assertThat(updatedProduct.getPriceValue()).isEqualTo(updatedPrice);
+            assertThat(updatedProduct.getCategory()).isEqualTo(category);
+            assertThat(updatedProduct.getBrandId()).isEqualTo(updatedBrandId);
+        });
+    }
 }

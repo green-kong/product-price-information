@@ -37,4 +37,9 @@ public class InMemoryProductRepository implements ProductRepository {
         }
         return Optional.of(product);
     }
+
+    @Override
+    public void update(final Product product) {
+        products.put(product.getId(), product);
+    }
 }
