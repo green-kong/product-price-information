@@ -9,5 +9,7 @@ public interface ProductRepository {
 
     Optional<Product> findById(final Long id);
 
-    void update(Product product);
+    void update(final Product product);
+
+    void delete(final Long id);
 }

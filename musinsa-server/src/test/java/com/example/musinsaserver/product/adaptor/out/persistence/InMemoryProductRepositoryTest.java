@@ -3,6 +3,8 @@ package com.example.musinsaserver.product.adaptor.out.persistence;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
+import java.util.Optional;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -77,5 +79,20 @@ class InMemoryProductRepositoryTest {
             assertThat(updatedProduct.getCategory()).isEqualTo(category);
             assertThat(updatedProduct.getBrandId()).isEqualTo(updatedBrandId);
         });
+    }
+
+    @Test
+    @DisplayName("product를 삭제한다.")
+    void deleteById() {
+        //given
+        final Product product = Product.createWithoutId(1_000, Category.PANTS, 1L);
+        final Product savedProduct = inMemoryProductRepository.save(product);
+
+        //when
+        inMemoryProductRepository.delete(savedProduct.getId());
+
+        //then
+        final Optional<Product> foundProduct = inMemoryProductRepository.findById(savedProduct.getId());
+        assertThat(foundProduct).isEmpty();
     }
 }

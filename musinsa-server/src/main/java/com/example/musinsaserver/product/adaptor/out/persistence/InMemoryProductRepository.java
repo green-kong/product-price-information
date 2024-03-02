@@ -42,4 +42,9 @@ public class InMemoryProductRepository implements ProductRepository {
     public void update(final Product product) {
         products.put(product.getId(), product);
     }
+
+    @Override
+    public void delete(final Long id) {
+        products.remove(id);
+    }
 }
