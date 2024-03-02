@@ -22,6 +22,16 @@ public class Product {
         return new Product(id, category, Price.from(price), brandId);
     }
 
+    public void update(final int price, final String category, final Long brandId) {
+        this.price = Price.from(price);
+        this.category = Category.from(category);
+        this.brandId = brandId;
+    }
+
+    public boolean belongsToSameBrand(final Long brandId) {
+        return brandId.equals(this.brandId);
+    }
+
     public int getPriceValue() {
         return price.getValue();
     }
