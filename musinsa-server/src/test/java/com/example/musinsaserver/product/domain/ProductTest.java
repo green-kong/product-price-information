@@ -21,13 +21,15 @@ class ProductTest {
         final Long brandId = 1L;
 
         //when
-        final Product product = Product.createWithoutId(price, brandId);
+        final Category category = Category.ACCESSORIES;
+        final Product product = Product.createWithoutId(price, category, brandId);
 
         //then
         assertSoftly(softAssertions -> {
             assertThat(product.getId()).isNull();
             assertThat(product.getPriceValue()).isEqualTo(price);
             assertThat(product.getBrandId()).isEqualTo(brandId);
+            assertThat(product.getCategory()).isEqualTo(category);
         });
     }
 
@@ -37,9 +39,10 @@ class ProductTest {
     void createProductWithInvalidValue(final int invalidValue) {
         //given
         final Long brandId = 1L;
+        final Category category = Category.SOCKS;
 
         //when & then
-        assertThatThrownBy(() -> Product.createWithoutId(invalidValue, brandId))
+        assertThatThrownBy(() -> Product.createWithoutId(invalidValue, category, brandId))
                 .isInstanceOf(InvalidPriceException.class)
                 .hasMessageContaining("가격은 10원이상 1,000,000원 이하여야 합니다.");
     }
@@ -49,11 +52,12 @@ class ProductTest {
     void createWithoutId() {
         //given
         final Long id = 1L;
+        final Category category = Category.HAT;
         final int price = 100;
         final Long brandId = 1L;
 
         //when
-        final Product product = Product.createWithId(id, price, brandId);
+        final Product product = Product.createWithId(id, price, category, brandId);
 
         //then
         assertSoftly(softAssertions -> {
@@ -69,10 +73,11 @@ class ProductTest {
     void createProductWithIdAndInvalidValue(final int invalidValue) {
         //given
         final Long id = 1L;
+        final Category category = Category.HAT;
         final Long brandId = 1L;
 
         //when & then
-        assertThatThrownBy(() -> Product.createWithId(id, invalidValue, brandId))
+        assertThatThrownBy(() -> Product.createWithId(id, invalidValue, category,brandId))
                 .isInstanceOf(InvalidPriceException.class)
                 .hasMessageContaining("가격은 10원이상 1,000,000원 이하여야 합니다.");
     }

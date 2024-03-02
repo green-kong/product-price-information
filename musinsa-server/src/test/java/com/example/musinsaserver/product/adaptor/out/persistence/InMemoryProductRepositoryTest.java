@@ -6,6 +6,7 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import com.example.musinsaserver.product.domain.Category;
 import com.example.musinsaserver.product.domain.Product;
 
 class InMemoryProductRepositoryTest {
@@ -18,7 +19,8 @@ class InMemoryProductRepositoryTest {
         //given
         final int price = 1_000;
         final long brandId = 1L;
-        final Product product = Product.createWithoutId(price, brandId);
+        final Category category = Category.PANTS;
+        final Product product = Product.createWithoutId(price, category, brandId);
 
         //when
         final Product savedProduct = inMemoryProductRepository.save(product);
@@ -28,6 +30,7 @@ class InMemoryProductRepositoryTest {
             assertThat(savedProduct.getId()).isNotNull();
             assertThat(savedProduct.getPriceValue()).isEqualTo(price);
             assertThat(savedProduct.getBrandId()).isEqualTo(brandId);
+            assertThat(savedProduct.getCategory()).isEqualTo(category);
         });
     }
 
@@ -37,7 +40,8 @@ class InMemoryProductRepositoryTest {
         //given
         final int price = 1_000;
         final long brandId = 1L;
-        final Product product = Product.createWithoutId(price, brandId);
+        final Category category = Category.SNEAKERS;
+        final Product product = Product.createWithoutId(price, category,brandId);
         final Product savedProduct = inMemoryProductRepository.save(product);
 
         //when
@@ -47,5 +51,6 @@ class InMemoryProductRepositoryTest {
         assertThat(foundProduct.getId()).isEqualTo(savedProduct.getId());
         assertThat(foundProduct.getPriceValue()).isEqualTo(price);
         assertThat(foundProduct.getBrandId()).isEqualTo(brandId);
+        assertThat(foundProduct.getCategory()).isEqualTo(category);
     }
 }

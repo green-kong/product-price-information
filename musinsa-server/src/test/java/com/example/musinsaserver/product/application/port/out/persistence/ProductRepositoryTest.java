@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.example.musinsaserver.product.domain.Category;
 import com.example.musinsaserver.product.domain.Product;
 
 @SpringBootTest
@@ -22,7 +23,7 @@ class ProductRepositoryTest {
         //given
         final int price = 1_000;
         final long brandId = 1L;
-        final Product product = Product.createWithoutId(price, brandId);
+        final Product product = Product.createWithoutId(price, Category.BAG, brandId);
 
         //when
         final Product savedProduct = productRepository.save(product);
@@ -31,6 +32,7 @@ class ProductRepositoryTest {
         assertSoftly(softAssertions -> {
             assertThat(savedProduct.getId()).isNotNull();
             assertThat(savedProduct.getPriceValue()).isEqualTo(price);
+            assertThat(savedProduct.getCategory()).isEqualTo(Category.BAG);
             assertThat(savedProduct.getBrandId()).isEqualTo(brandId);
         });
     }
@@ -41,7 +43,8 @@ class ProductRepositoryTest {
         //given
         final int price = 1_000;
         final long brandId = 1L;
-        final Product product = Product.createWithoutId(price, brandId);
+        final Category category = Category.HAT;
+        final Product product = Product.createWithoutId(price, category, brandId);
         final Product savedProduct = productRepository.save(product);
 
         //when
@@ -51,5 +54,6 @@ class ProductRepositoryTest {
         assertThat(foundProduct.getId()).isEqualTo(savedProduct.getId());
         assertThat(foundProduct.getPriceValue()).isEqualTo(price);
         assertThat(foundProduct.getBrandId()).isEqualTo(brandId);
+        assertThat(foundProduct.getCategory()).isEqualTo(category);
     }
 }

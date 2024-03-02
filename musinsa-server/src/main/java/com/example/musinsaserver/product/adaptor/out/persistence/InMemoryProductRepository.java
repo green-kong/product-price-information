@@ -19,7 +19,12 @@ public class InMemoryProductRepository implements ProductRepository {
     @Override
     public Product save(final Product product) {
         insertId += 1;
-        final Product productWithId = Product.createWithId(insertId, product.getPriceValue(), product.getBrandId());
+        final Product productWithId = Product.createWithId(
+                insertId,
+                product.getPriceValue(),
+                product.getCategory(),
+                product.getBrandId()
+        );
         products.put(insertId, productWithId);
         return productWithId;
     }

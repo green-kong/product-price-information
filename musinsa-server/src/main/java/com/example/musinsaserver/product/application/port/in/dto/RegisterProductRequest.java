@@ -1,10 +1,11 @@
 package com.example.musinsaserver.product.application.port.in.dto;
 
+import com.example.musinsaserver.product.domain.Category;
 import com.example.musinsaserver.product.domain.Product;
 
-public record RegisterProductRequest(int price, Long brandId) {
+public record RegisterProductRequest(int price, String category, Long brandId) {
 
     public Product toProduct() {
-        return Product.createWithoutId(price, brandId);
+        return Product.createWithoutId(price, Category.from(category), brandId);
     }
 }

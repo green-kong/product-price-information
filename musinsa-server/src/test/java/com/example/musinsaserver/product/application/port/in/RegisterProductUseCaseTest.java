@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.example.musinsaserver.product.application.port.in.dto.RegisterProductRequest;
 import com.example.musinsaserver.product.application.port.out.persistence.ProductRepository;
+import com.example.musinsaserver.product.domain.Category;
 import com.example.musinsaserver.product.domain.Product;
 
 @SpringBootTest
@@ -27,7 +28,8 @@ class RegisterProductUseCaseTest {
         //given
         final int price = 10_000;
         final Long brandId = 1L;
-        final RegisterProductRequest registerBrandRequest = new RegisterProductRequest(price, brandId);
+        final String category = "bag";
+        final RegisterProductRequest registerBrandRequest = new RegisterProductRequest(price, category, brandId);
 
         //when
         final Long savedId = registerProductUseCase.registerProduct(registerBrandRequest);
@@ -38,6 +40,7 @@ class RegisterProductUseCaseTest {
             assertThat(product.getId()).isEqualTo(savedId);
             assertThat(product.getPriceValue()).isEqualTo(price);
             assertThat(product.getBrandId()).isEqualTo(brandId);
+            assertThat(product.getCategory()).isEqualTo(Category.BAG);
         });
     }
 }
