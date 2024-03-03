@@ -45,6 +45,15 @@ public class PriceInformation {
         return new PriceInformation(id, productId, brandId, category, price, brandName);
     }
 
+    public void update(final Long productId, final int price) {
+        this.productId = productId;
+        this.price = price;
+    }
+
+    public boolean isMoreExpensiveThan(final int comparedPrice) {
+        return price > comparedPrice;
+    }
+
     public Long getId() {
         return id;
     }
@@ -68,4 +77,5 @@ public class PriceInformation {
     public String getBrandName() {
         return brandName;
     }
+
 }
