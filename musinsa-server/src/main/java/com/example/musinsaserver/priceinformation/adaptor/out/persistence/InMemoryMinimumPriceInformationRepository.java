@@ -36,4 +36,18 @@ public class InMemoryMinimumPriceInformationRepository implements MinimumPriceIn
         }
         return Optional.of(priceInformation);
     }
+
+    @Override
+    public Optional<PriceInformation> findByBrandIdAndCategory(final Long brandId, final String category) {
+        return minimumPriceInformations.values()
+                .stream()
+                .filter(priceInformation -> priceInformation.getBrandId().equals(brandId)
+                        && priceInformation.getCategory().equals(category))
+                .findFirst();
+    }
+
+    @Override
+    public void updateById(final Long id, final PriceInformation minimumPriceInformation) {
+        minimumPriceInformations.put(id, minimumPriceInformation);
+    }
 }
