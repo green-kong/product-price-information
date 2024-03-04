@@ -2,6 +2,7 @@ package com.example.musinsaserver.product.adaptor.out.persistence;
 
 import static java.util.Objects.isNull;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -46,5 +47,14 @@ public class InMemoryProductRepository implements ProductRepository {
     @Override
     public void delete(final Long id) {
         products.remove(id);
+    }
+
+    @Override
+    public Optional<Product> findMinimumPriceProductByBrandIdAndCategory(final Long brandId, final String category) {
+        return products.values()
+                .stream()
+                .filter(product -> product.getBrandId().equals(brandId)
+                        && product.getCategory().getValue().equals(category))
+                .min(Comparator.comparingInt(Product::getPriceValue));
     }
 }

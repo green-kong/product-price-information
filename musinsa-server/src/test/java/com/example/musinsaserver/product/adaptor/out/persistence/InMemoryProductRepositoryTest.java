@@ -95,4 +95,42 @@ class InMemoryProductRepositoryTest {
         final Optional<Product> foundProduct = inMemoryProductRepository.findById(savedProduct.getId());
         assertThat(foundProduct).isEmpty();
     }
+
+    @Test
+    @DisplayName("brandId와 category가 일치하는 product 중 가격이 가장 저렴한 product를 조회한다.")
+    void findMinimumPriceProductByBrandIdAndCategory() {
+        //given
+        final int targetPrice = 1_000;
+        final Category targetCategory = Category.PANTS;
+        final long targetBrandId = 2L;
+        final Product targetProduct = inMemoryProductRepository.save(
+                Product.createWithoutId(targetPrice, targetCategory, targetBrandId));
+        inMemoryProductRepository.save(Product.createWithoutId(2_000, targetCategory, 2L));
+        inMemoryProductRepository.save(Product.createWithoutId(10_000, targetCategory, 2L));
+        inMemoryProductRepository.save(Product.createWithoutId(1_00, Category.ACCESSORIES, 2L));
+        inMemoryProductRepository.save(Product.createWithoutId(1_0, targetCategory, 5L));
+
+        //when
+        final Product found = inMemoryProductRepository.findMinimumPriceProductByBrandIdAndCategory(targetBrandId,
+                targetCategory.getValue()).get();
+
+        //then
+        assertSoftly(softAssertions -> {
+            assertThat(found.getId()).isEqualTo(targetProduct.getId());
+            assertThat(found.getBrandId()).isEqualTo(targetBrandId);
+            assertThat(found.getCategory()).isEqualTo(targetCategory);
+            assertThat(found.getPriceValue()).isEqualTo(targetPrice);
+        });
+    }
+
+    @Test
+    @DisplayName("brandId와 category가 일치하는 product가 없는 경우 Optional.empty를 반환한다.")
+    void findMinimumPriceProductByBrandIdAndCategoryReturnEmpty() {
+        //when
+        final Optional<Product> found = inMemoryProductRepository.findMinimumPriceProductByBrandIdAndCategory(
+                0L, Category.SOCKS.getValue());
+
+        //then
+        assertThat(found).isEmpty();
+    }
 }
