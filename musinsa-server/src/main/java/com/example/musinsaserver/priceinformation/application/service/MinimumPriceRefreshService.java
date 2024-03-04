@@ -41,9 +41,9 @@ public class MinimumPriceRefreshService implements MinimumPriceRefreshUseCase {
     private void refreshOrDelete(final PriceInformation currentMinimumPriceInformation) {
         final Long priceInformationId = currentMinimumPriceInformation.getId();
         final Long brandId = currentMinimumPriceInformation.getBrandId();
-        final String category = currentMinimumPriceInformation.getCategory();
+        final Long categoryId = currentMinimumPriceInformation.getCategoryId();
         final Optional<ProductLoadDto> productLoadDto = productLoader.loadLowestPriceProductByBrandIdAndCategory(
-                brandId, category);
+                brandId, categoryId);
 
         productLoadDto.ifPresentOrElse(
                 refresh(currentMinimumPriceInformation, priceInformationId),

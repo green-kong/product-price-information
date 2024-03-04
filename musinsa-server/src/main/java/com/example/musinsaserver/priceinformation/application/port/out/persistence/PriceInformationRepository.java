@@ -9,7 +9,7 @@ public interface PriceInformationRepository {
 
     Optional<PriceInformation> findById(final Long id);
 
-    Optional<PriceInformation> findByBrandIdAndCategory(final Long brandId, final String category);
+    Optional<PriceInformation> findByBrandIdAndCategoryId(final Long brandId, final Long categoryId);
 
     void updateById(final Long id, final PriceInformation minimumPriceInformation);
 

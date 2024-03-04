@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import com.example.musinsaserver.product.exception.InvalidCategoryException;
 import com.example.musinsaserver.product.exception.InvalidPriceException;
 
 class ProductTest {
@@ -22,15 +21,15 @@ class ProductTest {
         final Long brandId = 1L;
 
         //when
-        final Category category = Category.ACCESSORIES;
-        final Product product = Product.createWithoutId(price, category, brandId);
+        final Long categoryId = 1L;
+        final Product product = Product.createWithoutId(price, categoryId, brandId);
 
         //then
         assertSoftly(softAssertions -> {
             assertThat(product.getId()).isNull();
             assertThat(product.getPriceValue()).isEqualTo(price);
             assertThat(product.getBrandId()).isEqualTo(brandId);
-            assertThat(product.getCategory()).isEqualTo(category);
+            assertThat(product.getCategoryId()).isEqualTo(categoryId);
         });
     }
 
@@ -40,10 +39,10 @@ class ProductTest {
     void createProductWithInvalidValue(final int invalidValue) {
         //given
         final Long brandId = 1L;
-        final Category category = Category.SOCKS;
+        final Long categoryId = 3L;
 
         //when & then
-        assertThatThrownBy(() -> Product.createWithoutId(invalidValue, category, brandId))
+        assertThatThrownBy(() -> Product.createWithoutId(invalidValue, categoryId, brandId))
                 .isInstanceOf(InvalidPriceException.class)
                 .hasMessageContaining("가격은 10원이상 1,000,000원 이하여야 합니다.");
     }
@@ -53,12 +52,12 @@ class ProductTest {
     void createWithoutId() {
         //given
         final Long id = 1L;
-        final Category category = Category.HAT;
+        final Long categoryId = 4L;
         final int price = 100;
         final Long brandId = 1L;
 
         //when
-        final Product product = Product.createWithId(id, price, category, brandId);
+        final Product product = Product.createWithId(id, price, categoryId, brandId);
 
         //then
         assertSoftly(softAssertions -> {
@@ -74,11 +73,11 @@ class ProductTest {
     void createProductWithIdAndInvalidValue(final int invalidValue) {
         //given
         final Long id = 1L;
-        final Category category = Category.HAT;
+        final Long categoryId = 3L;
         final Long brandId = 1L;
 
         //when & then
-        assertThatThrownBy(() -> Product.createWithId(id, invalidValue, category, brandId))
+        assertThatThrownBy(() -> Product.createWithId(id, invalidValue, categoryId, brandId))
                 .isInstanceOf(InvalidPriceException.class)
                 .hasMessageContaining("가격은 10원이상 1,000,000원 이하여야 합니다.");
     }
@@ -88,7 +87,7 @@ class ProductTest {
     void belongsToSameBrandReturnTrue() {
         //given
         final long brandId = 1L;
-        final Product product = Product.createWithoutId(10_000, Category.HAT, brandId);
+        final Product product = Product.createWithoutId(10_000, 10L, brandId);
 
         //when
         final boolean result = product.belongsToSameBrand(brandId);
@@ -102,7 +101,7 @@ class ProductTest {
     void belongsToSameBrandReturnFalse() {
         //given
         final long brandId = 1L;
-        final Product product = Product.createWithoutId(10_000, Category.HAT, brandId);
+        final Product product = Product.createWithoutId(10_000, 6L, brandId);
 
         //when
         final boolean result = product.belongsToSameBrand(2L);
@@ -115,16 +114,16 @@ class ProductTest {
     @DisplayName("brand의 정보를 변경한다.")
     void update() {
         //given
-        final Product product = Product.createWithoutId(10_000, Category.HAT, 1L);
+        final Product product = Product.createWithoutId(10_000, 3L, 1L);
 
         //when
-        product.update(20_000, "accessories", 3L);
+        product.update(20_000);
 
         //then
         assertSoftly(softAssertions -> {
-            assertThat(product.getCategory()).isEqualTo(Category.ACCESSORIES);
+            assertThat(product.getCategoryId()).isEqualTo(3L);
             assertThat(product.getPriceValue()).isEqualTo(20_000);
-            assertThat(product.getBrandId()).isEqualTo(3L);
+            assertThat(product.getBrandId()).isEqualTo(1L);
         });
     }
 
@@ -132,23 +131,11 @@ class ProductTest {
     @DisplayName("유효하지 않은 가격으로 변경할 시 예외가 발생한다.")
     void updateFailByInvalidPrice() {
         //given
-        final Product product = Product.createWithoutId(10_000, Category.HAT, 1L);
+        final Product product = Product.createWithoutId(10_000, 11L, 1L);
 
         //when & then
-        assertThatThrownBy(() -> product.update(1_000_001, "accessories", 3L))
+        assertThatThrownBy(() -> product.update(1_000_001))
                 .isInstanceOf(InvalidPriceException.class)
                 .hasMessageContaining("가격은 10원이상 1,000,000원 이하여야 합니다.");
-    }
-
-    @Test
-    @DisplayName("유효하지 않은 카테고리로 변경할 시 예외가 발생한다.")
-    void updateFailByInvalidCategory() {
-        //given
-        final Product product = Product.createWithoutId(10_000, Category.HAT, 1L);
-
-        //when & then
-        assertThatThrownBy(() -> product.update(1_000_000, "invalid", 3L))
-                .isInstanceOf(InvalidCategoryException.class)
-                .hasMessageContaining("일치하는 카테고리가 없습니다.");
     }
 }

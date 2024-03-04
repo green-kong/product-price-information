@@ -24,11 +24,13 @@ class MaximumPriceInformationRepositoryTest {
         //given
         final long productId = 1L;
         final long brandId = 3L;
+        final long categoryId = 7L;
         final String category = "바지";
         final int price = 20_000;
         final String brandName = "brandA";
         final var maximumPriceInformation = PriceInformation.createWithoutId(
                 productId,
+                categoryId,
                 brandId,
                 category,
                 price,
@@ -55,22 +57,30 @@ class MaximumPriceInformationRepositoryTest {
         //given
         final long targetProductId = 1L;
         final long targetBrandId = 2L;
+        final long targetCategoryId = 27L;
         final String targetCategory = "바지";
         final int targetPrice = 20_000;
         final String targetBrandName = "brandB";
         final PriceInformation targetInformation = maximumPriceInformationRepository.save(
-                PriceInformation.createWithoutId(targetProductId, targetBrandId, targetCategory, targetPrice,
+                PriceInformation.createWithoutId(targetProductId, targetCategoryId, targetBrandId, targetCategory,
+                        targetPrice,
                         targetBrandName));
-        maximumPriceInformationRepository.save(PriceInformation.createWithoutId(2L, 3L, "바지", 30_000, "brandC"));
-        maximumPriceInformationRepository.save(PriceInformation.createWithoutId(3L, 4L, "바지", 40_000, "brandD"));
-        maximumPriceInformationRepository.save(PriceInformation.createWithoutId(4L, 5L, "바지", 50_000, "brandE"));
-        maximumPriceInformationRepository.save(PriceInformation.createWithoutId(5L, 3L, "아우터", 20_000, "brandC"));
-        maximumPriceInformationRepository.save(PriceInformation.createWithoutId(6L, 1L, "바지", 20_000, "brandA"));
-        maximumPriceInformationRepository.save(PriceInformation.createWithoutId(7L, 2L, "아우터", 20_000, "brandB"));
+        maximumPriceInformationRepository.save(
+                PriceInformation.createWithoutId(2L, targetCategoryId, 3L, "바지", 30_000, "brandC"));
+        maximumPriceInformationRepository.save(
+                PriceInformation.createWithoutId(3L, targetCategoryId, 4L, "바지", 40_000, "brandD"));
+        maximumPriceInformationRepository.save(
+                PriceInformation.createWithoutId(4L, targetCategoryId, 5L, "바지", 50_000, "brandE"));
+        maximumPriceInformationRepository.save(
+                PriceInformation.createWithoutId(5L, targetCategoryId, 3L, "아우터", 20_000, "brandC"));
+        maximumPriceInformationRepository.save(
+                PriceInformation.createWithoutId(6L, targetCategoryId, 1L, "바지", 20_000, "brandA"));
+        maximumPriceInformationRepository.save(
+                PriceInformation.createWithoutId(7L, targetCategoryId, 2L, "아우터", 20_000, "brandB"));
 
         //when
-        final PriceInformation maximum = maximumPriceInformationRepository.findByBrandIdAndCategory(targetBrandId,
-                targetCategory).get();
+        final PriceInformation maximum = maximumPriceInformationRepository.findByBrandIdAndCategoryId(targetBrandId,
+                targetCategoryId).get();
 
         //then
         assertThat(maximum.getId()).isEqualTo(targetInformation.getId());
@@ -84,6 +94,7 @@ class MaximumPriceInformationRepositoryTest {
                 PriceInformation.createWithoutId(
                         1L,
                         3L,
+                        17L,
                         "바지",
                         20_000,
                         "brandA"
@@ -115,12 +126,14 @@ class MaximumPriceInformationRepositoryTest {
         //given
         final long productId = 10L;
         final long brandId = 3L;
+        final long categoryId = 13L;
         final String category = "바지";
         final int price = 20_000;
         final String brandName = "brandA";
         final PriceInformation savedMaximumPriceInformation = maximumPriceInformationRepository.save(
                 PriceInformation.createWithoutId(
                         productId,
+                        categoryId,
                         brandId,
                         category,
                         price,
@@ -157,6 +170,7 @@ class MaximumPriceInformationRepositoryTest {
         //given
         final long productId = 10L;
         final long brandId = 3L;
+        final long categoryId = 19L;
         final String category = "바지";
         final int price = 20_000;
         final String brandName = "brandA";
@@ -164,6 +178,7 @@ class MaximumPriceInformationRepositoryTest {
                 PriceInformation.createWithoutId(
                         productId,
                         brandId,
+                        categoryId,
                         category,
                         price,
                         brandName

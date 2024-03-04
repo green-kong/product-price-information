@@ -8,7 +8,7 @@ public interface ProductLoader {
 
     Optional<ProductLoadDto> loadProduct(final Long id);
 
-    Optional<ProductLoadDto> loadLowestPriceProductByBrandIdAndCategory(final Long brandId, final String category);
+    Optional<ProductLoadDto> loadLowestPriceProductByBrandIdAndCategory(final Long brandId, final Long categoryId);
 
-    Optional<ProductLoadDto> loadHighestPriceProductByBrandIdAndCategory(final Long brandId, final String category);
+    Optional<ProductLoadDto> loadHighestPriceProductByBrandIdAndCategory(final Long brandId, final Long categoryId);
 }

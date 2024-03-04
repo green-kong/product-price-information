@@ -19,12 +19,14 @@ class PriceInformationTest {
         //given
         final long productId = 1L;
         final long brandId = 3L;
+        final long categoryId = 6L;
         final String category = "바지";
         final int price = 30_000;
         final String brandName = "D";
 
         //when
-        final PriceInformation priceInformation = PriceInformation.createWithoutId(productId, brandId, category, price,
+        final PriceInformation priceInformation = PriceInformation.createWithoutId(productId, categoryId, brandId,
+                category, price,
                 brandName);
 
         //then
@@ -44,12 +46,14 @@ class PriceInformationTest {
         final Long id = 2L;
         final Long productId = 1L;
         final Long brandId = 3L;
+        final long categoryId = 5L;
         final String category = "바지";
         final int price = 30_000;
         final String brandName = "D";
 
         //when
-        final var priceInformation = PriceInformation.createWithId(id, productId, brandId, category, price, brandName);
+        final var priceInformation = PriceInformation.createWithId(id, productId, categoryId, brandId, category, price,
+                brandName);
 
         //then
         assertSoftly(softAssertions -> {
@@ -69,10 +73,12 @@ class PriceInformationTest {
         final Long id = 2L;
         final Long productId = 1L;
         final Long brandId = 3L;
+        final long categoryId = 10L;
         final String category = "바지";
         final int price = 30_000;
         final String brandName = "D";
-        final var priceInformation = PriceInformation.createWithId(id, productId, brandId, category, price, brandName);
+        final var priceInformation = PriceInformation.createWithId(id, productId, categoryId, brandId, category, price,
+                brandName);
 
         //when
         priceInformation.update(4L, 10_000);
@@ -89,11 +95,13 @@ class PriceInformationTest {
         //given
         final Long id = 2L;
         final Long productId = 1L;
+        final long categoryId = 11L;
         final Long brandId = 3L;
         final String category = "바지";
         final int price = 30_000;
         final String brandName = "D";
-        final var priceInformation = PriceInformation.createWithId(id, productId, brandId, category, price, brandName);
+        final var priceInformation = PriceInformation.createWithId(id, productId, categoryId, brandId, category, price,
+                brandName);
 
         //when
         final boolean result = priceInformation.isMoreExpensiveThan(comparedPrice);
@@ -117,10 +125,12 @@ class PriceInformationTest {
         final Long id = 2L;
         final Long productId = 1L;
         final Long brandId = 3L;
+        final Long categoryId = 6L;
         final String category = "바지";
         final int price = 30_000;
         final String brandName = "D";
-        final var priceInformation = PriceInformation.createWithId(id, productId, brandId, category, price, brandName);
+        final var priceInformation = PriceInformation.createWithId(id, productId, categoryId, brandId, category, price,
+                brandName);
 
         //when
         final boolean result = priceInformation.isMoreExpensiveThan(comparedPrice);

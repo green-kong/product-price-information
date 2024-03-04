@@ -20,7 +20,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 
-import com.example.musinsaserver.product.application.port.in.dto.ProductUpdateRequest;
+import com.example.musinsaserver.product.application.port.in.dto.ProductPriceUpdateRequest;
 import com.example.musinsaserver.product.application.port.in.dto.RegisterProductRequest;
 import com.example.musinsaserver.product.application.port.out.event.ProductDeleteEventPublisher;
 import com.example.musinsaserver.product.application.port.out.event.ProductRegisterEventPublisher;
@@ -29,6 +29,7 @@ import com.example.musinsaserver.product.application.port.out.event.dto.ProductD
 import com.example.musinsaserver.product.application.port.out.event.dto.ProductRegisterEvent;
 import com.example.musinsaserver.product.application.port.out.event.dto.ProductUpdateEvent;
 import com.example.musinsaserver.product.application.port.out.validator.BrandValidator;
+import com.example.musinsaserver.product.application.port.out.validator.CategoryValidator;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -44,6 +45,9 @@ class ProductAcceptanceTest {
 
     @MockBean
     BrandValidator brandValidator;
+
+    @MockBean
+    CategoryValidator categoryValidator;
 
     @MockBean
     ProductRegisterEventPublisher productRegisterEventPublisher;
@@ -68,8 +72,9 @@ class ProductAcceptanceTest {
         void registerProduct() {
             //given
             when(brandValidator.isExistedBrand(anyLong())).thenReturn(true);
+            when(categoryValidator.isExistedCategory(anyLong())).thenReturn(true);
             doNothing().when(productRegisterEventPublisher).publishRegisterProductEvent(any(ProductRegisterEvent.class));
-            final RegisterProductRequest requestBody = new RegisterProductRequest(20_000, "bag", 1L);
+            final RegisterProductRequest requestBody = new RegisterProductRequest(20_000, 1L, 1L);
 
             //when
             final ExtractableResponse<Response> response = given().log().all()
@@ -89,7 +94,8 @@ class ProductAcceptanceTest {
         void registerProductFailByInvalidCategory() {
             //given
             when(brandValidator.isExistedBrand(anyLong())).thenReturn(true);
-            final RegisterProductRequest requestBody = new RegisterProductRequest(20_000, "invalidCategory", 1L);
+            when(categoryValidator.isExistedCategory(anyLong())).thenReturn(false);
+            final RegisterProductRequest requestBody = new RegisterProductRequest(20_000, 0L, 1L);
 
             //when
             final ExtractableResponse<Response> response = given().log().all()
@@ -109,7 +115,8 @@ class ProductAcceptanceTest {
         void registerProductFailByInvalidPrice() {
             //given
             when(brandValidator.isExistedBrand(anyLong())).thenReturn(true);
-            final RegisterProductRequest requestBody = new RegisterProductRequest(9, "bag", 1L);
+            when(categoryValidator.isExistedCategory(anyLong())).thenReturn(true);
+            final RegisterProductRequest requestBody = new RegisterProductRequest(9, 1L, 1L);
 
             //when
             final ExtractableResponse<Response> response = given().log().all()
@@ -129,7 +136,7 @@ class ProductAcceptanceTest {
         void registerProductFailByInvalidBrand() {
             //given
             when(brandValidator.isExistedBrand(anyLong())).thenReturn(false);
-            final RegisterProductRequest requestBody = new RegisterProductRequest(20_000, "bag", 0L);
+            final RegisterProductRequest requestBody = new RegisterProductRequest(20_000, 1L, 0L);
 
             //when
             final ExtractableResponse<Response> response = given().log().all()
@@ -154,17 +161,18 @@ class ProductAcceptanceTest {
         void updateProduct() {
             //given
             when(brandValidator.isExistedBrand(anyLong())).thenReturn(true);
+            when(categoryValidator.isExistedCategory(anyLong())).thenReturn(true);
             doNothing().when(productRegisterEventPublisher).publishRegisterProductEvent(any(ProductRegisterEvent.class));
             doNothing().when(productUpdateEventPublisher).publishUpdateProductEvent(any(ProductUpdateEvent.class));
-            final Long savedProductId = saveProductAndReturnSavedProductId(10_000, "hat", 1L);
+            final Long savedProductId = saveProductAndReturnSavedProductId(10_000, 3L, 1L);
 
-            final ProductUpdateRequest productUpdateRequest = new ProductUpdateRequest(20_000, "pants", 3L);
+            final ProductPriceUpdateRequest productPriceUpdateRequest = new ProductPriceUpdateRequest(20_000);
 
             //when
             final ExtractableResponse<Response> response = given().log().all()
                     .contentType(ContentType.JSON)
                     .pathParam("productId", savedProductId)
-                    .body(productUpdateRequest)
+                    .body(productPriceUpdateRequest)
                     .when()
                     .patch("/api/product/{productId}")
                     .then().log().all()
@@ -180,14 +188,15 @@ class ProductAcceptanceTest {
         void updateFailByInvalidProductId() {
             //given
             when(brandValidator.isExistedBrand(anyLong())).thenReturn(true);
+            when(categoryValidator.isExistedCategory(anyLong())).thenReturn(true);
             doNothing().when(productRegisterEventPublisher).publishRegisterProductEvent(any(ProductRegisterEvent.class));
-            final ProductUpdateRequest productUpdateRequest = new ProductUpdateRequest(20_000, "pants", 3L);
+            final ProductPriceUpdateRequest productPriceUpdateRequest = new ProductPriceUpdateRequest(20_000);
 
             //when
             final ExtractableResponse<Response> response = given().log().all()
                     .contentType(ContentType.JSON)
                     .pathParam("productId", 0)
-                    .body(productUpdateRequest)
+                    .body(productPriceUpdateRequest)
                     .when()
                     .patch("/api/product/{productId}")
                     .then().log().all()
@@ -202,65 +211,17 @@ class ProductAcceptanceTest {
         void updateFailByInvalidPrice() {
             //given
             when(brandValidator.isExistedBrand(anyLong())).thenReturn(true);
+            when(categoryValidator.isExistedCategory(anyLong())).thenReturn(true);
             doNothing().when(productRegisterEventPublisher).publishRegisterProductEvent(any(ProductRegisterEvent.class));
-            final Long savedProductId = saveProductAndReturnSavedProductId(10_000, "hat", 1L);
+            final Long savedProductId = saveProductAndReturnSavedProductId(10_000, 2L, 1L);
 
-            final ProductUpdateRequest productUpdateRequest = new ProductUpdateRequest(9, "pants", 3L);
+            final ProductPriceUpdateRequest productPriceUpdateRequest = new ProductPriceUpdateRequest(9);
 
             //when
             final ExtractableResponse<Response> response = given().log().all()
                     .contentType(ContentType.JSON)
                     .pathParam("productId", savedProductId)
-                    .body(productUpdateRequest)
-                    .when()
-                    .patch("/api/product/{productId}")
-                    .then().log().all()
-                    .extract();
-
-            //then
-            assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        }
-
-        @Test
-        @DisplayName("유효하지 않은 카테고리로 수정하는 경우 400을 응답한다.")
-        void updateFailByInvalidCategory() {
-            //given
-            when(brandValidator.isExistedBrand(anyLong())).thenReturn(true);
-            doNothing().when(productRegisterEventPublisher).publishRegisterProductEvent(any(ProductRegisterEvent.class));
-            final Long savedProductId = saveProductAndReturnSavedProductId(10_000, "hat", 1L);
-
-            final ProductUpdateRequest productUpdateRequest = new ProductUpdateRequest(20_000, "invalid", 3L);
-
-            //when
-            final ExtractableResponse<Response> response = given().log().all()
-                    .contentType(ContentType.JSON)
-                    .pathParam("productId", savedProductId)
-                    .body(productUpdateRequest)
-                    .when()
-                    .patch("/api/product/{productId}")
-                    .then().log().all()
-                    .extract();
-
-            //then
-            assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        }
-
-        @Test
-        @DisplayName("존재하지 않는 brandId로 수정하는 경우 400을 응답한다.")
-        void updateFailByInvalidBrandId() {
-            //given
-            when(brandValidator.isExistedBrand(1L)).thenReturn(true);
-            when(brandValidator.isExistedBrand(3L)).thenReturn(false);
-            doNothing().when(productRegisterEventPublisher).publishRegisterProductEvent(any(ProductRegisterEvent.class));
-            final Long savedProductId = saveProductAndReturnSavedProductId(10_000, "hat", 1L);
-
-            final ProductUpdateRequest productUpdateRequest = new ProductUpdateRequest(20_000, "accessories", 3L);
-
-            //when
-            final ExtractableResponse<Response> response = given().log().all()
-                    .contentType(ContentType.JSON)
-                    .pathParam("productId", savedProductId)
-                    .body(productUpdateRequest)
+                    .body(productPriceUpdateRequest)
                     .when()
                     .patch("/api/product/{productId}")
                     .then().log().all()
@@ -280,9 +241,10 @@ class ProductAcceptanceTest {
         void deleteProduct() {
             //given
             when(brandValidator.isExistedBrand(anyLong())).thenReturn(true);
+            when(categoryValidator.isExistedCategory(anyLong())).thenReturn(true);
             doNothing().when(productRegisterEventPublisher).publishRegisterProductEvent(any(ProductRegisterEvent.class));
             doNothing().when(productDeleteEventPublisher).publishDeleteProductEvent(any(ProductDeleteEvent.class));
-            final Long savedProductId = saveProductAndReturnSavedProductId(10_000, "hat", 1L);
+            final Long savedProductId = saveProductAndReturnSavedProductId(10_000, 3L, 1L);
 
             //when
             final ExtractableResponse<Response> response = given().log().all()

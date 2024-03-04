@@ -38,10 +38,10 @@ class MinimumPriceRefreshUseCaseTest {
     void refreshFailByProductIsNotDeleted() {
         //given
         final long brandId = 3L;
-        final String category = "가방";
+        final Long categoryId = 19L;
         final long newProductId = 11L;
         final int newPrice = 30_000;
-        final ProductLoadDto productLoadDto = new ProductLoadDto(newProductId, brandId, newPrice, category);
+        final ProductLoadDto productLoadDto = new ProductLoadDto(newProductId, brandId, newPrice, categoryId);
         when(productLoader.loadProduct(anyLong())).thenReturn(Optional.of(productLoadDto));
 
         //when & then
@@ -55,13 +55,14 @@ class MinimumPriceRefreshUseCaseTest {
     void maintainCurrentStatus() {
         //given
         final Long productId = 20L;
+        final Long categoryId = 13L;
         final Long brandId = 100L;
         final String category = "스니커즈";
         final int price = 20_000;
         final String brandName = "BrandHundred";
         when(productLoader.loadProduct(anyLong())).thenReturn(Optional.empty());
         final PriceInformation savedPriceInformation = informationRepository.save(
-                PriceInformation.createWithoutId(productId, brandId, category, price, brandName));
+                PriceInformation.createWithoutId(productId, categoryId, brandId, category, price, brandName));
 
         //when
         minimumPriceRefreshUseCase.refreshMinimumPriceInformation(11L);
@@ -87,16 +88,17 @@ class MinimumPriceRefreshUseCaseTest {
         void refreshMinimumPriceInformationRefresh() {
             //given
             final long brandId = 3L;
+            final long categoryId = 8L;
             final String category = "가방";
             final String brandName = "brandC";
             final long newProductId = 11L;
             final int newPrice = 30_000;
-            final ProductLoadDto productLoadDto = new ProductLoadDto(newProductId, brandId, newPrice, category);
+            final ProductLoadDto productLoadDto = new ProductLoadDto(newProductId, brandId, newPrice, categoryId);
 
-            when(productLoader.loadLowestPriceProductByBrandIdAndCategory(brandId, category)).thenReturn(
+            when(productLoader.loadLowestPriceProductByBrandIdAndCategory(brandId, categoryId)).thenReturn(
                     Optional.of(productLoadDto));
             final PriceInformation savedPriceInformation = informationRepository.save(
-                    PriceInformation.createWithoutId(10L, brandId, category, 20_000, brandName));
+                    PriceInformation.createWithoutId(10L, categoryId, brandId, category, 20_000, brandName));
 
             //when
             minimumPriceRefreshUseCase.refreshMinimumPriceInformation(10L);
@@ -119,13 +121,14 @@ class MinimumPriceRefreshUseCaseTest {
         void refreshMinimumPriceInformationDelete() {
             //given
             final long brandId = 3L;
+            final long categoryId = 1L;
             final String category = "가방";
             final String brandName = "brandC";
 
-            when(productLoader.loadLowestPriceProductByBrandIdAndCategory(brandId, category)).thenReturn(
+            when(productLoader.loadLowestPriceProductByBrandIdAndCategory(brandId, categoryId)).thenReturn(
                     Optional.empty());
             final PriceInformation savedPriceInformation = informationRepository.save(
-                    PriceInformation.createWithoutId(10L, brandId, category, 20_000, brandName));
+                    PriceInformation.createWithoutId(10L, categoryId, brandId, category, 20_000, brandName));
 
             //when
             minimumPriceRefreshUseCase.refreshMinimumPriceInformation(10L);

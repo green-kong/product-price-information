@@ -27,11 +27,13 @@ class LowestPriceInformationByBrandSearchUseCaseTest {
         //given
         final long targetBrandId = 3L;
         final String targetBrandName = "brandC";
-        informationRepository.save(PriceInformation.createWithoutId(1L, targetBrandId, "바지", 10_000, targetBrandName));
-        informationRepository.save(PriceInformation.createWithoutId(2L, 2L, "바지", 20_000, "brandB"));
         informationRepository.save(
-                PriceInformation.createWithoutId(3L, targetBrandId, "액세서리", 30_000, targetBrandName));
-        informationRepository.save(PriceInformation.createWithoutId(4L, targetBrandId, "아우터", 1_000, targetBrandName));
+                PriceInformation.createWithoutId(1L, 13L, targetBrandId, "바지", 10_000, targetBrandName));
+        informationRepository.save(PriceInformation.createWithoutId(2L, 13L, 2L, "바지", 20_000, "brandB"));
+        informationRepository.save(
+                PriceInformation.createWithoutId(3L, 12L, targetBrandId, "액세서리", 30_000, targetBrandName));
+        informationRepository.save(
+                PriceInformation.createWithoutId(4L, 11L, targetBrandId, "아우터", 1_000, targetBrandName));
 
         //when
         final LowestPriceInformationByBrandResponses responses = useCase.searchLowestPriceInformationByBrand(

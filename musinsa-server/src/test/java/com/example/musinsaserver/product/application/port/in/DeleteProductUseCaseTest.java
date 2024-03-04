@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.example.musinsaserver.product.application.port.out.persistence.ProductRepository;
-import com.example.musinsaserver.product.domain.Category;
 import com.example.musinsaserver.product.domain.Product;
 import com.example.musinsaserver.product.exception.NonExistentProductException;
 
@@ -28,7 +27,7 @@ class DeleteProductUseCaseTest {
     @DisplayName("저장된 프로덕트를 삭제한다.")
     void deleteProduct() {
         //given
-        final Product savedProduct = productRepository.save(Product.createWithoutId(10_000, Category.ACCESSORIES, 1L));
+        final Product savedProduct = productRepository.save(Product.createWithoutId(10_000, 1L, 1L));
 
         //when
         deleteProductUseCase.delete(savedProduct.getId());

@@ -44,9 +44,9 @@ public class MaximumPriceRefreshService implements MaximumPriceRefreshUseCase {
     private void refreshOrDelete(final PriceInformation currentMaximumPriceInformation) {
         final Long priceInformationId = currentMaximumPriceInformation.getId();
         final Long brandId = currentMaximumPriceInformation.getBrandId();
-        final String category = currentMaximumPriceInformation.getCategory();
+        final Long categoryId = currentMaximumPriceInformation.getCategoryId();
         final Optional<ProductLoadDto> productLoadDto = productLoader.loadHighestPriceProductByBrandIdAndCategory(
-                brandId, category);
+                brandId, categoryId);
 
         productLoadDto.ifPresentOrElse(
                 refresh(currentMaximumPriceInformation, priceInformationId),

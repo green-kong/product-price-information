@@ -3,29 +3,27 @@ package com.example.musinsaserver.product.domain;
 public class Product {
 
     private Long id;
-    private Category category;
+    private Long categoryId;
     private Price price;
     private Long brandId;
 
-    private Product(final Long id, final Category category, final Price price, final Long brandId) {
+    private Product(final Long id, final Long categoryId, final Price price, final Long brandId) {
         this.id = id;
-        this.category = category;
+        this.categoryId = categoryId;
         this.price = price;
         this.brandId = brandId;
     }
 
-    public static Product createWithoutId(final int price, final Category category, final Long brandId) {
-        return new Product(null, category, Price.from(price), brandId);
+    public static Product createWithoutId(final int price, final Long categoryId, final Long brandId) {
+        return new Product(null, categoryId, Price.from(price), brandId);
     }
 
-    public static Product createWithId(final Long id, final int price, final Category category, final Long brandId) {
-        return new Product(id, category, Price.from(price), brandId);
+    public static Product createWithId(final Long id, final int price, final Long categoryId, final Long brandId) {
+        return new Product(id, categoryId, Price.from(price), brandId);
     }
 
-    public void update(final int price, final String category, final Long brandId) {
+    public void update(final int price) {
         this.price = Price.from(price);
-        this.category = Category.from(category);
-        this.brandId = brandId;
     }
 
     public boolean belongsToSameBrand(final Long brandId) {
@@ -40,8 +38,8 @@ public class Product {
         return id;
     }
 
-    public Category getCategory() {
-        return category;
+    public Long getCategoryId() {
+        return categoryId;
     }
 
     public Price getPrice() {

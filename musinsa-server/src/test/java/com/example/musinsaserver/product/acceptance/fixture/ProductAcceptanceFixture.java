@@ -8,8 +8,8 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
 public class ProductAcceptanceFixture {
-    public static Long saveProductAndReturnSavedProductId(final int price, final String category, final long brandId) {
-        final RegisterProductRequest requestBody = new RegisterProductRequest(price, category, brandId);
+    public static Long saveProductAndReturnSavedProductId(final int price, final Long categoryId, final long brandId) {
+        final RegisterProductRequest requestBody = new RegisterProductRequest(price, categoryId, brandId);
         final Response response = given()
                 .contentType(ContentType.JSON)
                 .body(requestBody)

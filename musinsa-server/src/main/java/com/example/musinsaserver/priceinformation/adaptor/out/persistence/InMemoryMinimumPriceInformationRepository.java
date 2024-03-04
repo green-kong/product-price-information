@@ -21,10 +21,15 @@ public class InMemoryMinimumPriceInformationRepository implements MinimumPriceIn
     @Override
     public PriceInformation save(final PriceInformation minimumPriceInformation) {
         insertedId += 1;
-        final PriceInformation minimumPriceInformationWithId = PriceInformation.createWithId(insertedId,
+        final PriceInformation minimumPriceInformationWithId = PriceInformation.createWithId(
+                insertedId,
                 minimumPriceInformation.getProductId(),
-                minimumPriceInformation.getBrandId(), minimumPriceInformation.getCategory(),
-                minimumPriceInformation.getPrice(), minimumPriceInformation.getBrandName());
+                minimumPriceInformation.getCategoryId(),
+                minimumPriceInformation.getBrandId(),
+                minimumPriceInformation.getCategory(),
+                minimumPriceInformation.getPrice(),
+                minimumPriceInformation.getBrandName()
+        );
         minimumPriceInformations.put(insertedId, minimumPriceInformationWithId);
         return minimumPriceInformationWithId;
     }
@@ -39,11 +44,11 @@ public class InMemoryMinimumPriceInformationRepository implements MinimumPriceIn
     }
 
     @Override
-    public Optional<PriceInformation> findByBrandIdAndCategory(final Long brandId, final String category) {
+    public Optional<PriceInformation> findByBrandIdAndCategoryId(final Long brandId, final Long categoryId) {
         return minimumPriceInformations.values()
                 .stream()
                 .filter(priceInformation -> priceInformation.getBrandId().equals(brandId)
-                        && priceInformation.getCategory().equals(category))
+                        && priceInformation.getCategoryId().equals(categoryId))
                 .findFirst();
     }
 

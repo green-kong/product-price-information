@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.musinsaserver.product.application.port.in.DeleteProductUseCase;
 import com.example.musinsaserver.product.application.port.in.RegisterProductUseCase;
 import com.example.musinsaserver.product.application.port.in.UpdateProductUseCase;
-import com.example.musinsaserver.product.application.port.in.dto.ProductUpdateRequest;
+import com.example.musinsaserver.product.application.port.in.dto.ProductPriceUpdateRequest;
 import com.example.musinsaserver.product.application.port.in.dto.RegisterProductRequest;
 
 @RestController
@@ -44,9 +44,9 @@ public class ProductController {
     @PatchMapping("{productId}")
     public ResponseEntity<Void> updateProduct(
             @PathVariable final Long productId,
-            @RequestBody final ProductUpdateRequest productUpdateRequest
+            @RequestBody final ProductPriceUpdateRequest productPriceUpdateRequest
     ) {
-        updateProductUseCase.updateProduct(productId, productUpdateRequest);
+        updateProductUseCase.updateProductPrice(productId, productPriceUpdateRequest);
         return ResponseEntity.noContent().build();
     }
 

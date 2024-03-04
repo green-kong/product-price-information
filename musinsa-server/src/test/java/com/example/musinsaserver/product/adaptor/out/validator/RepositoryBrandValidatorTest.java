@@ -30,7 +30,7 @@ class RepositoryBrandValidatorTest {
     }
 
     @Test
-    @DisplayName("brandId에 해당하는 브랜드가 없는 경우 true를 반환한다.")
+    @DisplayName("brandId에 해당하는 브랜드가 존재하는 경우 true를 반환한다.")
     void isExistedBrandReturnTrue() {
         //given
         final Brand brand = brandRepository.save(Brand.createWithoutId("brnadA"));

@@ -37,11 +37,11 @@ class MaximumPriceRefreshUseCaseTest {
     @DisplayName("productId에 해당하는 product가 삭제되지 않은 경우 예외가 발생한다.")
     void refreshFailByProductIsNotDeleted() {
         //given
-        final long brandId = 3L;
-        final String category = "가방";
         final long newProductId = 11L;
+        final long brandId = 3L;
         final int newPrice = 30_000;
-        final ProductLoadDto productLoadDto = new ProductLoadDto(newProductId, brandId, newPrice, category);
+        final long newCategoryId = 11L;
+        final ProductLoadDto productLoadDto = new ProductLoadDto(newProductId, brandId, newPrice, newCategoryId);
         when(productLoader.loadProduct(anyLong())).thenReturn(Optional.of(productLoadDto));
 
         //when & then
@@ -55,13 +55,14 @@ class MaximumPriceRefreshUseCaseTest {
     void maintainCurrentStatus() {
         //given
         final Long productId = 20L;
+        final Long categoryId = 10L;
         final Long brandId = 100L;
         final String category = "스니커즈";
         final int price = 20_000;
         final String brandName = "BrandHundred";
         when(productLoader.loadProduct(anyLong())).thenReturn(Optional.empty());
         final PriceInformation savedPriceInformation = informationRepository.save(
-                PriceInformation.createWithoutId(productId, brandId, category, price, brandName));
+                PriceInformation.createWithoutId(productId, categoryId, brandId, category, price, brandName));
 
         //when
         maximumPriceRefreshUseCase.refreshMaximumPriceInformation(11L);
@@ -86,17 +87,18 @@ class MaximumPriceRefreshUseCaseTest {
         @DisplayName("브랜드와 카테고리가 일치하는 최대가격정보가 있는 경우 업데이트한다.")
         void refreshMaximumPriceInformationRefresh() {
             //given
-            final long brandId = 3L;
-            final String category = "가방";
-            final String brandName = "brandC";
             final long newProductId = 11L;
+            final Long categoryId = 9L;
+            final long brandId = 3L;
+            final String brandName = "brandC";
             final int newPrice = 30_000;
-            final ProductLoadDto productLoadDto = new ProductLoadDto(newProductId, brandId, newPrice, category);
+            final String category = "액세서리";
+            final ProductLoadDto productLoadDto = new ProductLoadDto(newProductId, brandId, newPrice, categoryId);
 
-            when(productLoader.loadHighestPriceProductByBrandIdAndCategory(brandId, category)).thenReturn(
+            when(productLoader.loadHighestPriceProductByBrandIdAndCategory(brandId, categoryId)).thenReturn(
                     Optional.of(productLoadDto));
             final PriceInformation savedPriceInformation = informationRepository.save(
-                    PriceInformation.createWithoutId(10L, brandId, category, 20_000, brandName));
+                    PriceInformation.createWithoutId(10L, categoryId, brandId, category, 20_000, brandName));
 
             //when
             maximumPriceRefreshUseCase.refreshMaximumPriceInformation(10L);
@@ -119,13 +121,13 @@ class MaximumPriceRefreshUseCaseTest {
         void refreshMaximumPriceInformationDelete() {
             //given
             final long brandId = 3L;
-            final String category = "가방";
+            final Long categoryId = 1L;
             final String brandName = "brandC";
 
-            when(productLoader.loadHighestPriceProductByBrandIdAndCategory(brandId, category)).thenReturn(
+            when(productLoader.loadHighestPriceProductByBrandIdAndCategory(brandId, categoryId)).thenReturn(
                     Optional.empty());
             final PriceInformation savedPriceInformation = informationRepository.save(
-                    PriceInformation.createWithoutId(10L, brandId, category, 20_000, brandName));
+                    PriceInformation.createWithoutId(10L, brandId, categoryId,"가방", 20_000, brandName));
 
             //when
             maximumPriceRefreshUseCase.refreshMaximumPriceInformation(10L);

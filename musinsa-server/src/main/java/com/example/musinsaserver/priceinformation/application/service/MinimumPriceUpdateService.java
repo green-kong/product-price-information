@@ -6,12 +6,15 @@ import org.springframework.stereotype.Service;
 
 import com.example.musinsaserver.priceinformation.application.port.in.MinimumPriceUpdateUseCase;
 import com.example.musinsaserver.priceinformation.application.port.out.loader.BrandLoader;
+import com.example.musinsaserver.priceinformation.application.port.out.loader.CategoryLoader;
 import com.example.musinsaserver.priceinformation.application.port.out.loader.ProductLoader;
 import com.example.musinsaserver.priceinformation.application.port.out.loader.dto.BrandLoadDto;
+import com.example.musinsaserver.priceinformation.application.port.out.loader.dto.CategoryLoadDto;
 import com.example.musinsaserver.priceinformation.application.port.out.loader.dto.ProductLoadDto;
 import com.example.musinsaserver.priceinformation.application.port.out.persistence.MinimumPriceInformationRepository;
 import com.example.musinsaserver.priceinformation.domain.PriceInformation;
 import com.example.musinsaserver.priceinformation.exception.InvalidBrandIdException;
+import com.example.musinsaserver.priceinformation.exception.InvalidCategoryIdException;
 import com.example.musinsaserver.priceinformation.exception.InvalidProductIdException;
 
 @Service
@@ -20,24 +23,27 @@ public class MinimumPriceUpdateService implements MinimumPriceUpdateUseCase {
     private final MinimumPriceInformationRepository minimumPriceInformationRepository;
     private final ProductLoader productLoader;
     private final BrandLoader brandLoader;
+    private final CategoryLoader categoryLoader;
 
     public MinimumPriceUpdateService(
             final MinimumPriceInformationRepository minimumPriceInformationRepository,
             final ProductLoader productLoader,
-            final BrandLoader brandLoader
+            final BrandLoader brandLoader,
+            final CategoryLoader categoryLoader
     ) {
         this.minimumPriceInformationRepository = minimumPriceInformationRepository;
         this.productLoader = productLoader;
         this.brandLoader = brandLoader;
+        this.categoryLoader = categoryLoader;
     }
 
     @Override
     public void updateMinimumPrice(final Long productId) {
         final ProductLoadDto productLoadDto = productLoader.loadProduct(productId)
                 .orElseThrow(() -> new InvalidProductIdException(productId));
-        minimumPriceInformationRepository.findByBrandIdAndCategory(
+        minimumPriceInformationRepository.findByBrandIdAndCategoryId(
                 productLoadDto.brandId(),
-                productLoadDto.category()
+                productLoadDto.categoryId()
         ).ifPresentOrElse(comparePriceAndUpdate(productLoadDto), saveRegisteredProductAsMinimum(productLoadDto));
     }
 
@@ -62,12 +68,17 @@ public class MinimumPriceUpdateService implements MinimumPriceUpdateUseCase {
 
     private Runnable saveRegisteredProductAsMinimum(final ProductLoadDto productLoadDto) {
         return () -> {
+            final CategoryLoadDto categoryLoadDto = categoryLoader.loadCategory(productLoadDto.categoryId())
+                    .orElseThrow(() -> new InvalidCategoryIdException(productLoadDto.productId()));
+
             final BrandLoadDto brandLoadDto = brandLoader.loadBrand(productLoadDto.brandId())
                     .orElseThrow(() -> new InvalidBrandIdException(productLoadDto.brandId()));
+
             final PriceInformation priceInformation = PriceInformation.createWithoutId(
                     productLoadDto.productId(),
+                    productLoadDto.categoryId(),
                     productLoadDto.brandId(),
-                    productLoadDto.category(),
+                    categoryLoadDto.category(),
                     productLoadDto.price(),
                     brandLoadDto.brandName()
             );

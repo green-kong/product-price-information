@@ -19,9 +19,10 @@ import com.example.musinsaserver.product.application.port.out.event.ProductRegis
 import com.example.musinsaserver.product.application.port.out.event.dto.ProductRegisterEvent;
 import com.example.musinsaserver.product.application.port.out.persistence.ProductRepository;
 import com.example.musinsaserver.product.application.port.out.validator.BrandValidator;
-import com.example.musinsaserver.product.domain.Category;
+import com.example.musinsaserver.product.application.port.out.validator.CategoryValidator;
 import com.example.musinsaserver.product.domain.Product;
 import com.example.musinsaserver.product.exception.NonExistentBrandException;
+import com.example.musinsaserver.product.exception.NonExistentCategoryException;
 
 @SpringBootTest
 class RegisterProductUseCaseTest {
@@ -36,6 +37,9 @@ class RegisterProductUseCaseTest {
     BrandValidator brandValidator;
 
     @MockBean
+    CategoryValidator categoryValidator;
+
+    @MockBean
     ProductRegisterEventPublisher productRegisterEventPublisher;
 
     @Test
@@ -43,11 +47,12 @@ class RegisterProductUseCaseTest {
     void registerProduct() {
         //given
         when(brandValidator.isExistedBrand(anyLong())).thenReturn(true);
+        when(categoryValidator.isExistedCategory(anyLong())).thenReturn(true);
         doNothing().when(productRegisterEventPublisher).publishRegisterProductEvent(any(ProductRegisterEvent.class));
         final int price = 10_000;
         final Long brandId = 1L;
-        final String category = "bag";
-        final RegisterProductRequest registerBrandRequest = new RegisterProductRequest(price, category, brandId);
+        final Long categoryId = 1L;
+        final RegisterProductRequest registerBrandRequest = new RegisterProductRequest(price, categoryId, brandId);
 
         //when
         final Long savedId = registerProductUseCase.registerProduct(registerBrandRequest);
@@ -58,23 +63,41 @@ class RegisterProductUseCaseTest {
             assertThat(product.getId()).isEqualTo(savedId);
             assertThat(product.getPriceValue()).isEqualTo(price);
             assertThat(product.getBrandId()).isEqualTo(brandId);
-            assertThat(product.getCategory()).isEqualTo(Category.BAG);
+            assertThat(product.getCategoryId()).isEqualTo(categoryId);
         });
     }
 
     @Test
     @DisplayName("존재하지 않는 brandId를 포함한 product를 저장하면 예외가 발생한다.")
-    void registerProductFail() {
+    void registerProductFailByInvalidBrandId() {
         //given
         when(brandValidator.isExistedBrand(anyLong())).thenReturn(false);
+        when(categoryValidator.isExistedCategory(anyLong())).thenReturn(true);
         final int price = 10_000;
         final Long brandId = 1L;
-        final String category = "bag";
-        final RegisterProductRequest registerBrandRequest = new RegisterProductRequest(price, category, brandId);
+        final Long categoryId = 3L;
+        final RegisterProductRequest registerBrandRequest = new RegisterProductRequest(price, categoryId, brandId);
 
         //when & then
         assertThatThrownBy(() -> registerProductUseCase.registerProduct(registerBrandRequest))
                 .isInstanceOf(NonExistentBrandException.class)
                 .hasMessageContaining("프로덕트의 브랜드가 존재하지 않습니다.");
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 categoryId를 포함한 product를 저장하면 예외가 발생한다.")
+    void registerProductFailByInvalidCategoryId() {
+        //given
+        when(brandValidator.isExistedBrand(anyLong())).thenReturn(true);
+        when(categoryValidator.isExistedCategory(anyLong())).thenReturn(false);
+        final int price = 10_000;
+        final Long brandId = 1L;
+        final Long categoryId = 3L;
+        final RegisterProductRequest registerBrandRequest = new RegisterProductRequest(price, categoryId, brandId);
+
+        //when & then
+        assertThatThrownBy(() -> registerProductUseCase.registerProduct(registerBrandRequest))
+                .isInstanceOf(NonExistentCategoryException.class)
+                .hasMessageContaining("일치하는 카테고리가 없습니다.");
     }
 }

@@ -24,12 +24,14 @@ class MinimumPriceInformationRepositoryTest {
     void save() {
         //given
         final long productId = 1L;
+        final long categoryId = 3L;
         final long brandId = 3L;
         final String category = "바지";
         final int price = 20_000;
         final String brandName = "brandA";
         final var minimumPriceInformation = PriceInformation.createWithoutId(
                 productId,
+                categoryId,
                 brandId,
                 category,
                 price,
@@ -55,23 +57,29 @@ class MinimumPriceInformationRepositoryTest {
     void findByBrandIdAndCategory() {
         //given
         final long targetProductId = 1L;
+        final long targetCategoryId = 6L;
         final long targetBrandId = 2L;
         final String targetCategory = "바지";
         final int targetPrice = 20_000;
         final String targetBrandName = "brandB";
         final PriceInformation targetInformation = minimumPriceInformationRepository.save(
-                PriceInformation.createWithoutId(targetProductId, targetBrandId, targetCategory, targetPrice,
+                PriceInformation.createWithoutId(targetProductId, targetCategoryId, targetBrandId, targetCategory,
+                        targetPrice,
                         targetBrandName));
-        minimumPriceInformationRepository.save(PriceInformation.createWithoutId(2L, 3L, "바지", 30_000, "brandC"));
-        minimumPriceInformationRepository.save(PriceInformation.createWithoutId(3L, 4L, "바지", 40_000, "brandD"));
-        minimumPriceInformationRepository.save(PriceInformation.createWithoutId(4L, 5L, "바지", 50_000, "brandE"));
-        minimumPriceInformationRepository.save(PriceInformation.createWithoutId(5L, 3L, "아우터", 20_000, "brandC"));
-        minimumPriceInformationRepository.save(PriceInformation.createWithoutId(6L, 1L, "바지", 20_000, "brandA"));
-        minimumPriceInformationRepository.save(PriceInformation.createWithoutId(7L, 2L, "아우터", 20_000, "brandB"));
+        minimumPriceInformationRepository.save(
+                PriceInformation.createWithoutId(2L, targetCategoryId, 3L, "바지", 30_000, "brandC"));
+        minimumPriceInformationRepository.save(
+                PriceInformation.createWithoutId(3L, targetCategoryId, 4L, "바지", 40_000, "brandD"));
+        minimumPriceInformationRepository.save(
+                PriceInformation.createWithoutId(4L, targetCategoryId, 5L, "바지", 50_000, "brandE"));
+        minimumPriceInformationRepository.save(PriceInformation.createWithoutId(5L, 4L, 3L, "아우터", 20_000, "brandC"));
+        minimumPriceInformationRepository.save(
+                PriceInformation.createWithoutId(6L, targetCategoryId, 1L, "바지", 20_000, "brandA"));
+        minimumPriceInformationRepository.save(PriceInformation.createWithoutId(7L, 3L, 2L, "아우터", 20_000, "brandB"));
 
         //when
-        final PriceInformation minimum = minimumPriceInformationRepository.findByBrandIdAndCategory(targetBrandId,
-                targetCategory).get();
+        final PriceInformation minimum = minimumPriceInformationRepository.findByBrandIdAndCategoryId(targetBrandId,
+                targetCategoryId).get();
 
         //then
         assertThat(minimum.getId()).isEqualTo(targetInformation.getId());
@@ -84,6 +92,7 @@ class MinimumPriceInformationRepositoryTest {
         final PriceInformation savedMinimumPriceInformation = minimumPriceInformationRepository.save(
                 PriceInformation.createWithoutId(
                         1L,
+                        4L,
                         3L,
                         "바지",
                         20_000,
@@ -115,6 +124,7 @@ class MinimumPriceInformationRepositoryTest {
     void findByProductId() {
         //given
         final long productId = 10L;
+        final long categoryId = 4L;
         final long brandId = 3L;
         final String category = "바지";
         final int price = 20_000;
@@ -122,6 +132,7 @@ class MinimumPriceInformationRepositoryTest {
         final PriceInformation savedMinimumPriceInformation = minimumPriceInformationRepository.save(
                 PriceInformation.createWithoutId(
                         productId,
+                        categoryId,
                         brandId,
                         category,
                         price,
@@ -157,6 +168,7 @@ class MinimumPriceInformationRepositoryTest {
     void deleteById() {
         //given
         final long productId = 10L;
+        final long categoryId = 4L;
         final long brandId = 3L;
         final String category = "바지";
         final int price = 20_000;
@@ -164,6 +176,7 @@ class MinimumPriceInformationRepositoryTest {
         final PriceInformation savedMinimumPriceInformation = minimumPriceInformationRepository.save(
                 PriceInformation.createWithoutId(
                         productId,
+                        categoryId,
                         brandId,
                         category,
                         price,
@@ -183,15 +196,16 @@ class MinimumPriceInformationRepositoryTest {
     @DisplayName("brandId가 일치하는 모든 priceInformation을 반환한다.")
     void findByBrandId() {
         //given
-        final long targetBrandId = 2L;
+        final long targetBrandId = 41L;
+
         minimumPriceInformationRepository.save(
-                PriceInformation.createWithoutId(1L, targetBrandId, "바지", 10_000, "brandB"));
+                PriceInformation.createWithoutId(1L, 24L, targetBrandId, "바지", 10_000, "brandB"));
         minimumPriceInformationRepository.save(
-                PriceInformation.createWithoutId(2L, targetBrandId, "액세서리", 10_000, "brandB"));
-        minimumPriceInformationRepository.save(PriceInformation.createWithoutId(3L, 4L, "바지", 10_000, "brandD"));
-        minimumPriceInformationRepository.save(PriceInformation.createWithoutId(4L, 3L, "바지", 10_000, "brandC"));
+                PriceInformation.createWithoutId(2L,10L, targetBrandId, "액세서리", 10_000, "brandB"));
+        minimumPriceInformationRepository.save(PriceInformation.createWithoutId(3L,24L, 4L, "바지", 10_000, "brandD"));
+        minimumPriceInformationRepository.save(PriceInformation.createWithoutId(4L,24L, 3L, "바지", 10_000, "brandC"));
         minimumPriceInformationRepository.save(
-                PriceInformation.createWithoutId(5L, targetBrandId, "아우터", 10_000, "brandB"));
+                PriceInformation.createWithoutId(5L, 11L, targetBrandId, "아우터", 10_000, "brandB"));
 
         //when
         final List<PriceInformation> results = minimumPriceInformationRepository.findByBrandId(targetBrandId);

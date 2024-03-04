@@ -23,7 +23,7 @@ public class InMemoryProductRepository implements ProductRepository {
         final Product productWithId = Product.createWithId(
                 insertId,
                 product.getPriceValue(),
-                product.getCategory(),
+                product.getCategoryId(),
                 product.getBrandId()
         );
         products.put(insertId, productWithId);
@@ -50,20 +50,20 @@ public class InMemoryProductRepository implements ProductRepository {
     }
 
     @Override
-    public Optional<Product> findMinimumPriceProductByBrandIdAndCategory(final Long brandId, final String category) {
+    public Optional<Product> findMinimumPriceProductByBrandIdAndCategory(final Long brandId, final Long categoryId) {
         return products.values()
                 .stream()
                 .filter(product -> product.getBrandId().equals(brandId)
-                        && product.getCategory().getValue().equals(category))
+                        && product.getCategoryId().equals(categoryId))
                 .min(Comparator.comparingInt(Product::getPriceValue));
     }
 
     @Override
-    public Optional<Product> findMaximumPriceProductByBrandIdAndCategory(final Long brandId, final String category) {
+    public Optional<Product> findMaximumPriceProductByBrandIdAndCategory(final Long brandId, final Long categoryId) {
         return products.values()
                 .stream()
                 .filter(product -> product.getBrandId().equals(brandId)
-                        && product.getCategory().getValue().equals(category))
+                        && product.getCategoryId().equals(categoryId))
                 .max(Comparator.comparingInt(Product::getPriceValue));
     }
 }

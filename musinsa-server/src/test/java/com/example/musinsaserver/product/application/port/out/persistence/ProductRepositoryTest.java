@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.example.musinsaserver.product.domain.Category;
 import com.example.musinsaserver.product.domain.Product;
 
 @SpringBootTest
@@ -25,7 +24,8 @@ class ProductRepositoryTest {
         //given
         final int price = 1_000;
         final long brandId = 1L;
-        final Product product = Product.createWithoutId(price, Category.BAG, brandId);
+        final long categoryId = 1L;
+        final Product product = Product.createWithoutId(price, categoryId, brandId);
 
         //when
         final Product savedProduct = productRepository.save(product);
@@ -34,7 +34,7 @@ class ProductRepositoryTest {
         assertSoftly(softAssertions -> {
             assertThat(savedProduct.getId()).isNotNull();
             assertThat(savedProduct.getPriceValue()).isEqualTo(price);
-            assertThat(savedProduct.getCategory()).isEqualTo(Category.BAG);
+            assertThat(savedProduct.getCategoryId()).isEqualTo(categoryId);
             assertThat(savedProduct.getBrandId()).isEqualTo(brandId);
         });
     }
@@ -45,8 +45,8 @@ class ProductRepositoryTest {
         //given
         final int price = 1_000;
         final long brandId = 1L;
-        final Category category = Category.HAT;
-        final Product product = Product.createWithoutId(price, category, brandId);
+        final Long categoryId = 3L;
+        final Product product = Product.createWithoutId(price, categoryId, brandId);
         final Product savedProduct = productRepository.save(product);
 
         //when
@@ -56,7 +56,7 @@ class ProductRepositoryTest {
         assertThat(foundProduct.getId()).isEqualTo(savedProduct.getId());
         assertThat(foundProduct.getPriceValue()).isEqualTo(price);
         assertThat(foundProduct.getBrandId()).isEqualTo(brandId);
-        assertThat(foundProduct.getCategory()).isEqualTo(category);
+        assertThat(foundProduct.getCategoryId()).isEqualTo(categoryId);
     }
 
 
@@ -64,13 +64,11 @@ class ProductRepositoryTest {
     @DisplayName("프로덕트를 업데이트 한다.")
     void update() {
         //given
-        final Product product = Product.createWithoutId(1_000, Category.PANTS, 1L);
+        final Product product = Product.createWithoutId(1_000, 3L, 1L);
         final Product savedProduct = productRepository.save(product);
 
         final int updatedPrice = 20_000;
-        final Category category = Category.HAT;
-        final long updatedBrandId = 3L;
-        savedProduct.update(updatedPrice, "hat", updatedBrandId);
+        savedProduct.update(updatedPrice);
 
         //when
         productRepository.update(savedProduct);
@@ -80,8 +78,6 @@ class ProductRepositoryTest {
         assertSoftly(softAssertions -> {
             assertThat(updatedProduct.getId()).isEqualTo(savedProduct.getId());
             assertThat(updatedProduct.getPriceValue()).isEqualTo(updatedPrice);
-            assertThat(updatedProduct.getCategory()).isEqualTo(category);
-            assertThat(updatedProduct.getBrandId()).isEqualTo(updatedBrandId);
         });
     }
 
@@ -90,7 +86,7 @@ class ProductRepositoryTest {
     @DisplayName("product를 삭제한다.")
     void deleteById() {
         //given
-        final Product product = Product.createWithoutId(1_000, Category.PANTS, 1L);
+        final Product product = Product.createWithoutId(1_000, 3L, 1L);
         final Product savedProduct = productRepository.save(product);
 
         //when

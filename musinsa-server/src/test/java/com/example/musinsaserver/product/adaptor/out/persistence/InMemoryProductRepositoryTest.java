@@ -8,7 +8,6 @@ import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import com.example.musinsaserver.product.domain.Category;
 import com.example.musinsaserver.product.domain.Product;
 
 class InMemoryProductRepositoryTest {
@@ -21,8 +20,8 @@ class InMemoryProductRepositoryTest {
         //given
         final int price = 1_000;
         final long brandId = 1L;
-        final Category category = Category.PANTS;
-        final Product product = Product.createWithoutId(price, category, brandId);
+        final Long categoryId = 3L;
+        final Product product = Product.createWithoutId(price, categoryId, brandId);
 
         //when
         final Product savedProduct = inMemoryProductRepository.save(product);
@@ -32,7 +31,7 @@ class InMemoryProductRepositoryTest {
             assertThat(savedProduct.getId()).isNotNull();
             assertThat(savedProduct.getPriceValue()).isEqualTo(price);
             assertThat(savedProduct.getBrandId()).isEqualTo(brandId);
-            assertThat(savedProduct.getCategory()).isEqualTo(category);
+            assertThat(savedProduct.getCategoryId()).isEqualTo(categoryId);
         });
     }
 
@@ -42,8 +41,8 @@ class InMemoryProductRepositoryTest {
         //given
         final int price = 1_000;
         final long brandId = 1L;
-        final Category category = Category.SNEAKERS;
-        final Product product = Product.createWithoutId(price, category, brandId);
+        final Long categoryId = 3L;
+        final Product product = Product.createWithoutId(price, categoryId, brandId);
         final Product savedProduct = inMemoryProductRepository.save(product);
 
         //when
@@ -53,20 +52,18 @@ class InMemoryProductRepositoryTest {
         assertThat(foundProduct.getId()).isEqualTo(savedProduct.getId());
         assertThat(foundProduct.getPriceValue()).isEqualTo(price);
         assertThat(foundProduct.getBrandId()).isEqualTo(brandId);
-        assertThat(foundProduct.getCategory()).isEqualTo(category);
+        assertThat(foundProduct.getCategoryId()).isEqualTo(categoryId);
     }
 
     @Test
     @DisplayName("프로덕트를 업데이트 한다.")
     void update() {
         //given
-        final Product product = Product.createWithoutId(1_000, Category.PANTS, 1L);
+        final Product product = Product.createWithoutId(1_000, 3L, 1L);
         final Product savedProduct = inMemoryProductRepository.save(product);
 
         final int updatedPrice = 20_000;
-        final Category category = Category.HAT;
-        final long updatedBrandId = 3L;
-        savedProduct.update(updatedPrice, "hat", updatedBrandId);
+        savedProduct.update(updatedPrice);
 
         //when
         inMemoryProductRepository.update(savedProduct);
@@ -76,8 +73,6 @@ class InMemoryProductRepositoryTest {
         assertSoftly(softAssertions -> {
             assertThat(updatedProduct.getId()).isEqualTo(savedProduct.getId());
             assertThat(updatedProduct.getPriceValue()).isEqualTo(updatedPrice);
-            assertThat(updatedProduct.getCategory()).isEqualTo(category);
-            assertThat(updatedProduct.getBrandId()).isEqualTo(updatedBrandId);
         });
     }
 
@@ -85,7 +80,7 @@ class InMemoryProductRepositoryTest {
     @DisplayName("product를 삭제한다.")
     void deleteById() {
         //given
-        final Product product = Product.createWithoutId(1_000, Category.PANTS, 1L);
+        final Product product = Product.createWithoutId(1_000, 3L, 1L);
         final Product savedProduct = inMemoryProductRepository.save(product);
 
         //when
@@ -101,24 +96,24 @@ class InMemoryProductRepositoryTest {
     void findMinimumPriceProductByBrandIdAndCategory() {
         //given
         final int targetPrice = 1_000;
-        final Category targetCategory = Category.PANTS;
+        final Long targetCategoryId = 3L;
         final long targetBrandId = 2L;
         final Product targetProduct = inMemoryProductRepository.save(
-                Product.createWithoutId(targetPrice, targetCategory, targetBrandId));
-        inMemoryProductRepository.save(Product.createWithoutId(2_000, targetCategory, 2L));
-        inMemoryProductRepository.save(Product.createWithoutId(10_000, targetCategory, 2L));
-        inMemoryProductRepository.save(Product.createWithoutId(1_00, Category.ACCESSORIES, 2L));
-        inMemoryProductRepository.save(Product.createWithoutId(1_0, targetCategory, 5L));
+                Product.createWithoutId(targetPrice, targetCategoryId, targetBrandId));
+        inMemoryProductRepository.save(Product.createWithoutId(2_000, targetCategoryId, 2L));
+        inMemoryProductRepository.save(Product.createWithoutId(10_000, targetCategoryId, 2L));
+        inMemoryProductRepository.save(Product.createWithoutId(1_00, 4L, 2L));
+        inMemoryProductRepository.save(Product.createWithoutId(1_0, targetCategoryId, 5L));
 
         //when
         final Product found = inMemoryProductRepository.findMinimumPriceProductByBrandIdAndCategory(targetBrandId,
-                targetCategory.getValue()).get();
+                targetCategoryId).get();
 
         //then
         assertSoftly(softAssertions -> {
             assertThat(found.getId()).isEqualTo(targetProduct.getId());
             assertThat(found.getBrandId()).isEqualTo(targetBrandId);
-            assertThat(found.getCategory()).isEqualTo(targetCategory);
+            assertThat(found.getCategoryId()).isEqualTo(targetCategoryId);
             assertThat(found.getPriceValue()).isEqualTo(targetPrice);
         });
     }
@@ -128,7 +123,7 @@ class InMemoryProductRepositoryTest {
     void findMinimumPriceProductByBrandIdAndCategoryReturnEmpty() {
         //when
         final Optional<Product> found = inMemoryProductRepository.findMinimumPriceProductByBrandIdAndCategory(
-                0L, Category.SOCKS.getValue());
+                0L, 4L);
 
         //then
         assertThat(found).isEmpty();
@@ -139,24 +134,24 @@ class InMemoryProductRepositoryTest {
     void findMaximumPriceProductByBrandIdAndCategory() {
         //given
         final int targetPrice = 1_000_000;
-        final Category targetCategory = Category.PANTS;
+        final Long targetCategoryId = 3L;
         final long targetBrandId = 2L;
         final Product targetProduct = inMemoryProductRepository.save(
-                Product.createWithoutId(targetPrice, targetCategory, targetBrandId));
-        inMemoryProductRepository.save(Product.createWithoutId(2_000, targetCategory, 2L));
-        inMemoryProductRepository.save(Product.createWithoutId(10_000, targetCategory, 2L));
-        inMemoryProductRepository.save(Product.createWithoutId(1_00, Category.ACCESSORIES, 2L));
-        inMemoryProductRepository.save(Product.createWithoutId(1_0, targetCategory, 5L));
+                Product.createWithoutId(targetPrice, targetCategoryId, targetBrandId));
+        inMemoryProductRepository.save(Product.createWithoutId(2_000, targetCategoryId, 2L));
+        inMemoryProductRepository.save(Product.createWithoutId(10_000, targetCategoryId, 2L));
+        inMemoryProductRepository.save(Product.createWithoutId(1_00, 4L, 2L));
+        inMemoryProductRepository.save(Product.createWithoutId(1_0, targetCategoryId, 5L));
 
         //when
         final Product found = inMemoryProductRepository.findMaximumPriceProductByBrandIdAndCategory(targetBrandId,
-                targetCategory.getValue()).get();
+                targetCategoryId).get();
 
         //then
         assertSoftly(softAssertions -> {
             assertThat(found.getId()).isEqualTo(targetProduct.getId());
             assertThat(found.getBrandId()).isEqualTo(targetBrandId);
-            assertThat(found.getCategory()).isEqualTo(targetCategory);
+            assertThat(found.getCategoryId()).isEqualTo(targetCategoryId);
             assertThat(found.getPriceValue()).isEqualTo(targetPrice);
         });
     }
@@ -166,7 +161,7 @@ class InMemoryProductRepositoryTest {
     void findMaximumPriceProductByBrandIdAndCategoryReturnEmpty() {
         //when
         final Optional<Product> found = inMemoryProductRepository.findMaximumPriceProductByBrandIdAndCategory(
-                0L, Category.SOCKS.getValue());
+                0L, 0L);
 
         //then
         assertThat(found).isEmpty();
