@@ -34,4 +34,19 @@ public class RepositoryProductLoader implements ProductLoader {
                 product.getCategory().getValue()
         ));
     }
+
+    @Override
+    public Optional<ProductLoadDto> loadLowestPriceProductByBrandIdAndCategory(final Long brandId, final String category) {
+        final Product product = productRepository.findMinimumPriceProductByBrandIdAndCategory(brandId, category)
+                .orElse(null);
+        if (isNull(product)) {
+            return Optional.empty();
+        }
+        return Optional.of(new ProductLoadDto(
+                product.getId(),
+                product.getBrandId(),
+                product.getPriceValue(),
+                product.getCategory().getValue()
+        ));
+    }
 }

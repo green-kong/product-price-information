@@ -51,4 +51,52 @@ class RepositoryProductLoaderTest {
         //then
         assertThat(productLoadDto).isEmpty();
     }
+
+    @Test
+    @DisplayName("brandId와 category가 일치하는 product 중 가장 저렴함 product의 정보를 불러온다.")
+    void loadLowestPriceProductByBrandIdAndCategory() {
+        //given
+        final int targetPrice = 20_000;
+        final Category targetCategory = Category.TOP;
+        final long targetBrandId = 1L;
+        final Product targetProduct = productRepository.save(
+                Product.createWithoutId(targetPrice, targetCategory, targetBrandId));
+
+        productRepository.save(Product.createWithoutId(30_000, targetCategory, targetBrandId));
+        productRepository.save(Product.createWithoutId(40_000, targetCategory, targetBrandId));
+        productRepository.save(Product.createWithoutId(10_000, Category.PANTS, targetBrandId));
+        productRepository.save(Product.createWithoutId(1_000, Category.SNEAKERS, targetBrandId));
+        productRepository.save(Product.createWithoutId(15_000, targetCategory, 3L));
+
+        //when
+        final ProductLoadDto productLoadDto = repositoryProductLoader.loadLowestPriceProductByBrandIdAndCategory(
+                targetBrandId, targetCategory.getValue()).get();
+
+        //then
+        assertSoftly(softAssertions -> {
+            assertThat(productLoadDto.productId()).isEqualTo(targetProduct.getId());
+            assertThat(productLoadDto.brandId()).isEqualTo(targetProduct.getBrandId());
+            assertThat(productLoadDto.price()).isEqualTo(targetProduct.getPriceValue());
+            assertThat(productLoadDto.category()).isEqualTo(targetProduct.getCategory().getValue());
+        });
+    }
+
+
+    @Test
+    @DisplayName("brandId와 category가 일치하는 product가 없는 경우 Optional.empty를 반환한다.")
+    void loadLowestPriceProductByBrandIdAndCategoryReturnEmpty() {
+        //given
+        final Category targetCategory = Category.SOCKS;
+        final long targetBrandId = 1L;
+        productRepository.save(Product.createWithoutId(10_000, Category.PANTS, targetBrandId));
+        productRepository.save(Product.createWithoutId(1_000, Category.SNEAKERS, targetBrandId));
+        productRepository.save(Product.createWithoutId(15_000, targetCategory, 3L));
+
+        //when
+        final Optional<ProductLoadDto> productLoadDto = repositoryProductLoader.loadLowestPriceProductByBrandIdAndCategory(
+                targetBrandId, targetCategory.getValue());
+
+        //then
+        assertThat(productLoadDto).isEmpty();
+    }
 }
