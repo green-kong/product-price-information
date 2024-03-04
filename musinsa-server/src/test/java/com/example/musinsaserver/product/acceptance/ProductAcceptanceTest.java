@@ -22,8 +22,10 @@ import org.springframework.http.HttpStatus;
 
 import com.example.musinsaserver.product.application.port.in.dto.ProductUpdateRequest;
 import com.example.musinsaserver.product.application.port.in.dto.RegisterProductRequest;
+import com.example.musinsaserver.product.application.port.out.event.ProductDeleteEventPublisher;
 import com.example.musinsaserver.product.application.port.out.event.ProductRegisterEventPublisher;
 import com.example.musinsaserver.product.application.port.out.event.ProductUpdateEventPublisher;
+import com.example.musinsaserver.product.application.port.out.event.dto.ProductDeleteEvent;
 import com.example.musinsaserver.product.application.port.out.event.dto.ProductRegisterEvent;
 import com.example.musinsaserver.product.application.port.out.event.dto.ProductUpdateEvent;
 import com.example.musinsaserver.product.application.port.out.validator.BrandValidator;
@@ -48,6 +50,9 @@ class ProductAcceptanceTest {
 
     @MockBean
     ProductUpdateEventPublisher productUpdateEventPublisher;
+
+    @MockBean
+    ProductDeleteEventPublisher productDeleteEventPublisher;
 
     @BeforeEach
     void setUp() {
@@ -258,6 +263,53 @@ class ProductAcceptanceTest {
                     .body(productUpdateRequest)
                     .when()
                     .patch("/api/product/{productId}")
+                    .then().log().all()
+                    .extract();
+
+            //then
+            assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        }
+    }
+
+    @Nested
+    @DisplayName("프로덕트 삭제 인수테스트")
+    class delete {
+
+        @Test
+        @DisplayName("저장된 product의 정보를 삭제한다.")
+        void deleteProduct() {
+            //given
+            when(brandValidator.isExistedBrand(anyLong())).thenReturn(true);
+            doNothing().when(productRegisterEventPublisher).publishRegisterProductEvent(any(ProductRegisterEvent.class));
+            doNothing().when(productDeleteEventPublisher).publishDeleteProductEvent(any(ProductDeleteEvent.class));
+            final Long savedProductId = saveProductAndReturnSavedProductId(10_000, "hat", 1L);
+
+            //when
+            final ExtractableResponse<Response> response = given().log().all()
+                    .contentType(ContentType.JSON)
+                    .pathParam("productId", savedProductId)
+                    .when()
+                    .delete("/api/product/{productId}")
+                    .then().log().all()
+                    .extract();
+
+            //then
+            verify(productDeleteEventPublisher, times(1)).publishDeleteProductEvent(any(ProductDeleteEvent.class));
+            assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+        }
+
+        @Test
+        @DisplayName("유효하지 않은 id를 통해 삭제를 시도하는 경우 400을 응답한다.")
+        void deleteProductFail() {
+            //given
+            doNothing().when(productDeleteEventPublisher).publishDeleteProductEvent(any(ProductDeleteEvent.class));
+
+            //when
+            final ExtractableResponse<Response> response = given().log().all()
+                    .contentType(ContentType.JSON)
+                    .pathParam("productId", 0L)
+                    .when()
+                    .delete("/api/product/{productId}")
                     .then().log().all()
                     .extract();
 

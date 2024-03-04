@@ -3,6 +3,7 @@ package com.example.musinsaserver.product.adaptor.in.web;
 import java.net.URI;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.musinsaserver.product.application.port.in.DeleteProductUseCase;
 import com.example.musinsaserver.product.application.port.in.RegisterProductUseCase;
 import com.example.musinsaserver.product.application.port.in.UpdateProductUseCase;
 import com.example.musinsaserver.product.application.port.in.dto.ProductUpdateRequest;
@@ -21,13 +23,16 @@ public class ProductController {
 
     private final RegisterProductUseCase registerProductUseCase;
     private final UpdateProductUseCase updateProductUseCase;
+    private final DeleteProductUseCase deleteProductUseCase;
 
     public ProductController(
             final RegisterProductUseCase registerProductUseCase,
-            final UpdateProductUseCase updateProductUseCase
+            final UpdateProductUseCase updateProductUseCase,
+            final DeleteProductUseCase deleteProductUseCase
     ) {
         this.registerProductUseCase = registerProductUseCase;
         this.updateProductUseCase = updateProductUseCase;
+        this.deleteProductUseCase = deleteProductUseCase;
     }
 
     @PostMapping
@@ -42,6 +47,12 @@ public class ProductController {
             @RequestBody final ProductUpdateRequest productUpdateRequest
     ) {
         updateProductUseCase.updateProduct(productId, productUpdateRequest);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("{productId}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable final Long productId) {
+        deleteProductUseCase.delete(productId);
         return ResponseEntity.noContent().build();
     }
 }
