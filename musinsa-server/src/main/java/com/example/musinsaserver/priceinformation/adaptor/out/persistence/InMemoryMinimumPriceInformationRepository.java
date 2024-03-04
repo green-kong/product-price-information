@@ -50,4 +50,17 @@ public class InMemoryMinimumPriceInformationRepository implements MinimumPriceIn
     public void updateById(final Long id, final PriceInformation minimumPriceInformation) {
         minimumPriceInformations.put(id, minimumPriceInformation);
     }
+
+    @Override
+    public Optional<PriceInformation> findByProductId(final Long productId) {
+        return minimumPriceInformations.values()
+                .stream()
+                .filter(priceInformation -> priceInformation.getProductId().equals(productId))
+                .findFirst();
+    }
+
+    @Override
+    public void deleteById(final Long id) {
+        minimumPriceInformations.remove(id);
+    }
 }

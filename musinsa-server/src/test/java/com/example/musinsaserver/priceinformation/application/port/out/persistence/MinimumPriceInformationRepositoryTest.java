@@ -3,6 +3,8 @@ package com.example.musinsaserver.priceinformation.application.port.out.persiste
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
+import java.util.Optional;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,5 +107,74 @@ class MinimumPriceInformationRepositoryTest {
             assertThat(found.getPrice()).isEqualTo(savedMinimumPriceInformation.getPrice());
             assertThat(found.getBrandName()).isEqualTo(savedMinimumPriceInformation.getBrandName());
         });
+    }
+
+    @Test
+    @DisplayName("최소가격정보 중 productId가 일치하는 정보를 반환한다.")
+    void findByProductId() {
+        //given
+        final long productId = 10L;
+        final long brandId = 3L;
+        final String category = "바지";
+        final int price = 20_000;
+        final String brandName = "brandA";
+        final PriceInformation savedMinimumPriceInformation = minimumPriceInformationRepository.save(
+                PriceInformation.createWithoutId(
+                        productId,
+                        brandId,
+                        category,
+                        price,
+                        brandName
+                ));
+
+        //when
+        final PriceInformation found = minimumPriceInformationRepository.findByProductId(productId).get();
+
+        //then
+        assertSoftly(softAssertions -> {
+            assertThat(found.getId()).isEqualTo(savedMinimumPriceInformation.getId());
+            assertThat(found.getProductId()).isEqualTo(productId);
+            assertThat(found.getBrandId()).isEqualTo(brandId);
+            assertThat(found.getCategory()).isEqualTo(category);
+            assertThat(found.getPrice()).isEqualTo(price);
+            assertThat(found.getBrandName()).isEqualTo(brandName);
+        });
+    }
+
+    @Test
+    @DisplayName("최소가격정보 중 productId가 일치하는 정보가 없는 경우 Optional.empty를 반환한다.")
+    void findByProductIdReturnEmpty() {
+        //when
+        final Optional<PriceInformation> found = minimumPriceInformationRepository.findByProductId(0L);
+
+        //then
+        assertThat(found).isEmpty();
+    }
+
+    @Test
+    @DisplayName("id를 통해 최소가격 정보를 삭제한다.")
+    void deleteById() {
+        //given
+        final long productId = 10L;
+        final long brandId = 3L;
+        final String category = "바지";
+        final int price = 20_000;
+        final String brandName = "brandA";
+        final PriceInformation savedMinimumPriceInformation = minimumPriceInformationRepository.save(
+                PriceInformation.createWithoutId(
+                        productId,
+                        brandId,
+                        category,
+                        price,
+                        brandName
+                ));
+
+        //when
+        minimumPriceInformationRepository.deleteById(savedMinimumPriceInformation.getId());
+
+        //then
+        final Optional<PriceInformation> found = minimumPriceInformationRepository.findByProductId(
+                savedMinimumPriceInformation.getId());
+        assertThat(found).isEmpty();
     }
 }

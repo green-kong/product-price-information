@@ -50,4 +50,17 @@ public class InMemoryMaximumPriceInformationRepository implements MaximumPriceIn
     public void updateById(final Long id, final PriceInformation minimumPriceInformation) {
         maximumPriceInformations.put(id, minimumPriceInformation);
     }
+
+    @Override
+    public Optional<PriceInformation> findByProductId(final Long productId) {
+        return maximumPriceInformations.values()
+                .stream()
+                .filter(priceInformation -> priceInformation.getProductId().equals(productId))
+                .findFirst();
+    }
+
+    @Override
+    public void deleteById(final Long id) {
+        maximumPriceInformations.remove(id);
+    }
 }
