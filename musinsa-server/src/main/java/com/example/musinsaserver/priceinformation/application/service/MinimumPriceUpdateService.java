@@ -13,7 +13,6 @@ import com.example.musinsaserver.priceinformation.application.port.out.persisten
 import com.example.musinsaserver.priceinformation.domain.PriceInformation;
 import com.example.musinsaserver.priceinformation.exception.InvalidBrandIdException;
 import com.example.musinsaserver.priceinformation.exception.InvalidProductIdException;
-import com.example.musinsaserver.product.application.port.out.event.dto.ProductRegisterEvent;
 
 @Service
 public class MinimumPriceUpdateService implements MinimumPriceUpdateUseCase {
@@ -33,8 +32,7 @@ public class MinimumPriceUpdateService implements MinimumPriceUpdateUseCase {
     }
 
     @Override
-    public void updateMinimumPrice(final ProductRegisterEvent productRegisterEvent) {
-        final Long productId = productRegisterEvent.productId();
+    public void updateMinimumPrice(final Long productId) {
         final ProductLoadDto productLoadDto = productLoader.loadProduct(productId)
                 .orElseThrow(() -> new InvalidProductIdException(productId));
         minimumPriceInformationRepository.findByBrandIdAndCategory(

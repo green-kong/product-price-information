@@ -13,7 +13,6 @@ import com.example.musinsaserver.priceinformation.application.port.out.persisten
 import com.example.musinsaserver.priceinformation.domain.PriceInformation;
 import com.example.musinsaserver.priceinformation.exception.InvalidBrandIdException;
 import com.example.musinsaserver.priceinformation.exception.InvalidProductIdException;
-import com.example.musinsaserver.product.application.port.out.event.dto.ProductRegisterEvent;
 
 // TODO: 2024/03/04 중복코드 관리
 @Service
@@ -34,8 +33,7 @@ public class MaximumPriceUpdateService implements MaximumPriceUpdateUseCase {
     }
 
     @Override
-    public void updateMaximumPriceUpdate(final ProductRegisterEvent productRegisterEvent) {
-        final Long productId = productRegisterEvent.productId();
+    public void updateMaximumPrice(final Long productId) {
         final ProductLoadDto productLoadDto = productLoader.loadProduct(productId)
                 .orElseThrow(() -> new InvalidProductIdException(productId));
         maximumPriceInformationRepository.findByBrandIdAndCategory(

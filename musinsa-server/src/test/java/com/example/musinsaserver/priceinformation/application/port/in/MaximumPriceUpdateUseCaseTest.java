@@ -22,7 +22,6 @@ import com.example.musinsaserver.priceinformation.application.port.out.persisten
 import com.example.musinsaserver.priceinformation.domain.PriceInformation;
 import com.example.musinsaserver.priceinformation.exception.InvalidBrandIdException;
 import com.example.musinsaserver.priceinformation.exception.InvalidProductIdException;
-import com.example.musinsaserver.product.application.port.out.event.dto.ProductRegisterEvent;
 
 @SpringBootTest
 class MaximumPriceUpdateUseCaseTest {
@@ -55,7 +54,7 @@ class MaximumPriceUpdateUseCaseTest {
         );
 
         //when
-        maximumPriceUpdateUseCase.updateMaximumPriceUpdate(new ProductRegisterEvent(newProductId));
+        maximumPriceUpdateUseCase.updateMaximumPrice(newProductId);
 
         //then
         final var updatedMinimum = informationRepository.findById(currentMaximumPriceInformation.getId()).get();
@@ -85,7 +84,7 @@ class MaximumPriceUpdateUseCaseTest {
         );
 
         //when
-        maximumPriceUpdateUseCase.updateMaximumPriceUpdate(new ProductRegisterEvent(1L));
+        maximumPriceUpdateUseCase.updateMaximumPrice(1L);
 
         //then
         final var updatedMinimum = informationRepository.findById(currentMinimumPriceInformation.getId()).get();
@@ -113,7 +112,7 @@ class MaximumPriceUpdateUseCaseTest {
         );
 
         //when & then
-        assertThatThrownBy(() -> maximumPriceUpdateUseCase.updateMaximumPriceUpdate(new ProductRegisterEvent(1L)))
+        assertThatThrownBy(() -> maximumPriceUpdateUseCase.updateMaximumPrice(1L))
                 .isInstanceOf(InvalidProductIdException.class)
                 .hasMessageContaining("프로덕트 id가 유효하지 않습니다.");
     }
@@ -134,7 +133,7 @@ class MaximumPriceUpdateUseCaseTest {
         when(productLoader.loadProduct(anyLong())).thenReturn(productLoadDto);
 
         //when
-        maximumPriceUpdateUseCase.updateMaximumPriceUpdate(new ProductRegisterEvent(newProductId));
+        maximumPriceUpdateUseCase.updateMaximumPrice(newProductId);
 
         //then
         final var minimum = informationRepository.findByBrandIdAndCategory(brandId, category).get();
@@ -162,7 +161,7 @@ class MaximumPriceUpdateUseCaseTest {
 
         //when & then
         assertThatThrownBy(
-                () -> maximumPriceUpdateUseCase.updateMaximumPriceUpdate(new ProductRegisterEvent(newProductId)))
+                () -> maximumPriceUpdateUseCase.updateMaximumPrice(newProductId))
                 .isInstanceOf(InvalidBrandIdException.class)
                 .hasMessageContaining("유효하지 않은 브랜드 id 입니다.");
     }

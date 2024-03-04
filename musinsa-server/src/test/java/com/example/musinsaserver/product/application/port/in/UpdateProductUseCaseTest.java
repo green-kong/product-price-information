@@ -2,7 +2,11 @@ package com.example.musinsaserver.product.application.port.in;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.DisplayName;
@@ -12,6 +16,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.example.musinsaserver.product.application.port.in.dto.ProductUpdateRequest;
+import com.example.musinsaserver.product.application.port.out.event.ProductUpdateEventPublisher;
+import com.example.musinsaserver.product.application.port.out.event.dto.ProductUpdateEvent;
 import com.example.musinsaserver.product.application.port.out.persistence.ProductRepository;
 import com.example.musinsaserver.product.application.port.out.validator.BrandValidator;
 import com.example.musinsaserver.product.domain.Category;
@@ -33,11 +39,15 @@ class UpdateProductUseCaseTest {
     @MockBean
     BrandValidator brandValidator;
 
+    @MockBean
+    ProductUpdateEventPublisher publisher;
+
     @Test
     @DisplayName("프로덕트의 정보를 업데이트 한다.")
     void update() {
         //given
         when(brandValidator.isExistedBrand(anyLong())).thenReturn(true);
+        doNothing().when(publisher).publishUpdateProductEvent(any(ProductUpdateEvent.class));
         final Product savedProduct = productRepository.save(Product.createWithoutId(10, Category.ACCESSORIES, 1L));
 
         final int updatedPrice = 1_000_000;
@@ -49,6 +59,7 @@ class UpdateProductUseCaseTest {
         updateProductUseCase.updateProduct(savedProduct.getId(), productUpdateRequest);
 
         //then
+        verify(publisher, times(1)).publishUpdateProductEvent(any(ProductUpdateEvent.class));
         final Product product = productRepository.findById(savedProduct.getId()).get();
         assertThat(product.getId()).isEqualTo(savedProduct.getId());
         assertThat(product.getPriceValue()).isEqualTo(updatedPrice);

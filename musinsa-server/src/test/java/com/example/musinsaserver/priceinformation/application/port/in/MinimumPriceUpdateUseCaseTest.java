@@ -22,7 +22,6 @@ import com.example.musinsaserver.priceinformation.application.port.out.persisten
 import com.example.musinsaserver.priceinformation.domain.PriceInformation;
 import com.example.musinsaserver.priceinformation.exception.InvalidBrandIdException;
 import com.example.musinsaserver.priceinformation.exception.InvalidProductIdException;
-import com.example.musinsaserver.product.application.port.out.event.dto.ProductRegisterEvent;
 
 @SpringBootTest
 class MinimumPriceUpdateUseCaseTest {
@@ -55,7 +54,7 @@ class MinimumPriceUpdateUseCaseTest {
         );
 
         //when
-        minimumPriceUpdateUseCase.updateMinimumPrice(new ProductRegisterEvent(newProductId));
+        minimumPriceUpdateUseCase.updateMinimumPrice(newProductId);
 
         //then
         final var updatedMinimum = informationRepository.findById(currentMinimumPriceInformation.getId()).get();
@@ -84,7 +83,7 @@ class MinimumPriceUpdateUseCaseTest {
         );
 
         //when
-        minimumPriceUpdateUseCase.updateMinimumPrice(new ProductRegisterEvent(1L));
+        minimumPriceUpdateUseCase.updateMinimumPrice(1L);
 
         //then
         final var updatedMinimum = informationRepository.findById(currentMinimumPriceInformation.getId()).get();
@@ -112,7 +111,7 @@ class MinimumPriceUpdateUseCaseTest {
         );
 
         //when & then
-        assertThatThrownBy(() -> minimumPriceUpdateUseCase.updateMinimumPrice(new ProductRegisterEvent(1L)))
+        assertThatThrownBy(() -> minimumPriceUpdateUseCase.updateMinimumPrice(1L))
                 .isInstanceOf(InvalidProductIdException.class)
                 .hasMessageContaining("프로덕트 id가 유효하지 않습니다.");
     }
@@ -133,7 +132,7 @@ class MinimumPriceUpdateUseCaseTest {
         when(productLoader.loadProduct(anyLong())).thenReturn(productLoadDto);
 
         //when
-        minimumPriceUpdateUseCase.updateMinimumPrice(new ProductRegisterEvent(newProductId));
+        minimumPriceUpdateUseCase.updateMinimumPrice(newProductId);
 
         //then
         final var minimum = informationRepository.findByBrandIdAndCategory(brandId, category).get();
@@ -161,7 +160,7 @@ class MinimumPriceUpdateUseCaseTest {
 
         //when & then
         assertThatThrownBy(
-                () -> minimumPriceUpdateUseCase.updateMinimumPrice(new ProductRegisterEvent(newProductId)))
+                () -> minimumPriceUpdateUseCase.updateMinimumPrice(newProductId))
                 .isInstanceOf(InvalidBrandIdException.class)
                 .hasMessageContaining("유효하지 않은 브랜드 id 입니다.");
     }
