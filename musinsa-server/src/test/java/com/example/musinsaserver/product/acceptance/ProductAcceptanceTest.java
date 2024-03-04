@@ -6,6 +6,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +23,9 @@ import org.springframework.http.HttpStatus;
 import com.example.musinsaserver.product.application.port.in.dto.ProductUpdateRequest;
 import com.example.musinsaserver.product.application.port.in.dto.RegisterProductRequest;
 import com.example.musinsaserver.product.application.port.out.event.ProductRegisterEventPublisher;
+import com.example.musinsaserver.product.application.port.out.event.ProductUpdateEventPublisher;
 import com.example.musinsaserver.product.application.port.out.event.dto.ProductRegisterEvent;
+import com.example.musinsaserver.product.application.port.out.event.dto.ProductUpdateEvent;
 import com.example.musinsaserver.product.application.port.out.validator.BrandValidator;
 
 import io.restassured.RestAssured;
@@ -41,6 +45,9 @@ class ProductAcceptanceTest {
 
     @MockBean
     ProductRegisterEventPublisher productRegisterEventPublisher;
+
+    @MockBean
+    ProductUpdateEventPublisher productUpdateEventPublisher;
 
     @BeforeEach
     void setUp() {
@@ -143,6 +150,7 @@ class ProductAcceptanceTest {
             //given
             when(brandValidator.isExistedBrand(anyLong())).thenReturn(true);
             doNothing().when(productRegisterEventPublisher).publishRegisterProductEvent(any(ProductRegisterEvent.class));
+            doNothing().when(productUpdateEventPublisher).publishUpdateProductEvent(any(ProductUpdateEvent.class));
             final Long savedProductId = saveProductAndReturnSavedProductId(10_000, "hat", 1L);
 
             final ProductUpdateRequest productUpdateRequest = new ProductUpdateRequest(20_000, "pants", 3L);
@@ -158,6 +166,7 @@ class ProductAcceptanceTest {
                     .extract();
 
             //then
+            verify(productUpdateEventPublisher, times(1)).publishUpdateProductEvent(any(ProductUpdateEvent.class));
             assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
         }
 
