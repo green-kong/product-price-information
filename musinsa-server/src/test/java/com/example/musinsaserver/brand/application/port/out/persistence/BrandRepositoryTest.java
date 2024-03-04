@@ -8,12 +8,11 @@ import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import com.example.musinsaserver.brand.domain.Brand;
+import com.example.musinsaserver.support.BaseTest;
 
-@SpringBootTest
-class BrandRepositoryTest {
+class BrandRepositoryTest extends BaseTest {
 
     @Autowired
     BrandRepository brandRepository;

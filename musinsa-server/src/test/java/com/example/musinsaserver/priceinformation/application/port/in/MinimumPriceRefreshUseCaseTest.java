@@ -12,7 +12,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.example.musinsaserver.priceinformation.application.port.out.loader.ProductLoader;
@@ -20,9 +19,9 @@ import com.example.musinsaserver.priceinformation.application.port.out.loader.dt
 import com.example.musinsaserver.priceinformation.application.port.out.persistence.MinimumPriceInformationRepository;
 import com.example.musinsaserver.priceinformation.domain.PriceInformation;
 import com.example.musinsaserver.priceinformation.exception.ProductIsNotDeletedException;
+import com.example.musinsaserver.support.BaseTest;
 
-@SpringBootTest
-class MinimumPriceRefreshUseCaseTest {
+class MinimumPriceRefreshUseCaseTest extends BaseTest {
 
     @Autowired
     MinimumPriceRefreshUseCase minimumPriceRefreshUseCase;

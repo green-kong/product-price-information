@@ -15,13 +15,14 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 
 import com.example.musinsaserver.brand.application.port.in.dto.RegisterBrandRequest;
 import com.example.musinsaserver.common.dto.ErrorResponse;
+import com.example.musinsaserver.support.BaseTest;
 
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-class BrandAcceptanceTest {
+class BrandAcceptanceTest extends BaseTest {
     @LocalServerPort
     int port;
 

@@ -5,13 +5,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import com.example.musinsaserver.brand.application.port.out.persistence.BrandRepository;
 import com.example.musinsaserver.brand.domain.Brand;
+import com.example.musinsaserver.support.BaseTest;
 
-@SpringBootTest
-class RepositoryBrandValidatorTest {
+class RepositoryBrandValidatorTest extends BaseTest {
 
     @Autowired
     RepositoryBrandValidator repositoryBrandValidator;

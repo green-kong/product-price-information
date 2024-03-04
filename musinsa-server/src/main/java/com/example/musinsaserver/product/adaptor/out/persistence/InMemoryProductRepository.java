@@ -66,4 +66,9 @@ public class InMemoryProductRepository implements ProductRepository {
                         && product.getCategoryId().equals(categoryId))
                 .max(Comparator.comparingInt(Product::getPriceValue));
     }
+
+    public void clear() {
+        insertId = 0L;
+        products.clear();
+    }
 }

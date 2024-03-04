@@ -63,4 +63,9 @@ public class InMemoryMaximumPriceInformationRepository implements MaximumPriceIn
     public void deleteById(final Long id) {
         maximumPriceInformations.remove(id);
     }
+
+    public void clear() {
+        insertedId = 0L;
+        maximumPriceInformations.clear();
+    }
 }

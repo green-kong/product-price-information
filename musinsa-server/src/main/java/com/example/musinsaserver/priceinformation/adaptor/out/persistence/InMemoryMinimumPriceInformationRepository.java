@@ -77,4 +77,9 @@ public class InMemoryMinimumPriceInformationRepository implements MinimumPriceIn
                 .filter(priceInformation -> priceInformation.getBrandId().equals(brandId))
                 .toList();
     }
+
+    public void clear() {
+        insertedId = 0L;
+        minimumPriceInformations.clear();
+    }
 }

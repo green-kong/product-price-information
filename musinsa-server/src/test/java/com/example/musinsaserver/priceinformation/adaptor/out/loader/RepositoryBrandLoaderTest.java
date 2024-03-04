@@ -6,15 +6,14 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import com.example.musinsaserver.brand.application.port.out.persistence.BrandRepository;
 import com.example.musinsaserver.brand.domain.Brand;
 import com.example.musinsaserver.priceinformation.application.port.out.loader.BrandLoader;
 import com.example.musinsaserver.priceinformation.application.port.out.loader.dto.BrandLoadDto;
+import com.example.musinsaserver.support.BaseTest;
 
-@SpringBootTest
-class RepositoryBrandLoaderTest {
+class RepositoryBrandLoaderTest extends BaseTest {
 
     @Autowired
     BrandLoader brandLoader;

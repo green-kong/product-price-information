@@ -10,7 +10,6 @@ import static org.mockito.Mockito.verify;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.example.musinsaserver.product.application.port.in.dto.ProductPriceUpdateRequest;
@@ -20,9 +19,9 @@ import com.example.musinsaserver.product.application.port.out.persistence.Produc
 import com.example.musinsaserver.product.domain.Product;
 import com.example.musinsaserver.product.exception.InvalidPriceException;
 import com.example.musinsaserver.product.exception.NonExistentProductException;
+import com.example.musinsaserver.support.BaseTest;
 
-@SpringBootTest
-class UpdateProductUseCaseTest {
+class UpdateProductUseCaseTest extends BaseTest {
 
     @Autowired
     UpdateProductUseCase updateProductUseCase;

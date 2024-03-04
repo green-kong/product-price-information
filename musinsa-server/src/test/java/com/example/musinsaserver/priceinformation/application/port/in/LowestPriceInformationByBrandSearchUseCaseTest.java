@@ -6,14 +6,13 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import com.example.musinsaserver.priceinformation.application.port.in.dto.LowestPriceInformationByBrandResponses;
 import com.example.musinsaserver.priceinformation.application.port.out.persistence.MinimumPriceInformationRepository;
 import com.example.musinsaserver.priceinformation.domain.PriceInformation;
+import com.example.musinsaserver.support.BaseTest;
 
-@SpringBootTest
-class LowestPriceInformationByBrandSearchUseCaseTest {
+class LowestPriceInformationByBrandSearchUseCaseTest extends BaseTest {
 
     @Autowired
     LowestPriceInformationByBrandSearchUseCase useCase;

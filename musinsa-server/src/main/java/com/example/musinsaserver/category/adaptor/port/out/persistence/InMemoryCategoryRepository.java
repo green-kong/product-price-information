@@ -32,4 +32,9 @@ public class InMemoryCategoryRepository implements CategoryRepository {
         }
         return Optional.of(category);
     }
+
+    public void clear() {
+        insertedId = 0L;
+        categories.clear();
+    }
 }

@@ -5,13 +5,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import com.example.musinsaserver.category.application.port.out.persistence.CategoryRepository;
 import com.example.musinsaserver.category.domain.Category;
+import com.example.musinsaserver.support.BaseTest;
 
-@SpringBootTest
-class RepositoryCategoryValidatorTest {
+class RepositoryCategoryValidatorTest extends BaseTest {
 
     @Autowired
     RepositoryCategoryValidator repositoryCategoryValidator;

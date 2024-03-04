@@ -11,7 +11,6 @@ import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.example.musinsaserver.priceinformation.application.port.out.loader.BrandLoader;
@@ -25,9 +24,9 @@ import com.example.musinsaserver.priceinformation.domain.PriceInformation;
 import com.example.musinsaserver.priceinformation.exception.InvalidBrandIdException;
 import com.example.musinsaserver.priceinformation.exception.InvalidCategoryIdException;
 import com.example.musinsaserver.priceinformation.exception.InvalidProductIdException;
+import com.example.musinsaserver.support.BaseTest;
 
-@SpringBootTest
-class MinimumPriceUpdateUseCaseTest {
+class MinimumPriceUpdateUseCaseTest extends BaseTest {
 
     @Autowired
     MinimumPriceUpdateUseCase minimumPriceUpdateUseCase;

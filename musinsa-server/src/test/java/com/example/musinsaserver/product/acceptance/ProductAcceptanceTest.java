@@ -30,6 +30,7 @@ import com.example.musinsaserver.product.application.port.out.event.dto.ProductR
 import com.example.musinsaserver.product.application.port.out.event.dto.ProductUpdateEvent;
 import com.example.musinsaserver.product.application.port.out.validator.BrandValidator;
 import com.example.musinsaserver.product.application.port.out.validator.CategoryValidator;
+import com.example.musinsaserver.support.BaseTest;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -38,7 +39,7 @@ import io.restassured.response.Response;
 
 @DisplayName("프로덕트 인수테스트")
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-class ProductAcceptanceTest {
+class ProductAcceptanceTest extends BaseTest {
 
     @LocalServerPort
     int port;

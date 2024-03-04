@@ -8,14 +8,13 @@ import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import com.example.musinsaserver.product.application.port.out.persistence.ProductRepository;
 import com.example.musinsaserver.product.domain.Product;
 import com.example.musinsaserver.product.exception.NonExistentProductException;
+import com.example.musinsaserver.support.BaseTest;
 
-@SpringBootTest
-class DeleteProductUseCaseTest {
+class DeleteProductUseCaseTest extends BaseTest {
 
     @Autowired
     DeleteProductUseCase deleteProductUseCase;

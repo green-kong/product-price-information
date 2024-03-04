@@ -8,12 +8,11 @@ import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import com.example.musinsaserver.category.domain.Category;
+import com.example.musinsaserver.support.BaseTest;
 
-@SpringBootTest
-class CategoryRepositoryTest {
+class CategoryRepositoryTest extends BaseTest {
 
     @Autowired
     CategoryRepository categoryRepository;

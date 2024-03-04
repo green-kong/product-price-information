@@ -33,4 +33,9 @@ public class InMemoryBrandRepository implements BrandRepository {
         }
         return Optional.of(brand);
     }
+
+    public void clear() {
+        insertId = 0;
+        brands.clear();
+    }
 }

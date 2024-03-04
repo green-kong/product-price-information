@@ -8,12 +8,11 @@ import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import com.example.musinsaserver.priceinformation.domain.PriceInformation;
+import com.example.musinsaserver.support.BaseTest;
 
-@SpringBootTest
-class MaximumPriceInformationRepositoryTest {
+class MaximumPriceInformationRepositoryTest extends BaseTest {
 
     @Autowired
     MaximumPriceInformationRepository maximumPriceInformationRepository;
