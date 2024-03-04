@@ -6,24 +6,32 @@ import org.springframework.stereotype.Service;
 
 import com.example.musinsaserver.priceinformation.application.port.in.LowestPriceInformationByBrandSearchUseCase;
 import com.example.musinsaserver.priceinformation.application.port.in.dto.LowestPriceInformationByBrandResponses;
+import com.example.musinsaserver.priceinformation.application.port.out.loader.CategoryLoader;
 import com.example.musinsaserver.priceinformation.application.port.out.persistence.MinimumPriceInformationRepository;
 import com.example.musinsaserver.priceinformation.domain.PriceInformation;
+import com.example.musinsaserver.priceinformation.exception.InsufficientDataInBrandException;
 
 @Service
 public class LowestPriceInformationByBrandSearchService implements LowestPriceInformationByBrandSearchUseCase {
 
     private final MinimumPriceInformationRepository minimumPriceInformationRepository;
+    private final CategoryLoader categoryLoader;
 
     public LowestPriceInformationByBrandSearchService(
-            final MinimumPriceInformationRepository minimumPriceInformationRepository
+            final MinimumPriceInformationRepository minimumPriceInformationRepository,
+            final CategoryLoader categoryLoader
     ) {
         this.minimumPriceInformationRepository = minimumPriceInformationRepository;
+        this.categoryLoader = categoryLoader;
     }
 
     @Override
     public LowestPriceInformationByBrandResponses searchLowestPriceInformationByBrand(final Long brandId) {
-        // TODO: 2024/03/04 카테고리 영속화 이후, category 개수와 일치하는지 validate
         final List<PriceInformation> priceInformations = minimumPriceInformationRepository.findByBrandId(brandId);
+        int countAllCategories = categoryLoader.countAllCategories();
+        if (countAllCategories != priceInformations.size()) {
+            throw new InsufficientDataInBrandException(brandId, countAllCategories, priceInformations.size());
+        }
         return LowestPriceInformationByBrandResponses.from(priceInformations);
     }
 }

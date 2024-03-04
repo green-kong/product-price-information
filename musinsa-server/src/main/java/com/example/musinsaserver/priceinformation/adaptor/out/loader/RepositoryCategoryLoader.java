@@ -28,4 +28,9 @@ public class RepositoryCategoryLoader implements CategoryLoader {
         }
         return Optional.of(new CategoryLoadDto(category.getId(), category.getNameValue()));
     }
+
+    @Override
+    public int countAllCategories() {
+        return categoryRepository.countAll();
+    }
 }

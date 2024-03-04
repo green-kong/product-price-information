@@ -60,4 +60,22 @@ class CategoryRepositoryTest extends BaseTest {
         //then
         assertThat(found).isEmpty();
     }
+
+    @Test
+    @DisplayName("저장된 카테고리의 갯수를 반환한다.")
+    void countAll() {
+        //given
+        categoryRepository.save(Category.createWithoutId("아우터"));
+        categoryRepository.save(Category.createWithoutId("상의"));
+        categoryRepository.save(Category.createWithoutId("바지"));
+        categoryRepository.save(Category.createWithoutId("양말"));
+        categoryRepository.save(Category.createWithoutId("스니커즈"));
+        categoryRepository.save(Category.createWithoutId("액세서리"));
+
+        //when
+        final int countAll = categoryRepository.countAll();
+
+        //then
+        assertThat(countAll).isEqualTo(6);
+    }
 }

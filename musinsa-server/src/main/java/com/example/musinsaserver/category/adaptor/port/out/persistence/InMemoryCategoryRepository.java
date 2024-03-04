@@ -33,6 +33,11 @@ public class InMemoryCategoryRepository implements CategoryRepository {
         return Optional.of(category);
     }
 
+    @Override
+    public int countAll() {
+        return categories.size();
+    }
+
     public void clear() {
         insertedId = 0L;
         categories.clear();

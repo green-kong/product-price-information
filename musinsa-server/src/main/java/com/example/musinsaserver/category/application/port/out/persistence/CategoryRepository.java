@@ -8,4 +8,6 @@ public interface CategoryRepository {
     Category save(final Category category);
 
     Optional<Category> findById(final Long id);
+
+    int countAll();
 }
