@@ -99,4 +99,52 @@ class RepositoryProductLoaderTest {
         //then
         assertThat(productLoadDto).isEmpty();
     }
+
+    @Test
+    @DisplayName("brandId와 category가 일치하는 product 중 가장 비싼 product의 정보를 불러온다.")
+    void loadHighestPriceProductByBrandIdAndCategory() {
+        //given
+        final int targetPrice = 1_000_000;
+        final Category targetCategory = Category.TOP;
+        final long targetBrandId = 30L;
+        final Product targetProduct = productRepository.save(
+                Product.createWithoutId(targetPrice, targetCategory, targetBrandId));
+
+        productRepository.save(Product.createWithoutId(30_000, targetCategory, targetBrandId));
+        productRepository.save(Product.createWithoutId(40_000, targetCategory, targetBrandId));
+        productRepository.save(Product.createWithoutId(10_000, Category.PANTS, targetBrandId));
+        productRepository.save(Product.createWithoutId(1_000, Category.SNEAKERS, targetBrandId));
+        productRepository.save(Product.createWithoutId(15_000, targetCategory, 3L));
+
+        //when
+        final ProductLoadDto productLoadDto = repositoryProductLoader.loadHighestPriceProductByBrandIdAndCategory(
+                targetBrandId, targetCategory.getValue()).get();
+
+        //then
+        assertSoftly(softAssertions -> {
+            assertThat(productLoadDto.productId()).isEqualTo(targetProduct.getId());
+            assertThat(productLoadDto.brandId()).isEqualTo(targetProduct.getBrandId());
+            assertThat(productLoadDto.price()).isEqualTo(targetProduct.getPriceValue());
+            assertThat(productLoadDto.category()).isEqualTo(targetProduct.getCategory().getValue());
+        });
+    }
+
+
+    @Test
+    @DisplayName("brandId와 category가 일치하는 product가 없는 경우 Optional.empty를 반환한다.")
+    void loadHighestPriceProductByBrandIdAndCategoryReturnEmpty() {
+        //given
+        final Category targetCategory = Category.SOCKS;
+        final long targetBrandId = 31L;
+        productRepository.save(Product.createWithoutId(10_000, Category.PANTS, targetBrandId));
+        productRepository.save(Product.createWithoutId(1_000, Category.SNEAKERS, targetBrandId));
+        productRepository.save(Product.createWithoutId(15_000, targetCategory, 3L));
+
+        //when
+        final Optional<ProductLoadDto> productLoadDto = repositoryProductLoader.loadHighestPriceProductByBrandIdAndCategory(
+                targetBrandId, targetCategory.getValue());
+
+        //then
+        assertThat(productLoadDto).isEmpty();
+    }
 }

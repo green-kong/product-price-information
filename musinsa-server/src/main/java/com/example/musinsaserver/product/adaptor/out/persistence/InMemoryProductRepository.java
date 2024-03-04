@@ -57,4 +57,13 @@ public class InMemoryProductRepository implements ProductRepository {
                         && product.getCategory().getValue().equals(category))
                 .min(Comparator.comparingInt(Product::getPriceValue));
     }
+
+    @Override
+    public Optional<Product> findMaximumPriceProductByBrandIdAndCategory(final Long brandId, final String category) {
+        return products.values()
+                .stream()
+                .filter(product -> product.getBrandId().equals(brandId)
+                        && product.getCategory().getValue().equals(category))
+                .max(Comparator.comparingInt(Product::getPriceValue));
+    }
 }

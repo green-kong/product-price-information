@@ -64,5 +64,4 @@ public class MinimumPriceRefreshService implements MinimumPriceRefreshUseCase {
     private Runnable delete(final Long priceInformationId) {
         return () -> minimumPriceInformationRepository.deleteById(priceInformationId);
     }
-
 }

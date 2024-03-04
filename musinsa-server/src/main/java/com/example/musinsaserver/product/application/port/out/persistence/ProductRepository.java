@@ -14,4 +14,6 @@ public interface ProductRepository {
     void delete(final Long id);
 
     Optional<Product> findMinimumPriceProductByBrandIdAndCategory(final Long brandId, final String category);
+
+    Optional<Product> findMaximumPriceProductByBrandIdAndCategory(final Long brandId, final String category);
 }
