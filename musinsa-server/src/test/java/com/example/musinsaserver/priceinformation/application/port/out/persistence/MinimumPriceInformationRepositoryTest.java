@@ -3,6 +3,7 @@ package com.example.musinsaserver.priceinformation.application.port.out.persiste
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.DisplayName;
@@ -176,5 +177,26 @@ class MinimumPriceInformationRepositoryTest {
         final Optional<PriceInformation> found = minimumPriceInformationRepository.findByProductId(
                 savedMinimumPriceInformation.getId());
         assertThat(found).isEmpty();
+    }
+
+    @Test
+    @DisplayName("brandId가 일치하는 모든 priceInformation을 반환한다.")
+    void findByBrandId() {
+        //given
+        final long targetBrandId = 2L;
+        minimumPriceInformationRepository.save(
+                PriceInformation.createWithoutId(1L, targetBrandId, "바지", 10_000, "brandB"));
+        minimumPriceInformationRepository.save(
+                PriceInformation.createWithoutId(2L, targetBrandId, "액세서리", 10_000, "brandB"));
+        minimumPriceInformationRepository.save(PriceInformation.createWithoutId(3L, 4L, "바지", 10_000, "brandD"));
+        minimumPriceInformationRepository.save(PriceInformation.createWithoutId(4L, 3L, "바지", 10_000, "brandC"));
+        minimumPriceInformationRepository.save(
+                PriceInformation.createWithoutId(5L, targetBrandId, "아우터", 10_000, "brandB"));
+
+        //when
+        final List<PriceInformation> results = minimumPriceInformationRepository.findByBrandId(targetBrandId);
+
+        //then
+        assertThat(results).hasSize(3);
     }
 }

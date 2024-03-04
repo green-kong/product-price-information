@@ -3,6 +3,7 @@ package com.example.musinsaserver.priceinformation.adaptor.out.persistence;
 import static java.util.Objects.isNull;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -62,5 +63,13 @@ public class InMemoryMinimumPriceInformationRepository implements MinimumPriceIn
     @Override
     public void deleteById(final Long id) {
         minimumPriceInformations.remove(id);
+    }
+
+    @Override
+    public List<PriceInformation> findByBrandId(final Long brandId) {
+        return minimumPriceInformations.values()
+                .stream()
+                .filter(priceInformation -> priceInformation.getBrandId().equals(brandId))
+                .toList();
     }
 }

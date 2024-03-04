@@ -81,5 +81,4 @@ public class PriceInformation {
     public String getBrandName() {
         return brandName;
     }
-
 }
