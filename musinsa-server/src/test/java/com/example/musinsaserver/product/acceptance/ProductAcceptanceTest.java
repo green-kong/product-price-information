@@ -3,7 +3,9 @@ package com.example.musinsaserver.product.acceptance;
 import static com.example.musinsaserver.product.acceptance.fixture.ProductAcceptanceFixture.saveProductAndReturnSavedProductId;
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -18,6 +20,8 @@ import org.springframework.http.HttpStatus;
 
 import com.example.musinsaserver.product.application.port.in.dto.ProductUpdateRequest;
 import com.example.musinsaserver.product.application.port.in.dto.RegisterProductRequest;
+import com.example.musinsaserver.product.application.port.out.event.ProductRegisterEventPublisher;
+import com.example.musinsaserver.product.application.port.out.event.dto.ProductRegisterEvent;
 import com.example.musinsaserver.product.application.port.out.validator.BrandValidator;
 
 import io.restassured.RestAssured;
@@ -35,6 +39,9 @@ class ProductAcceptanceTest {
     @MockBean
     BrandValidator brandValidator;
 
+    @MockBean
+    ProductRegisterEventPublisher productRegisterEventPublisher;
+
     @BeforeEach
     void setUp() {
         RestAssured.port = port;
@@ -49,6 +56,7 @@ class ProductAcceptanceTest {
         void registerProduct() {
             //given
             when(brandValidator.isExistedBrand(anyLong())).thenReturn(true);
+            doNothing().when(productRegisterEventPublisher).publishRegisterProductEvent(any(ProductRegisterEvent.class));
             final RegisterProductRequest requestBody = new RegisterProductRequest(20_000, "bag", 1L);
 
             //when
@@ -134,6 +142,7 @@ class ProductAcceptanceTest {
         void updateProduct() {
             //given
             when(brandValidator.isExistedBrand(anyLong())).thenReturn(true);
+            doNothing().when(productRegisterEventPublisher).publishRegisterProductEvent(any(ProductRegisterEvent.class));
             final Long savedProductId = saveProductAndReturnSavedProductId(10_000, "hat", 1L);
 
             final ProductUpdateRequest productUpdateRequest = new ProductUpdateRequest(20_000, "pants", 3L);
@@ -157,6 +166,7 @@ class ProductAcceptanceTest {
         void updateFailByInvalidProductId() {
             //given
             when(brandValidator.isExistedBrand(anyLong())).thenReturn(true);
+            doNothing().when(productRegisterEventPublisher).publishRegisterProductEvent(any(ProductRegisterEvent.class));
             final ProductUpdateRequest productUpdateRequest = new ProductUpdateRequest(20_000, "pants", 3L);
 
             //when
@@ -178,6 +188,7 @@ class ProductAcceptanceTest {
         void updateFailByInvalidPrice() {
             //given
             when(brandValidator.isExistedBrand(anyLong())).thenReturn(true);
+            doNothing().when(productRegisterEventPublisher).publishRegisterProductEvent(any(ProductRegisterEvent.class));
             final Long savedProductId = saveProductAndReturnSavedProductId(10_000, "hat", 1L);
 
             final ProductUpdateRequest productUpdateRequest = new ProductUpdateRequest(9, "pants", 3L);
@@ -201,6 +212,7 @@ class ProductAcceptanceTest {
         void updateFailByInvalidCategory() {
             //given
             when(brandValidator.isExistedBrand(anyLong())).thenReturn(true);
+            doNothing().when(productRegisterEventPublisher).publishRegisterProductEvent(any(ProductRegisterEvent.class));
             final Long savedProductId = saveProductAndReturnSavedProductId(10_000, "hat", 1L);
 
             final ProductUpdateRequest productUpdateRequest = new ProductUpdateRequest(20_000, "invalid", 3L);
@@ -225,6 +237,7 @@ class ProductAcceptanceTest {
             //given
             when(brandValidator.isExistedBrand(1L)).thenReturn(true);
             when(brandValidator.isExistedBrand(3L)).thenReturn(false);
+            doNothing().when(productRegisterEventPublisher).publishRegisterProductEvent(any(ProductRegisterEvent.class));
             final Long savedProductId = saveProductAndReturnSavedProductId(10_000, "hat", 1L);
 
             final ProductUpdateRequest productUpdateRequest = new ProductUpdateRequest(20_000, "accessories", 3L);
