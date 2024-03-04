@@ -108,4 +108,32 @@ class PriceInformationTest {
                 Arguments.of(30_000, false)
         );
     }
+
+    @DisplayName("priceInformation의 price가 인자로 받은 price보다 작으면 true를 반환하고, 같거나 크면 false를 반환한다.")
+    @ParameterizedTest
+    @MethodSource("provideComparedPriceAndExpectedForMaximum")
+    void isMoreCheaperThanReturn(final int comparedPrice, final boolean expected) {
+        //given
+        final Long id = 2L;
+        final Long productId = 1L;
+        final Long brandId = 3L;
+        final String category = "바지";
+        final int price = 30_000;
+        final String brandName = "D";
+        final var priceInformation = PriceInformation.createWithId(id, productId, brandId, category, price, brandName);
+
+        //when
+        final boolean result = priceInformation.isMoreExpensiveThan(comparedPrice);
+
+        //then
+        assertThat(result).isEqualTo(expected);
+    }
+
+    public static Stream<Arguments> provideComparedPriceAndExpectedForMaximum() {
+        return Stream.of(
+                Arguments.of(29_999, true),
+                Arguments.of(30_000, false),
+                Arguments.of(30_001, false)
+        );
+    }
 }

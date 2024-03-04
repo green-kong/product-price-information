@@ -54,6 +54,10 @@ public class PriceInformation {
         return price > comparedPrice;
     }
 
+    public boolean isCheaperThan(final int comparedPrice) {
+        return price < comparedPrice;
+    }
+
     public Long getId() {
         return id;
     }
