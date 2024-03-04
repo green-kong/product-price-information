@@ -33,7 +33,7 @@ public class MinimumPriceUpdateService implements MinimumPriceUpdateUseCase {
     }
 
     @Override
-    public void updateMinimumPriceUpdate(final ProductRegisterEvent productRegisterEvent) {
+    public void updateMinimumPrice(final ProductRegisterEvent productRegisterEvent) {
         final Long productId = productRegisterEvent.productId();
         final ProductLoadDto productLoadDto = productLoader.loadProduct(productId)
                 .orElseThrow(() -> new InvalidProductIdException(productId));

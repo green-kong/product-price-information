@@ -55,7 +55,7 @@ class MinimumPriceUpdateUseCaseTest {
         );
 
         //when
-        minimumPriceUpdateUseCase.updateMinimumPriceUpdate(new ProductRegisterEvent(newProductId));
+        minimumPriceUpdateUseCase.updateMinimumPrice(new ProductRegisterEvent(newProductId));
 
         //then
         final var updatedMinimum = informationRepository.findById(currentMinimumPriceInformation.getId()).get();
@@ -84,7 +84,7 @@ class MinimumPriceUpdateUseCaseTest {
         );
 
         //when
-        minimumPriceUpdateUseCase.updateMinimumPriceUpdate(new ProductRegisterEvent(1L));
+        minimumPriceUpdateUseCase.updateMinimumPrice(new ProductRegisterEvent(1L));
 
         //then
         final var updatedMinimum = informationRepository.findById(currentMinimumPriceInformation.getId()).get();
@@ -112,7 +112,7 @@ class MinimumPriceUpdateUseCaseTest {
         );
 
         //when & then
-        assertThatThrownBy(() -> minimumPriceUpdateUseCase.updateMinimumPriceUpdate(new ProductRegisterEvent(1L)))
+        assertThatThrownBy(() -> minimumPriceUpdateUseCase.updateMinimumPrice(new ProductRegisterEvent(1L)))
                 .isInstanceOf(InvalidProductIdException.class)
                 .hasMessageContaining("프로덕트 id가 유효하지 않습니다.");
     }
@@ -133,7 +133,7 @@ class MinimumPriceUpdateUseCaseTest {
         when(productLoader.loadProduct(anyLong())).thenReturn(productLoadDto);
 
         //when
-        minimumPriceUpdateUseCase.updateMinimumPriceUpdate(new ProductRegisterEvent(newProductId));
+        minimumPriceUpdateUseCase.updateMinimumPrice(new ProductRegisterEvent(newProductId));
 
         //then
         final var minimum = informationRepository.findByBrandIdAndCategory(brandId, category).get();
@@ -161,7 +161,7 @@ class MinimumPriceUpdateUseCaseTest {
 
         //when & then
         assertThatThrownBy(
-                () -> minimumPriceUpdateUseCase.updateMinimumPriceUpdate(new ProductRegisterEvent(newProductId)))
+                () -> minimumPriceUpdateUseCase.updateMinimumPrice(new ProductRegisterEvent(newProductId)))
                 .isInstanceOf(InvalidBrandIdException.class)
                 .hasMessageContaining("유효하지 않은 브랜드 id 입니다.");
     }
