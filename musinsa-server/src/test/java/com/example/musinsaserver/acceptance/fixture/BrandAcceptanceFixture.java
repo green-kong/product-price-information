@@ -14,7 +14,7 @@ public class BrandAcceptanceFixture {
                 .contentType(JSON)
                 .body(new RegisterBrandRequest(name))
                 .when()
-                .post("/api/brand")
+                .post("/api/brands")
                 .then().log().all()
                 .extract();
 

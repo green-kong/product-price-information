@@ -42,7 +42,7 @@ class BrandAcceptanceTest extends BaseTest {
                 .contentType(JSON)
                 .body(registerBrandRequest)
                 .when()
-                .post("/api/brand")
+                .post("/api/brands")
                 .then().log().all()
                 .extract();
 
@@ -61,7 +61,7 @@ class BrandAcceptanceTest extends BaseTest {
                 .contentType(JSON)
                 .body(registerBrandRequest)
                 .when()
-                .post("/api/brand")
+                .post("/api/brands")
                 .then().log().all()
                 .extract();
 

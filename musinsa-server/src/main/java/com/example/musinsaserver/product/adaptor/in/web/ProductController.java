@@ -18,7 +18,7 @@ import com.example.musinsaserver.product.application.port.in.dto.ProductPriceUpd
 import com.example.musinsaserver.product.application.port.in.dto.RegisterProductRequest;
 
 @RestController
-@RequestMapping("api/product")
+@RequestMapping("api/products")
 public class ProductController {
 
     private final RegisterProductUseCase registerProductUseCase;
@@ -38,7 +38,7 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<Void> registerProduct(@RequestBody final RegisterProductRequest registerProductRequest) {
         final Long savedProductId = registerProductUseCase.registerProduct(registerProductRequest);
-        return ResponseEntity.created(URI.create("/api/product/" + savedProductId)).build();
+        return ResponseEntity.created(URI.create("/api/products/" + savedProductId)).build();
     }
 
     @PatchMapping("{productId}")

@@ -82,7 +82,7 @@ class ProductAcceptanceTest extends BaseTest {
                     .contentType(ContentType.JSON)
                     .body(requestBody)
                     .when()
-                    .post("/api/product")
+                    .post("/api/products")
                     .then().log().all()
                     .extract();
 
@@ -103,7 +103,7 @@ class ProductAcceptanceTest extends BaseTest {
                     .contentType(ContentType.JSON)
                     .body(requestBody)
                     .when()
-                    .post("/api/product")
+                    .post("/api/products")
                     .then().log().all()
                     .extract();
 
@@ -124,7 +124,7 @@ class ProductAcceptanceTest extends BaseTest {
                     .contentType(ContentType.JSON)
                     .body(requestBody)
                     .when()
-                    .post("/api/product")
+                    .post("/api/products")
                     .then().log().all()
                     .extract();
 
@@ -144,7 +144,7 @@ class ProductAcceptanceTest extends BaseTest {
                     .contentType(ContentType.JSON)
                     .body(requestBody)
                     .when()
-                    .post("/api/product")
+                    .post("/api/products")
                     .then().log().all()
                     .extract();
 
@@ -175,7 +175,7 @@ class ProductAcceptanceTest extends BaseTest {
                     .pathParam("productId", savedProductId)
                     .body(productPriceUpdateRequest)
                     .when()
-                    .patch("/api/product/{productId}")
+                    .patch("/api/products/{productId}")
                     .then().log().all()
                     .extract();
 
@@ -199,7 +199,7 @@ class ProductAcceptanceTest extends BaseTest {
                     .pathParam("productId", 0)
                     .body(productPriceUpdateRequest)
                     .when()
-                    .patch("/api/product/{productId}")
+                    .patch("/api/products/{productId}")
                     .then().log().all()
                     .extract();
 
@@ -224,7 +224,7 @@ class ProductAcceptanceTest extends BaseTest {
                     .pathParam("productId", savedProductId)
                     .body(productPriceUpdateRequest)
                     .when()
-                    .patch("/api/product/{productId}")
+                    .patch("/api/products/{productId}")
                     .then().log().all()
                     .extract();
 
@@ -252,7 +252,7 @@ class ProductAcceptanceTest extends BaseTest {
                     .contentType(ContentType.JSON)
                     .pathParam("productId", savedProductId)
                     .when()
-                    .delete("/api/product/{productId}")
+                    .delete("/api/products/{productId}")
                     .then().log().all()
                     .extract();
 
@@ -272,7 +272,7 @@ class ProductAcceptanceTest extends BaseTest {
                     .contentType(ContentType.JSON)
                     .pathParam("productId", 0L)
                     .when()
-                    .delete("/api/product/{productId}")
+                    .delete("/api/products/{productId}")
                     .then().log().all()
                     .extract();
 

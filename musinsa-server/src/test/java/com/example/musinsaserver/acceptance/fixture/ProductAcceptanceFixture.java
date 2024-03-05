@@ -14,7 +14,7 @@ public class ProductAcceptanceFixture {
                 .contentType(ContentType.JSON)
                 .body(requestBody)
                 .when()
-                .post("/api/product");
+                .post("/api/products");
         final String[] splitLocation = response.header("Location").split("/");
         return Long.parseLong(splitLocation[splitLocation.length - 1]);
     }
