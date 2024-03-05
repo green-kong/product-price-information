@@ -9,7 +9,7 @@ import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 
 @Entity(name = "products")
-@Table(indexes =  @Index(name = "idx__brandId__categoryId", columnList = "brand_id, category_id"))
+@Table(indexes =  @Index(name = "product_idx_brandId_categoryId", columnList = "brand_id, category_id"))
 public class JpaProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,21 +1,39 @@
 package com.example.musinsaserver.priceinformation.adaptor.out.persistence.jpa.lowest;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
+import jakarta.persistence.Table;
 
 @Entity(name = "lowest_price_informations")
+@Table(indexes = {
+        @Index(name = "lowest_idx_category_id", columnList = "category_id"),
+        @Index(name = "lowest_idx_brand_id", columnList = "brand_id"),
+        @Index(name = "lowest_idx_brand_id_category_id", columnList = "brand_id, category_id")
+})
 public class JpaLowestPriceInformationEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "product_id")
     private Long productId;
+
+    @Column(name = "brand_id")
     private Long brandId;
+
+    @Column(name = "category_id")
     private Long categoryId;
+
+    @Column(name = "brand_name")
+    private String brandName;
+
     private String category;
     private int price;
-    private String brandName;
+
 
     protected JpaLowestPriceInformationEntity() {
     }
