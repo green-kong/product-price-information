@@ -19,7 +19,7 @@ import com.example.musinsaserver.priceinformation.application.port.out.loader.Pr
 import com.example.musinsaserver.priceinformation.application.port.out.loader.dto.BrandLoadDto;
 import com.example.musinsaserver.priceinformation.application.port.out.loader.dto.CategoryLoadDto;
 import com.example.musinsaserver.priceinformation.application.port.out.loader.dto.ProductLoadDto;
-import com.example.musinsaserver.priceinformation.application.port.out.persistence.MaximumPriceInformationRepository;
+import com.example.musinsaserver.priceinformation.application.port.out.persistence.HighestPriceInformationRepository;
 import com.example.musinsaserver.priceinformation.domain.PriceInformation;
 import com.example.musinsaserver.priceinformation.exception.InvalidBrandIdException;
 import com.example.musinsaserver.priceinformation.exception.InvalidCategoryIdException;
@@ -32,7 +32,7 @@ class MaximumPriceUpdateUseCaseTest extends BaseTest {
     MaximumPriceUpdateUseCase maximumPriceUpdateUseCase;
 
     @Autowired
-    MaximumPriceInformationRepository informationRepository;
+    HighestPriceInformationRepository informationRepository;
 
     @MockBean
     BrandLoader brandLoader;

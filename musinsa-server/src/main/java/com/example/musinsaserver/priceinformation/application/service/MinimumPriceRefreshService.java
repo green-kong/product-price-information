@@ -8,26 +8,26 @@ import org.springframework.stereotype.Component;
 import com.example.musinsaserver.priceinformation.application.port.in.MinimumPriceRefreshUseCase;
 import com.example.musinsaserver.priceinformation.application.port.out.loader.ProductLoader;
 import com.example.musinsaserver.priceinformation.application.port.out.loader.dto.ProductLoadDto;
-import com.example.musinsaserver.priceinformation.application.port.out.persistence.MinimumPriceInformationRepository;
+import com.example.musinsaserver.priceinformation.application.port.out.persistence.LowestPriceInformationRepository;
 import com.example.musinsaserver.priceinformation.domain.PriceInformation;
 import com.example.musinsaserver.priceinformation.exception.ProductIsNotDeletedException;
 
 @Component
 public class MinimumPriceRefreshService implements MinimumPriceRefreshUseCase {
 
-    private final MinimumPriceInformationRepository minimumPriceInformationRepository;
+    private final LowestPriceInformationRepository lowestPriceInformationRepository;
     private final ProductLoader productLoader;
 
-    public MinimumPriceRefreshService(final MinimumPriceInformationRepository minimumPriceInformationRepository,
+    public MinimumPriceRefreshService(final LowestPriceInformationRepository lowestPriceInformationRepository,
                                       final ProductLoader productLoader) {
-        this.minimumPriceInformationRepository = minimumPriceInformationRepository;
+        this.lowestPriceInformationRepository = lowestPriceInformationRepository;
         this.productLoader = productLoader;
     }
 
     @Override
     public void refreshMinimumPriceInformation(final Long productId) {
         validateProductId(productId);
-        minimumPriceInformationRepository.findByProductId(productId)
+        lowestPriceInformationRepository.findByProductId(productId)
                 .ifPresent(this::refreshOrDelete);
     }
 
@@ -57,11 +57,11 @@ public class MinimumPriceRefreshService implements MinimumPriceRefreshUseCase {
     ) {
         return foundProduct -> {
             currentMinimumPriceInformation.update(foundProduct.productId(), foundProduct.price());
-            minimumPriceInformationRepository.updateById(priceInformationId, currentMinimumPriceInformation);
+            lowestPriceInformationRepository.updateById(priceInformationId, currentMinimumPriceInformation);
         };
     }
 
     private Runnable delete(final Long priceInformationId) {
-        return () -> minimumPriceInformationRepository.deleteById(priceInformationId);
+        return () -> lowestPriceInformationRepository.deleteById(priceInformationId);
     }
 }

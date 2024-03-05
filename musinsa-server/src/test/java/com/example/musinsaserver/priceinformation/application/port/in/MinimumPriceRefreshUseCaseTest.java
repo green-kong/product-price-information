@@ -16,7 +16,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.example.musinsaserver.priceinformation.application.port.out.loader.ProductLoader;
 import com.example.musinsaserver.priceinformation.application.port.out.loader.dto.ProductLoadDto;
-import com.example.musinsaserver.priceinformation.application.port.out.persistence.MinimumPriceInformationRepository;
+import com.example.musinsaserver.priceinformation.application.port.out.persistence.LowestPriceInformationRepository;
 import com.example.musinsaserver.priceinformation.domain.PriceInformation;
 import com.example.musinsaserver.priceinformation.exception.ProductIsNotDeletedException;
 import com.example.musinsaserver.support.BaseTest;
@@ -27,7 +27,7 @@ class MinimumPriceRefreshUseCaseTest extends BaseTest {
     MinimumPriceRefreshUseCase minimumPriceRefreshUseCase;
 
     @Autowired
-    MinimumPriceInformationRepository informationRepository;
+    LowestPriceInformationRepository informationRepository;
 
     @MockBean
     ProductLoader productLoader;

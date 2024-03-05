@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import com.example.musinsaserver.priceinformation.application.port.in.MaximumPriceRefreshUseCase;
 import com.example.musinsaserver.priceinformation.application.port.out.loader.ProductLoader;
 import com.example.musinsaserver.priceinformation.application.port.out.loader.dto.ProductLoadDto;
-import com.example.musinsaserver.priceinformation.application.port.out.persistence.MaximumPriceInformationRepository;
+import com.example.musinsaserver.priceinformation.application.port.out.persistence.HighestPriceInformationRepository;
 import com.example.musinsaserver.priceinformation.domain.PriceInformation;
 import com.example.musinsaserver.priceinformation.exception.ProductIsNotDeletedException;
 
@@ -16,21 +16,21 @@ import com.example.musinsaserver.priceinformation.exception.ProductIsNotDeletedE
 @Component
 public class MaximumPriceRefreshService implements MaximumPriceRefreshUseCase {
 
-    private final MaximumPriceInformationRepository maximumPriceInformationRepository;
+    private final HighestPriceInformationRepository highestPriceInformationRepository;
     private final ProductLoader productLoader;
 
     public MaximumPriceRefreshService(
-            final MaximumPriceInformationRepository maximumPriceInformationRepository,
+            final HighestPriceInformationRepository highestPriceInformationRepository,
             final ProductLoader productLoader
     ) {
-        this.maximumPriceInformationRepository = maximumPriceInformationRepository;
+        this.highestPriceInformationRepository = highestPriceInformationRepository;
         this.productLoader = productLoader;
     }
 
     @Override
     public void refreshMaximumPriceInformation(final Long productId) {
         validateProductId(productId);
-        maximumPriceInformationRepository.findByProductId(productId)
+        highestPriceInformationRepository.findByProductId(productId)
                 .ifPresent(this::refreshOrDelete);
     }
 
@@ -60,11 +60,11 @@ public class MaximumPriceRefreshService implements MaximumPriceRefreshUseCase {
     ) {
         return foundProduct -> {
             currentMaximumPriceInformation.update(foundProduct.productId(), foundProduct.price());
-            maximumPriceInformationRepository.updateById(priceInformationId, currentMaximumPriceInformation);
+            highestPriceInformationRepository.updateById(priceInformationId, currentMaximumPriceInformation);
         };
     }
 
     private Runnable delete(final Long priceInformationId) {
-        return () -> maximumPriceInformationRepository.deleteById(priceInformationId);
+        return () -> highestPriceInformationRepository.deleteById(priceInformationId);
     }
 }

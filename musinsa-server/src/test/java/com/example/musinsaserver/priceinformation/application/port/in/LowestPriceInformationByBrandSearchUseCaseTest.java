@@ -11,7 +11,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.example.musinsaserver.priceinformation.application.port.in.dto.LowestPriceInformationByBrandResponses;
 import com.example.musinsaserver.priceinformation.application.port.out.loader.CategoryLoader;
-import com.example.musinsaserver.priceinformation.application.port.out.persistence.MinimumPriceInformationRepository;
+import com.example.musinsaserver.priceinformation.application.port.out.persistence.LowestPriceInformationRepository;
 import com.example.musinsaserver.priceinformation.domain.PriceInformation;
 import com.example.musinsaserver.support.BaseTest;
 
@@ -21,7 +21,7 @@ class LowestPriceInformationByBrandSearchUseCaseTest extends BaseTest {
     LowestPriceInformationByBrandSearchUseCase useCase;
 
     @Autowired
-    MinimumPriceInformationRepository informationRepository;
+    LowestPriceInformationRepository informationRepository;
 
     @MockBean
     CategoryLoader categoryLoader;

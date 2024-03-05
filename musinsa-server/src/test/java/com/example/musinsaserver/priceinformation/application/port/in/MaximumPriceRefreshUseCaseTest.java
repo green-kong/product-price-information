@@ -16,7 +16,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.example.musinsaserver.priceinformation.application.port.out.loader.ProductLoader;
 import com.example.musinsaserver.priceinformation.application.port.out.loader.dto.ProductLoadDto;
-import com.example.musinsaserver.priceinformation.application.port.out.persistence.MaximumPriceInformationRepository;
+import com.example.musinsaserver.priceinformation.application.port.out.persistence.HighestPriceInformationRepository;
 import com.example.musinsaserver.priceinformation.domain.PriceInformation;
 import com.example.musinsaserver.priceinformation.exception.ProductIsNotDeletedException;
 import com.example.musinsaserver.support.BaseTest;
@@ -27,7 +27,7 @@ class MaximumPriceRefreshUseCaseTest extends BaseTest {
     MaximumPriceRefreshUseCase maximumPriceRefreshUseCase;
 
     @Autowired
-    MaximumPriceInformationRepository informationRepository;
+    HighestPriceInformationRepository informationRepository;
 
     @MockBean
     ProductLoader productLoader;

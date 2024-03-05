@@ -12,7 +12,7 @@ import com.example.musinsaserver.priceinformation.application.port.out.loader.Pr
 import com.example.musinsaserver.priceinformation.application.port.out.loader.dto.BrandLoadDto;
 import com.example.musinsaserver.priceinformation.application.port.out.loader.dto.CategoryLoadDto;
 import com.example.musinsaserver.priceinformation.application.port.out.loader.dto.ProductLoadDto;
-import com.example.musinsaserver.priceinformation.application.port.out.persistence.MaximumPriceInformationRepository;
+import com.example.musinsaserver.priceinformation.application.port.out.persistence.HighestPriceInformationRepository;
 import com.example.musinsaserver.priceinformation.domain.PriceInformation;
 import com.example.musinsaserver.priceinformation.exception.InvalidBrandIdException;
 import com.example.musinsaserver.priceinformation.exception.InvalidCategoryIdException;
@@ -22,18 +22,18 @@ import com.example.musinsaserver.priceinformation.exception.InvalidProductIdExce
 @Service
 public class MaximumPriceUpdateService implements MaximumPriceUpdateUseCase {
 
-    private final MaximumPriceInformationRepository maximumPriceInformationRepository;
+    private final HighestPriceInformationRepository highestPriceInformationRepository;
     private final ProductLoader productLoader;
     private final BrandLoader brandLoader;
     private final CategoryLoader categoryLoader;
 
     public MaximumPriceUpdateService(
-            final MaximumPriceInformationRepository maximumPriceInformationRepository,
+            final HighestPriceInformationRepository highestPriceInformationRepository,
             final ProductLoader productLoader,
             final BrandLoader brandLoader,
             final CategoryLoader categoryLoader
     ) {
-        this.maximumPriceInformationRepository = maximumPriceInformationRepository;
+        this.highestPriceInformationRepository = highestPriceInformationRepository;
         this.productLoader = productLoader;
         this.brandLoader = brandLoader;
         this.categoryLoader = categoryLoader;
@@ -43,7 +43,7 @@ public class MaximumPriceUpdateService implements MaximumPriceUpdateUseCase {
     public void updateMaximumPrice(final Long productId) {
         final ProductLoadDto productLoadDto = productLoader.loadProduct(productId)
                 .orElseThrow(() -> new InvalidProductIdException(productId));
-        final Optional<PriceInformation> byBrandIdAndCategoryId = maximumPriceInformationRepository.findByBrandIdAndCategoryId(
+        final Optional<PriceInformation> byBrandIdAndCategoryId = highestPriceInformationRepository.findByBrandIdAndCategoryId(
                 productLoadDto.brandId(),
                 productLoadDto.categoryId()
         );
@@ -64,7 +64,7 @@ public class MaximumPriceUpdateService implements MaximumPriceUpdateUseCase {
             final PriceInformation currentMaximumPriceInformation
     ) {
         currentMaximumPriceInformation.update(productLoadDto.productId(), productLoadDto.price());
-        maximumPriceInformationRepository.updateById(
+        highestPriceInformationRepository.updateById(
                 currentMaximumPriceInformation.getId(),
                 currentMaximumPriceInformation
         );
@@ -86,7 +86,7 @@ public class MaximumPriceUpdateService implements MaximumPriceUpdateUseCase {
                     productLoadDto.price(),
                     brandLoadDto.brandName()
             );
-            maximumPriceInformationRepository.save(priceInformation);
+            highestPriceInformationRepository.save(priceInformation);
         };
     }
 }
