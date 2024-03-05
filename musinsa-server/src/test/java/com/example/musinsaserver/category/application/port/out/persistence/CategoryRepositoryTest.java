@@ -3,6 +3,7 @@ package com.example.musinsaserver.category.application.port.out.persistence;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.DisplayName;
@@ -77,5 +78,23 @@ class CategoryRepositoryTest extends BaseTest {
 
         //then
         assertThat(countAll).isEqualTo(6);
+    }
+
+    @Test
+    @DisplayName("모든 카테고리를 반환한다.")
+    void findAll() {
+        //given
+        categoryRepository.save(Category.createWithoutId("아우터"));
+        categoryRepository.save(Category.createWithoutId("상의"));
+        categoryRepository.save(Category.createWithoutId("바지"));
+        categoryRepository.save(Category.createWithoutId("양말"));
+        categoryRepository.save(Category.createWithoutId("스니커즈"));
+        categoryRepository.save(Category.createWithoutId("액세서리"));
+
+        //when
+        final List<Category> all = categoryRepository.findAll();
+
+        //then
+        assertThat(all).hasSize(6);
     }
 }

@@ -2,6 +2,7 @@ package com.example.musinsaserver.category.adaptor.port.out.persistence.jpa;
 
 import static java.util.Objects.isNull;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Component;
@@ -39,5 +40,13 @@ public class JpaCategoryRepository implements CategoryRepository {
     @Override
     public int countAll() {
         return (int) categories.count();
+    }
+
+    @Override
+    public List<Category> findAll() {
+        final List<JpaCategoryEntity> all = categories.findAll();
+        return all.stream()
+                .map(mapper::toCategoryDomainEntity)
+                .toList();
     }
 }
