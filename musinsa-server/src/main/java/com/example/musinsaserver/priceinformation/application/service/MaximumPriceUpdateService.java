@@ -4,6 +4,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.musinsaserver.priceinformation.application.port.in.MaximumPriceUpdateUseCase;
 import com.example.musinsaserver.priceinformation.application.port.out.loader.BrandLoader;
@@ -18,8 +19,8 @@ import com.example.musinsaserver.priceinformation.exception.InvalidBrandIdExcept
 import com.example.musinsaserver.priceinformation.exception.InvalidCategoryIdException;
 import com.example.musinsaserver.priceinformation.exception.InvalidProductIdException;
 
-// TODO: 2024/03/04 중복코드 관리
 @Service
+@Transactional(readOnly = true)
 public class MaximumPriceUpdateService implements MaximumPriceUpdateUseCase {
 
     private final HighestPriceInformationRepository highestPriceInformationRepository;
@@ -40,6 +41,7 @@ public class MaximumPriceUpdateService implements MaximumPriceUpdateUseCase {
     }
 
     @Override
+    @Transactional
     public void updateMaximumPrice(final Long productId) {
         final ProductLoadDto productLoadDto = productLoader.loadProduct(productId)
                 .orElseThrow(() -> new InvalidProductIdException(productId));

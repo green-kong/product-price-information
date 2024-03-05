@@ -3,6 +3,7 @@ package com.example.musinsaserver.priceinformation.application.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.musinsaserver.priceinformation.application.port.in.LowestPriceInformationByBrandSearchUseCase;
 import com.example.musinsaserver.priceinformation.application.port.in.dto.LowestPriceInformationByBrandResponses;
@@ -12,6 +13,7 @@ import com.example.musinsaserver.priceinformation.domain.PriceInformation;
 import com.example.musinsaserver.priceinformation.exception.InsufficientDataInBrandException;
 
 @Service
+@Transactional(readOnly = true)
 public class LowestPriceInformationByBrandSearchService implements LowestPriceInformationByBrandSearchUseCase {
 
     private final LowestPriceInformationRepository lowestPriceInformationRepository;

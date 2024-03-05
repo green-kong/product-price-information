@@ -1,6 +1,7 @@
 package com.example.musinsaserver.product.application.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.musinsaserver.product.application.port.in.RegisterProductUseCase;
 import com.example.musinsaserver.product.application.port.in.dto.RegisterProductRequest;
@@ -14,6 +15,7 @@ import com.example.musinsaserver.product.exception.NonExistentCategoryException;
 import com.example.musinsaserver.product.exception.NonExistentBrandException;
 
 @Service
+@Transactional(readOnly = true)
 public class RegisterProductService implements RegisterProductUseCase {
 
     private final ProductRepository productRepository;
@@ -34,6 +36,7 @@ public class RegisterProductService implements RegisterProductUseCase {
     }
 
     @Override
+    @Transactional
     public Long registerProduct(final RegisterProductRequest registerProductRequest) {
         final Long brandId = registerProductRequest.brandId();
         final Long categoryId = registerProductRequest.categoryId();

@@ -3,7 +3,8 @@ package com.example.musinsaserver.priceinformation.application.service;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.musinsaserver.priceinformation.application.port.in.MinimumPriceRefreshUseCase;
 import com.example.musinsaserver.priceinformation.application.port.out.loader.ProductLoader;
@@ -12,7 +13,8 @@ import com.example.musinsaserver.priceinformation.application.port.out.persisten
 import com.example.musinsaserver.priceinformation.domain.PriceInformation;
 import com.example.musinsaserver.priceinformation.exception.ProductIsNotDeletedException;
 
-@Component
+@Service
+@Transactional(readOnly = true)
 public class MinimumPriceRefreshService implements MinimumPriceRefreshUseCase {
 
     private final LowestPriceInformationRepository lowestPriceInformationRepository;
@@ -25,6 +27,7 @@ public class MinimumPriceRefreshService implements MinimumPriceRefreshUseCase {
     }
 
     @Override
+    @Transactional
     public void refreshMinimumPriceInformation(final Long productId) {
         validateProductId(productId);
         lowestPriceInformationRepository.findByProductId(productId)

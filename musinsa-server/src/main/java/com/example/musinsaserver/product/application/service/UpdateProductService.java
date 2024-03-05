@@ -1,6 +1,7 @@
 package com.example.musinsaserver.product.application.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.musinsaserver.product.application.port.in.UpdateProductUseCase;
 import com.example.musinsaserver.product.application.port.in.dto.ProductPriceUpdateRequest;
@@ -11,6 +12,7 @@ import com.example.musinsaserver.product.domain.Product;
 import com.example.musinsaserver.product.exception.NonExistentProductException;
 
 @Service
+@Transactional(readOnly = true)
 public class UpdateProductService implements UpdateProductUseCase {
 
     private final ProductRepository productRepository;
@@ -25,6 +27,7 @@ public class UpdateProductService implements UpdateProductUseCase {
     }
 
     @Override
+    @Transactional
     public void updateProductPrice(final Long productId, final ProductPriceUpdateRequest productPriceUpdateRequest) {
         final Product product = getProductOrThrow(productId);
         product.update(productPriceUpdateRequest.price());

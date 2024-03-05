@@ -3,6 +3,7 @@ package com.example.musinsaserver.priceinformation.application.service;
 import java.util.function.Consumer;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.musinsaserver.priceinformation.application.port.in.MinimumPriceUpdateUseCase;
 import com.example.musinsaserver.priceinformation.application.port.out.loader.BrandLoader;
@@ -18,6 +19,7 @@ import com.example.musinsaserver.priceinformation.exception.InvalidCategoryIdExc
 import com.example.musinsaserver.priceinformation.exception.InvalidProductIdException;
 
 @Service
+@Transactional(readOnly = true)
 public class MinimumPriceUpdateService implements MinimumPriceUpdateUseCase {
 
     private final LowestPriceInformationRepository lowestPriceInformationRepository;
@@ -38,6 +40,7 @@ public class MinimumPriceUpdateService implements MinimumPriceUpdateUseCase {
     }
 
     @Override
+    @Transactional
     public void updateMinimumPrice(final Long productId) {
         final ProductLoadDto productLoadDto = productLoader.loadProduct(productId)
                 .orElseThrow(() -> new InvalidProductIdException(productId));

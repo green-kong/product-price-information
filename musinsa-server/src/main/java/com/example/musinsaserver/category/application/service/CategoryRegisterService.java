@@ -1,6 +1,7 @@
 package com.example.musinsaserver.category.application.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.musinsaserver.category.application.port.in.CategoryRegisterUseCase;
 import com.example.musinsaserver.category.application.port.in.dto.CategoryRegisterRequest;
@@ -8,6 +9,7 @@ import com.example.musinsaserver.category.application.port.out.persistence.Categ
 import com.example.musinsaserver.category.domain.Category;
 
 @Service
+@Transactional(readOnly = true)
 public class CategoryRegisterService implements CategoryRegisterUseCase {
 
     private final CategoryRepository categoryRepository;
@@ -17,6 +19,7 @@ public class CategoryRegisterService implements CategoryRegisterUseCase {
     }
 
     @Override
+    @Transactional
     public Long save(final CategoryRegisterRequest categoryRegisterRequest) {
         final Category category = categoryRegisterRequest.toCategory();
         final Category saved = categoryRepository.save(category);
