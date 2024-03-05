@@ -8,6 +8,8 @@ import com.example.musinsaserver.priceinformation.application.port.out.loader.dt
 public interface CategoryLoader {
     Optional<CategoryLoadDto> loadCategory(final Long categoryId);
 
+    Optional<CategoryLoadDto> loadCategory(final String categoryName);
+
     int countAllCategories();
 
     List<CategoryLoadDto> loadAllCategories();

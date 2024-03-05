@@ -1,7 +1,8 @@
 package com.example.musinsaserver.priceinformation.adaptor.out.loader;
 
+import static java.util.Objects.isNull;
+
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.stereotype.Component;
@@ -24,7 +25,7 @@ public class RepositoryCategoryLoader implements CategoryLoader {
     public Optional<CategoryLoadDto> loadCategory(final Long categoryId) {
         final Category category = categoryRepository.findById(categoryId)
                 .orElse(null);
-        if (Objects.isNull(category)) {
+        if (isNull(category)) {
             return Optional.empty();
         }
         return Optional.of(new CategoryLoadDto(category.getId(), category.getNameValue()));
@@ -41,5 +42,15 @@ public class RepositoryCategoryLoader implements CategoryLoader {
         return categories.stream()
                 .map(category -> new CategoryLoadDto(category.getId(), category.getNameValue()))
                 .toList();
+    }
+
+    @Override
+    public Optional<CategoryLoadDto> loadCategory(final String categoryName) {
+        final Category category = categoryRepository.findByName(categoryName)
+                .orElse(null);
+        if (isNull(category)) {
+            return Optional.empty();
+        }
+        return Optional.of(new CategoryLoadDto(category.getId(), category.getNameValue()));
     }
 }

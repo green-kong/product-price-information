@@ -13,4 +13,6 @@ public interface CategoryRepository {
     int countAll();
 
     List<Category> findAll();
+
+    Optional<Category> findByName(final String name);
 }

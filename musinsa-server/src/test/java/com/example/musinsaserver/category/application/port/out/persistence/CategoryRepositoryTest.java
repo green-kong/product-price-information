@@ -52,6 +52,7 @@ class CategoryRepositoryTest extends BaseTest {
             assertThat(found.getNameValue()).isEqualTo(categoryName);
         });
     }
+
     @Test
     @DisplayName("id가 일치하는 카테고리가 없는 경우 Optional.empty를 반환한다.")
     void findByIdReturnEmpty() {
@@ -96,5 +97,32 @@ class CategoryRepositoryTest extends BaseTest {
 
         //then
         assertThat(all).hasSize(6);
+    }
+
+    @Test
+    @DisplayName("이름으로 카테고리를 조회한다.")
+    void findByName() {
+        //given
+        final String name = "아우터";
+        final Category save = categoryRepository.save(Category.createWithoutId(name));
+
+        //when
+        final Category found = categoryRepository.findByName(name).get();
+
+        //then
+        assertSoftly(softAssertions -> {
+            assertThat(found.getId()).isEqualTo(save.getId());
+            assertThat(found.getNameValue()).isEqualTo(name);
+        });
+    }
+
+    @Test
+    @DisplayName("일치하는 이름의 카테고리가 없는 경우 Optional.empty를 반환한다.")
+    void findByNameReturnEmpty() {
+        //when
+        final Optional<Category> empty = categoryRepository.findByName("invalidName");
+
+        //then
+        assertThat(empty).isEmpty();
     }
 }

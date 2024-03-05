@@ -80,4 +80,31 @@ class RepositoryCategoryLoaderTest extends BaseTest {
         //then
         assertThat(categoryLoadDtos).hasSize(4);
     }
+
+    @Test
+    @DisplayName("이름이 일치하는 카테고리를 불러온다.")
+    void findByName() {
+        //given
+        final String name = "아우터";
+        final Category saved = categoryRepository.save(Category.createWithoutId(name));
+
+        //when
+        final CategoryLoadDto categoryLoadDto = repositoryCategoryLoader.loadCategory(name).get();
+
+        //then
+        assertSoftly(softAssertions -> {
+            assertThat(categoryLoadDto.id()).isEqualTo(saved.getId());
+            assertThat(categoryLoadDto.category()).isEqualTo(name);
+        });
+    }
+
+    @Test
+    @DisplayName("이름이 일치하는 카테고리가 없는 경우 empty를 반환한다..")
+    void findByNameReturnsEmpty() {
+        //when
+        final Optional<CategoryLoadDto> empty = repositoryCategoryLoader.loadCategory("invalid");
+
+        //then
+        assertThat(empty).isEmpty();
+    }
 }

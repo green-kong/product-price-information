@@ -49,4 +49,14 @@ public class JpaCategoryRepository implements CategoryRepository {
                 .map(mapper::toCategoryDomainEntity)
                 .toList();
     }
+
+    @Override
+    public Optional<Category> findByName(final String name) {
+        final JpaCategoryEntity jpaCategoryEntity = categories.findJpaCategoryEntityByName(name)
+                .orElse(null);
+        if (isNull(jpaCategoryEntity)) {
+            return Optional.empty();
+        }
+        return Optional.of(mapper.toCategoryDomainEntity(jpaCategoryEntity));
+    }
 }
