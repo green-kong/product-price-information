@@ -52,7 +52,8 @@ public class MinimumPriceUpdateService implements MinimumPriceUpdateUseCase {
 
     private Consumer<PriceInformation> comparePriceAndUpdate(final ProductLoadDto productLoadDto) {
         return currentMinimumPriceInformation -> {
-            if (currentMinimumPriceInformation.isMoreExpensiveThan(productLoadDto.price())) {
+            if (currentMinimumPriceInformation.isMoreExpensiveThan(productLoadDto.price())
+                    || currentMinimumPriceInformation.getProductId().equals(productLoadDto.productId())) {
                 updateMinimumPriceInformation(productLoadDto, currentMinimumPriceInformation);
             }
         };

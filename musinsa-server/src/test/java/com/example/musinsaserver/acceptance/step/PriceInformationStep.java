@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 
 import com.example.musinsaserver.acceptance.CucumberClient;
 import com.example.musinsaserver.priceinformation.application.port.in.dto.LowestPriceInformationByBrandResponses;
+import com.example.musinsaserver.priceinformation.application.port.in.dto.LowestPriceInformationByCategoryResponse;
 
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -43,5 +44,28 @@ public class PriceInformationStep {
                 .extract();
 
         cucumberClient.setResponse(response);
+    }
+
+    @When("전체 상품 중 카테고리별 가장 저렴한 상품 정보를 반환한다.")
+    public void lowestPriceProductByCategory() {
+        final ExtractableResponse<Response> response = given().log().all()
+                .when()
+                .get("/api/price-informations/categories")
+                .then().log().all()
+                .extract();
+
+        cucumberClient.setResponse(response);
+    }
+
+    @Then("반환된 상품 정보의 개수는 {int}이고, 가격의 총합은 {int}원이다.")
+    public void checkLowestPriceProductByCategoryResponse(int expectedCount, int expectedSum) {
+        final ExtractableResponse<Response> response = cucumberClient.getResponse();
+
+        final var parsedResponse = response.as(LowestPriceInformationByCategoryResponse.class);
+        assertSoftly(softAssertions -> {
+            assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+            assertThat(parsedResponse.sum()).isEqualTo(expectedSum);
+            assertThat(parsedResponse.responses()).hasSize(expectedCount);
+        });
     }
 }
