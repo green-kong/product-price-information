@@ -1,7 +1,10 @@
 package com.example.musinsaserver.priceinformation.adaptor.in.event;
 
-import org.springframework.context.event.EventListener;
+import static org.springframework.transaction.event.TransactionPhase.AFTER_COMMIT;
+
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 import com.example.musinsaserver.priceinformation.application.port.in.MaximumPriceUpdateUseCase;
 import com.example.musinsaserver.priceinformation.application.port.in.MinimumPriceUpdateUseCase;
@@ -21,12 +24,14 @@ public class RegisterProductEventHandler {
         this.maximumPriceUpdateUseCase = maximumPriceUpdateUseCase;
     }
 
-    @EventListener
+    @TransactionalEventListener(phase = AFTER_COMMIT)
+    @Async
     public void updateMinimumPrice(final ProductRegisterEvent productRegisterEvent) {
         minimumPriceUpdateUseCase.updateMinimumPrice(productRegisterEvent.brandId(), productRegisterEvent.categoryId());
     }
 
-    @EventListener
+    @TransactionalEventListener(phase = AFTER_COMMIT)
+    @Async
     public void updateMaximumPrice(final ProductRegisterEvent productRegisterEvent) {
         maximumPriceUpdateUseCase.updateMaximumPrice(productRegisterEvent.brandId(), productRegisterEvent.categoryId());
     }

@@ -1,5 +1,7 @@
 package com.example.musinsaserver.priceinformation.application.service;
 
+import static org.springframework.transaction.annotation.Propagation.REQUIRES_NEW;
+
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -27,7 +29,7 @@ public class MinimumPriceRefreshService implements MinimumPriceRefreshUseCase {
     }
 
     @Override
-    @Transactional
+    @Transactional(propagation = REQUIRES_NEW)
     public void refreshMinimumPriceInformation(final Long productId) {
         validateProductId(productId);
         lowestPriceInformationRepository.findByProductId(productId)

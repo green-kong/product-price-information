@@ -1,5 +1,7 @@
 package com.example.musinsaserver.priceinformation.application.service;
 
+import static org.springframework.transaction.annotation.Propagation.REQUIRES_NEW;
+
 import java.util.function.Consumer;
 
 import org.springframework.stereotype.Service;
@@ -40,7 +42,7 @@ public class MaximumPriceUpdateService implements MaximumPriceUpdateUseCase {
     }
 
     @Override
-    @Transactional
+    @Transactional(propagation = REQUIRES_NEW)
     public void updateMaximumPrice(final Long brandId, final Long categoryId) {
         final ProductLoadDto productLoadDto = getHighestProductBy(brandId, categoryId);
          highestPriceInformationRepository.findByBrandIdAndCategoryId(
