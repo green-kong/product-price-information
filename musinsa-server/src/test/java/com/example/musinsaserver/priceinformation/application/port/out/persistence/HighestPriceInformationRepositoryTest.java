@@ -1,5 +1,6 @@
 package com.example.musinsaserver.priceinformation.application.port.out.persistence;
 
+import static com.example.musinsaserver.priceinformation.domain.PriceInformation.createWithoutId;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
@@ -15,7 +16,7 @@ import com.example.musinsaserver.support.BaseTest;
 class HighestPriceInformationRepositoryTest extends BaseTest {
 
     @Autowired
-    HighestPriceInformationRepository highestPriceInformationRepository;
+    HighestPriceInformationRepository repositoy;
 
     @Test
     @DisplayName("최대가격 정보를 저장한다.")
@@ -27,7 +28,7 @@ class HighestPriceInformationRepositoryTest extends BaseTest {
         final String category = "바지";
         final int price = 20_000;
         final String brandName = "brandA";
-        final var maximumPriceInformation = PriceInformation.createWithoutId(
+        final var maximumPriceInformation = createWithoutId(
                 productId,
                 categoryId,
                 brandId,
@@ -37,10 +38,10 @@ class HighestPriceInformationRepositoryTest extends BaseTest {
         );
 
         //when
-        final var savedMaximumPriceInformation = highestPriceInformationRepository.save(maximumPriceInformation);
+        final var savedMaximumPriceInformation = repositoy.save(maximumPriceInformation);
 
         //then
-        final var found = highestPriceInformationRepository.findById(savedMaximumPriceInformation.getId()).get();
+        final var found = repositoy.findById(savedMaximumPriceInformation.getId()).get();
         assertSoftly(softAssertions -> {
             assertThat(savedMaximumPriceInformation.getId()).isEqualTo(found.getId());
             assertThat(found.getBrandId()).isEqualTo(brandId);
@@ -54,43 +55,44 @@ class HighestPriceInformationRepositoryTest extends BaseTest {
     @DisplayName("브랜드id와 카테고리로 가격정보를 조회한다.")
     void findByBrandIdAndCategory() {
         //given
-        final long targetProductId = 1L;
-        final long targetBrandId = 2L;
-        final long targetCategoryId = 27L;
-        final String targetCategory = "바지";
-        final int targetPrice = 20_000;
-        final String targetBrandName = "brandB";
-        final PriceInformation targetInformation = highestPriceInformationRepository.save(
-                PriceInformation.createWithoutId(targetProductId, targetCategoryId, targetBrandId, targetCategory,
-                        targetPrice,
-                        targetBrandName));
-        highestPriceInformationRepository.save(
-                PriceInformation.createWithoutId(2L, targetCategoryId, 3L, "바지", 30_000, "brandC"));
-        highestPriceInformationRepository.save(
-                PriceInformation.createWithoutId(3L, targetCategoryId, 4L, "바지", 40_000, "brandD"));
-        highestPriceInformationRepository.save(
-                PriceInformation.createWithoutId(4L, targetCategoryId, 5L, "바지", 50_000, "brandE"));
-        highestPriceInformationRepository.save(
-                PriceInformation.createWithoutId(5L, targetCategoryId, 3L, "아우터", 20_000, "brandC"));
-        highestPriceInformationRepository.save(
-                PriceInformation.createWithoutId(6L, targetCategoryId, 1L, "바지", 20_000, "brandA"));
-        highestPriceInformationRepository.save(
-                PriceInformation.createWithoutId(7L, targetCategoryId, 2L, "아우터", 20_000, "brandB"));
+        final long targetBrandId = 3L;
+        final long targetCategoryId = 2L;
+        final var saved = saveHighest(1L, targetCategoryId, targetBrandId, "바지", 20_000, "A");
+        saveHighest(1L, targetCategoryId, 6L, "바지", 20_000, "B");
+        saveHighest(1L, 3L, targetBrandId, "아우터", 20_000, "A");
+        saveHighest(1L, 4L, 7L, "양말", 20_000, "C");
 
         //when
-        final PriceInformation maximum = highestPriceInformationRepository.findByBrandIdAndCategoryId(targetBrandId,
-                targetCategoryId).get();
+        final var found = repositoy.findByBrandIdAndCategoryId(targetBrandId, targetCategoryId).get();
 
         //then
-        assertThat(maximum.getId()).isEqualTo(targetInformation.getId());
+        assertThat(saved.getId()).isEqualTo(found.getId());
+    }
+
+    private PriceInformation saveHighest(
+            final long productId,
+            final Long categoryId,
+            final Long brandId,
+            final String category,
+            final int price,
+            final String brandName
+    ) {
+        return repositoy.save(createWithoutId(
+                productId,
+                categoryId,
+                brandId,
+                category,
+                price,
+                brandName
+        ));
     }
 
     @Test
     @DisplayName("최가격 정보를 업데이트한다.")
     void update() {
         //given
-        final PriceInformation savedMaximumPriceInformation = highestPriceInformationRepository.save(
-                PriceInformation.createWithoutId(
+        final PriceInformation savedMaximumPriceInformation = repositoy.save(
+                createWithoutId(
                         1L,
                         3L,
                         17L,
@@ -103,13 +105,13 @@ class HighestPriceInformationRepositoryTest extends BaseTest {
         savedMaximumPriceInformation.update(updatedProductId, updatedPrice);
 
         //when
-        highestPriceInformationRepository.updateById(
+        repositoy.updateById(
                 savedMaximumPriceInformation.getId(),
                 savedMaximumPriceInformation
         );
 
         //then
-        final var found = highestPriceInformationRepository.findById(savedMaximumPriceInformation.getId()).get();
+        final var found = repositoy.findById(savedMaximumPriceInformation.getId()).get();
         assertSoftly(softAssertions -> {
             assertThat(savedMaximumPriceInformation.getId()).isEqualTo(found.getId());
             assertThat(found.getBrandId()).isEqualTo(savedMaximumPriceInformation.getBrandId());
@@ -129,8 +131,8 @@ class HighestPriceInformationRepositoryTest extends BaseTest {
         final String category = "바지";
         final int price = 20_000;
         final String brandName = "brandA";
-        final PriceInformation savedMaximumPriceInformation = highestPriceInformationRepository.save(
-                PriceInformation.createWithoutId(
+        final PriceInformation savedMaximumPriceInformation = repositoy.save(
+                createWithoutId(
                         productId,
                         categoryId,
                         brandId,
@@ -140,7 +142,7 @@ class HighestPriceInformationRepositoryTest extends BaseTest {
                 ));
 
         //when
-        final PriceInformation found = highestPriceInformationRepository.findByProductId(productId).get();
+        final PriceInformation found = repositoy.findByProductId(productId).get();
 
         //then
         assertSoftly(softAssertions -> {
@@ -157,7 +159,7 @@ class HighestPriceInformationRepositoryTest extends BaseTest {
     @DisplayName("최대가격정보 중 productId가 일치하는 정보가 없는 경우 Optional.empty를 반환한다.")
     void findByProductIdReturnEmpty() {
         //when
-        final Optional<PriceInformation> found = highestPriceInformationRepository.findByProductId(0L);
+        final Optional<PriceInformation> found = repositoy.findByProductId(0L);
 
         //then
         assertThat(found).isEmpty();
@@ -173,8 +175,8 @@ class HighestPriceInformationRepositoryTest extends BaseTest {
         final String category = "바지";
         final int price = 20_000;
         final String brandName = "brandA";
-        final PriceInformation savedMaximumPriceInformation = highestPriceInformationRepository.save(
-                PriceInformation.createWithoutId(
+        final PriceInformation savedMaximumPriceInformation = repositoy.save(
+                createWithoutId(
                         productId,
                         brandId,
                         categoryId,
@@ -184,10 +186,10 @@ class HighestPriceInformationRepositoryTest extends BaseTest {
                 ));
 
         //when
-        highestPriceInformationRepository.deleteById(savedMaximumPriceInformation.getId());
+        repositoy.deleteById(savedMaximumPriceInformation.getId());
 
         //then
-        final Optional<PriceInformation> found = highestPriceInformationRepository.findByProductId(
+        final Optional<PriceInformation> found = repositoy.findByProductId(
                 savedMaximumPriceInformation.getId());
         assertThat(found).isEmpty();
     }
