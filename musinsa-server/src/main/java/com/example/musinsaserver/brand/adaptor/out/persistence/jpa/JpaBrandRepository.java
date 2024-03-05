@@ -35,4 +35,14 @@ public class JpaBrandRepository implements BrandRepository {
         }
         return Optional.of(mapper.toBrandDomainEntity(jpaBrandEntity));
     }
+
+    @Override
+    public Optional<Brand> findByName(final String name) {
+        final JpaBrandEntity jpaBrandEntity = brands.findJpaBrandEntityByName(name)
+                .orElse(null);
+        if (Objects.isNull(jpaBrandEntity)) {
+            return Optional.empty();
+        }
+        return Optional.of(mapper.toBrandDomainEntity(jpaBrandEntity));
+    }
 }

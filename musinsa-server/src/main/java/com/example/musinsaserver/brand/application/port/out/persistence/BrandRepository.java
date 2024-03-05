@@ -8,4 +8,5 @@ public interface BrandRepository {
     Brand save(final Brand brand);
 
     Optional<Brand> findById(final Long id);
+    Optional<Brand> findByName(final String name);
 }
