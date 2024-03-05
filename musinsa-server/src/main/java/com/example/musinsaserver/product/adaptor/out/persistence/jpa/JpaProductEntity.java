@@ -1,18 +1,27 @@
 package com.example.musinsaserver.product.adaptor.out.persistence.jpa;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
+import jakarta.persistence.Table;
 
 @Entity(name = "products")
+@Table(indexes =  @Index(name = "idx__brandId__categoryId", columnList = "brand_id, category_id"))
 public class JpaProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "category_id")
     private Long categoryId;
-    private int price;
+
+    @Column(name = "brand_id")
     private Long brandId;
+
+    private int price;
 
     protected JpaProductEntity() {
     }
