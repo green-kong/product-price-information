@@ -3,6 +3,7 @@ package com.example.musinsaserver.priceinformation.adaptor.out.loader;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.DisplayName;
@@ -64,4 +65,19 @@ class RepositoryCategoryLoaderTest extends BaseTest {
         assertThat(result).isEqualTo(4);
     }
 
+    @Test
+    @DisplayName("저장된 모든 카테고리를 불러온다.")
+    void findAll() {
+        //given
+        categoryRepository.save(Category.createWithoutId("아우터"));
+        categoryRepository.save(Category.createWithoutId("바지"));
+        categoryRepository.save(Category.createWithoutId("상의"));
+        categoryRepository.save(Category.createWithoutId("모자"));
+
+        //when
+        final List<CategoryLoadDto> categoryLoadDtos = repositoryCategoryLoader.loadAllCategories();
+
+        //then
+        assertThat(categoryLoadDtos).hasSize(4);
+    }
 }

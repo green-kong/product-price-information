@@ -1,5 +1,6 @@
 package com.example.musinsaserver.priceinformation.adaptor.out.loader;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -32,5 +33,13 @@ public class RepositoryCategoryLoader implements CategoryLoader {
     @Override
     public int countAllCategories() {
         return categoryRepository.countAll();
+    }
+
+    @Override
+    public List<CategoryLoadDto> loadAllCategories() {
+        final List<Category> categories = categoryRepository.findAll();
+        return categories.stream()
+                .map(category -> new CategoryLoadDto(category.getId(), category.getNameValue()))
+                .toList();
     }
 }
