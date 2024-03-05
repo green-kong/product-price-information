@@ -1,11 +1,13 @@
 package com.example.musinsaserver.priceinformation.adaptor.in.event;
 
 import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Component;
 
 import com.example.musinsaserver.priceinformation.application.port.in.MaximumPriceRefreshUseCase;
 import com.example.musinsaserver.priceinformation.application.port.in.MinimumPriceRefreshUseCase;
-import com.example.musinsaserver.product.application.port.out.event.dto.ProductRegisterEvent;
+import com.example.musinsaserver.product.application.port.out.event.dto.ProductDeleteEvent;
 
+@Component
 public class DeleteProductEventHandler {
 
     private final MinimumPriceRefreshUseCase minimumPriceRefreshUseCase;
@@ -20,12 +22,12 @@ public class DeleteProductEventHandler {
     }
 
     @EventListener
-    public void updateMinimumPrice(final ProductRegisterEvent productRegisterEvent) {
-        minimumPriceRefreshUseCase.refreshMinimumPriceInformation(productRegisterEvent.productId());
+    public void updateMinimumPrice(final ProductDeleteEvent productDeleteEvent) {
+        minimumPriceRefreshUseCase.refreshMinimumPriceInformation(productDeleteEvent.productId());
     }
 
     @EventListener
-    public void updateMaximumPrice(final ProductRegisterEvent productRegisterEvent) {
-        maximumPriceRefreshUseCase.refreshMaximumPriceInformation(productRegisterEvent.productId());
+    public void updateMaximumPrice(final ProductDeleteEvent productDeleteEvent) {
+        maximumPriceRefreshUseCase.refreshMaximumPriceInformation(productDeleteEvent.productId());
     }
 }
