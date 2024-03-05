@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
 import com.example.musinsaserver.acceptance.CucumberClient;
+import com.example.musinsaserver.priceinformation.application.port.in.dto.HighestAndLowestPriceInformationByCategoryResponse;
 import com.example.musinsaserver.priceinformation.application.port.in.dto.LowestPriceInformationByBrandResponses;
 import com.example.musinsaserver.priceinformation.application.port.in.dto.LowestPriceInformationByCategoryResponse;
 
@@ -39,7 +40,7 @@ public class PriceInformationStep {
         final ExtractableResponse<Response> response = given().log().all()
                 .pathParam("brandId", brandId)
                 .when()
-                .get("/api/price-informations/brands/{brandId}")
+                .get("/api/price-informations/brands/{brandId}/lowest")
                 .then().log().all()
                 .extract();
 
@@ -50,7 +51,7 @@ public class PriceInformationStep {
     public void lowestPriceProductByCategory() {
         final ExtractableResponse<Response> response = given().log().all()
                 .when()
-                .get("/api/price-informations/categories")
+                .get("/api/price-informations/categories/lowest")
                 .then().log().all()
                 .extract();
 
@@ -66,6 +67,33 @@ public class PriceInformationStep {
             assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
             assertThat(parsedResponse.sum()).isEqualTo(expectedSum);
             assertThat(parsedResponse.responses()).hasSize(expectedCount);
+        });
+    }
+
+    @When("{string} 카테고리의 최소가격정보와 최대가격정보를 반환한다.")
+    public void searchHighestAndLowest(String category) {
+        final ExtractableResponse<Response> response = given().log().all()
+                .pathParam("categoryName", category)
+                .when()
+                .get("/api/price-informations/categories/{categoryName}/highest-lowest")
+                .then().log().all()
+                .extract();
+
+        cucumberClient.setResponse(response);
+    }
+
+    @Then("카테고리는 {string}, 최소 가격정보의 브랜드는 {string} 가격은 {int}원이고, 최대 가격정보의 브랜드는 {string} 가격은 {int}원이다.")
+    public void checkHighestLowest(String category, String lowBrand, int lowPrice, String highBrand, int highPrice) {
+        final ExtractableResponse<Response> response = cucumberClient.getResponse();
+
+        final var parsedResponse = response.as(HighestAndLowestPriceInformationByCategoryResponse.class);
+
+        assertSoftly(softAssertions -> {
+            assertThat(parsedResponse.category()).isEqualTo(category);
+            assertThat(parsedResponse.highest().brand()).isEqualTo(highBrand);
+            assertThat(parsedResponse.highest().price()).isEqualTo(highPrice);
+            assertThat(parsedResponse.lowest().brand()).isEqualTo(lowBrand);
+            assertThat(parsedResponse.lowest().price()).isEqualTo(lowPrice);
         });
     }
 }

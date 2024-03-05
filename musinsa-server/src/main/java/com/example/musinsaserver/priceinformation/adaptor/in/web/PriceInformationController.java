@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.musinsaserver.priceinformation.application.port.in.HighestAndLowestPriceInformationSearchUseCase;
 import com.example.musinsaserver.priceinformation.application.port.in.LowestPriceInformationByBrandSearchUseCase;
 import com.example.musinsaserver.priceinformation.application.port.in.LowestPriceInformationByCategorySearchUseCase;
 import com.example.musinsaserver.priceinformation.application.port.in.dto.HighestAndLowestPriceInformationByCategoryResponse;
@@ -18,13 +19,16 @@ public class PriceInformationController {
 
     private final LowestPriceInformationByBrandSearchUseCase lowestPriceInformationByBrandSearchUseCase;
     private final LowestPriceInformationByCategorySearchUseCase lowestPriceInformationByCategorySearchUseCase;
+    private final HighestAndLowestPriceInformationSearchUseCase highestAndLowestPriceInformationSearchUseCase;
 
     public PriceInformationController(
             final LowestPriceInformationByBrandSearchUseCase lowestPriceInformationByBrandSearchUseCase,
-            final LowestPriceInformationByCategorySearchUseCase lowestPriceInformationByCategorySearchUseCase
+            final LowestPriceInformationByCategorySearchUseCase lowestPriceInformationByCategorySearchUseCase,
+            final HighestAndLowestPriceInformationSearchUseCase highestAndLowestPriceInformationSearchUseCase
     ) {
         this.lowestPriceInformationByBrandSearchUseCase = lowestPriceInformationByBrandSearchUseCase;
         this.lowestPriceInformationByCategorySearchUseCase = lowestPriceInformationByCategorySearchUseCase;
+        this.highestAndLowestPriceInformationSearchUseCase = highestAndLowestPriceInformationSearchUseCase;
     }
 
     @GetMapping("brands/{brandId}/lowest")
@@ -42,7 +46,11 @@ public class PriceInformationController {
     }
 
     @GetMapping("categories/{categoryName}/highest-lowest")
-    public ResponseEntity<HighestAndLowestPriceInformationByCategoryResponse> getHighestAndLowestInformationByCategory() {
-        return null;
+    public ResponseEntity<HighestAndLowestPriceInformationByCategoryResponse> getHighestAndLowestInformationByCategory(
+            @PathVariable("categoryName") final String category
+    ) {
+        final var response = highestAndLowestPriceInformationSearchUseCase.searchHighestAndLowestPriceInformation(
+                category);
+        return ResponseEntity.ok(response);
     }
 }
