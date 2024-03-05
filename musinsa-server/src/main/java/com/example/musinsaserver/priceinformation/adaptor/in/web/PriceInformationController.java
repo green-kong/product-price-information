@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.musinsaserver.priceinformation.application.port.in.LowestPriceInformationByBrandSearchUseCase;
 import com.example.musinsaserver.priceinformation.application.port.in.LowestPriceInformationByCategorySearchUseCase;
+import com.example.musinsaserver.priceinformation.application.port.in.dto.HighestAndLowestPriceInformationByCategoryResponse;
 import com.example.musinsaserver.priceinformation.application.port.in.dto.LowestPriceInformationByBrandResponses;
 import com.example.musinsaserver.priceinformation.application.port.in.dto.LowestPriceInformationByCategoryResponse;
 
@@ -26,7 +27,7 @@ public class PriceInformationController {
         this.lowestPriceInformationByCategorySearchUseCase = lowestPriceInformationByCategorySearchUseCase;
     }
 
-    @GetMapping("brands/{brandId}")
+    @GetMapping("brands/{brandId}/lowest")
     public ResponseEntity<LowestPriceInformationByBrandResponses> getLowestPriceProductInformationByBrand(
             @PathVariable("brandId") final Long brandId
     ) {
@@ -34,9 +35,14 @@ public class PriceInformationController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("categories")
+    @GetMapping("categories/lowest")
     public ResponseEntity<LowestPriceInformationByCategoryResponse> getLowestPriceProductInformationByCategory() {
         final var response = lowestPriceInformationByCategorySearchUseCase.searchLowestPriceInformationByCategory();
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("categories/{categoryName}/highest-lowest")
+    public ResponseEntity<HighestAndLowestPriceInformationByCategoryResponse> getHighestAndLowestInformationByCategory() {
+        return null;
     }
 }
