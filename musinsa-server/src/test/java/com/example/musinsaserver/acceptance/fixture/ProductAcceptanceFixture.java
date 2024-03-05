@@ -1,4 +1,4 @@
-package com.example.musinsaserver.product.acceptance.fixture;
+package com.example.musinsaserver.acceptance.fixture;
 
 import static io.restassured.RestAssured.given;
 

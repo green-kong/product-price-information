@@ -1,4 +1,4 @@
-package com.example.musinsaserver.brand.acceptance;
+package com.example.musinsaserver.acceptance;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
