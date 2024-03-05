@@ -1,5 +1,6 @@
 package com.example.musinsaserver.priceinformation.adaptor.out.persistence.jpa.lowest;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -79,5 +80,18 @@ public class JpaLowestPriceInformationRepository implements LowestPriceInformati
     @Override
     public void deleteById(final Long id) {
         informations.deleteById(id);
+    }
+
+    @Override
+    public List<PriceInformation> findLowestPriceInformationByCategoryIds(final List<Long> categoryIds) {
+        final List<Optional<JpaLowestPriceInformationEntity>> jpaEntities = categoryIds.stream()
+                .map(informations::findFirstByCategoryIdOrderByPriceAsc)
+                .toList();
+        final List<PriceInformation> priceInformations = new ArrayList<>();
+        for (final Optional<JpaLowestPriceInformationEntity> jpaEntity : jpaEntities) {
+            jpaEntity.ifPresent(jpaLowestPriceInformationEntity -> priceInformations.add(
+                    mapper.toPriceInformationDomainEntity(jpaLowestPriceInformationEntity)));
+        }
+        return priceInformations;
     }
 }

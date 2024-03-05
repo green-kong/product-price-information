@@ -16,7 +16,7 @@ import com.example.musinsaserver.support.BaseTest;
 class LowestPriceInformationRepositoryTest extends BaseTest {
 
     @Autowired
-    LowestPriceInformationRepository lowestPriceInformationRepository;
+    LowestPriceInformationRepository repository;
 
     @Test
     @DisplayName("최소가격 정보를 저장한다.")
@@ -38,10 +38,10 @@ class LowestPriceInformationRepositoryTest extends BaseTest {
         );
 
         //when
-        final var savedMinimumPriceInformation = lowestPriceInformationRepository.save(minimumPriceInformation);
+        final var savedMinimumPriceInformation = repository.save(minimumPriceInformation);
 
         //then
-        final var found = lowestPriceInformationRepository.findById(savedMinimumPriceInformation.getId()).get();
+        final var found = repository.findById(savedMinimumPriceInformation.getId()).get();
         assertSoftly(softAssertions -> {
             assertThat(savedMinimumPriceInformation.getId()).isEqualTo(found.getId());
             assertThat(found.getBrandId()).isEqualTo(brandId);
@@ -61,23 +61,23 @@ class LowestPriceInformationRepositoryTest extends BaseTest {
         final String targetCategory = "바지";
         final int targetPrice = 20_000;
         final String targetBrandName = "brandB";
-        final PriceInformation targetInformation = lowestPriceInformationRepository.save(
+        final PriceInformation targetInformation = repository.save(
                 PriceInformation.createWithoutId(targetProductId, targetCategoryId, targetBrandId, targetCategory,
                         targetPrice,
                         targetBrandName));
-        lowestPriceInformationRepository.save(
+        repository.save(
                 PriceInformation.createWithoutId(2L, targetCategoryId, 3L, "바지", 30_000, "brandC"));
-        lowestPriceInformationRepository.save(
+        repository.save(
                 PriceInformation.createWithoutId(3L, targetCategoryId, 4L, "바지", 40_000, "brandD"));
-        lowestPriceInformationRepository.save(
+        repository.save(
                 PriceInformation.createWithoutId(4L, targetCategoryId, 5L, "바지", 50_000, "brandE"));
-        lowestPriceInformationRepository.save(PriceInformation.createWithoutId(5L, 4L, 3L, "아우터", 20_000, "brandC"));
-        lowestPriceInformationRepository.save(
+        repository.save(PriceInformation.createWithoutId(5L, 4L, 3L, "아우터", 20_000, "brandC"));
+        repository.save(
                 PriceInformation.createWithoutId(6L, targetCategoryId, 1L, "바지", 20_000, "brandA"));
-        lowestPriceInformationRepository.save(PriceInformation.createWithoutId(7L, 3L, 2L, "아우터", 20_000, "brandB"));
+        repository.save(PriceInformation.createWithoutId(7L, 3L, 2L, "아우터", 20_000, "brandB"));
 
         //when
-        final PriceInformation minimum = lowestPriceInformationRepository.findByBrandIdAndCategoryId(targetBrandId,
+        final PriceInformation minimum = repository.findByBrandIdAndCategoryId(targetBrandId,
                 targetCategoryId).get();
 
         //then
@@ -88,7 +88,7 @@ class LowestPriceInformationRepositoryTest extends BaseTest {
     @DisplayName("최소가격 정보를 업데이트한다.")
     void update() {
         //given
-        final PriceInformation savedMinimumPriceInformation = lowestPriceInformationRepository.save(
+        final PriceInformation savedMinimumPriceInformation = repository.save(
                 PriceInformation.createWithoutId(
                         1L,
                         4L,
@@ -102,13 +102,13 @@ class LowestPriceInformationRepositoryTest extends BaseTest {
         savedMinimumPriceInformation.update(updatedProductId, updatedPrice);
 
         //when
-        lowestPriceInformationRepository.updateById(
+        repository.updateById(
                 savedMinimumPriceInformation.getId(),
                 savedMinimumPriceInformation
         );
 
         //then
-        final var found = lowestPriceInformationRepository.findById(savedMinimumPriceInformation.getId()).get();
+        final var found = repository.findById(savedMinimumPriceInformation.getId()).get();
         assertSoftly(softAssertions -> {
             assertThat(savedMinimumPriceInformation.getId()).isEqualTo(found.getId());
             assertThat(found.getBrandId()).isEqualTo(savedMinimumPriceInformation.getBrandId());
@@ -128,7 +128,7 @@ class LowestPriceInformationRepositoryTest extends BaseTest {
         final String category = "바지";
         final int price = 20_000;
         final String brandName = "brandA";
-        final PriceInformation savedMinimumPriceInformation = lowestPriceInformationRepository.save(
+        final PriceInformation savedMinimumPriceInformation = repository.save(
                 PriceInformation.createWithoutId(
                         productId,
                         categoryId,
@@ -139,7 +139,7 @@ class LowestPriceInformationRepositoryTest extends BaseTest {
                 ));
 
         //when
-        final PriceInformation found = lowestPriceInformationRepository.findByProductId(productId).get();
+        final PriceInformation found = repository.findByProductId(productId).get();
 
         //then
         assertSoftly(softAssertions -> {
@@ -156,7 +156,7 @@ class LowestPriceInformationRepositoryTest extends BaseTest {
     @DisplayName("최소가격정보 중 productId가 일치하는 정보가 없는 경우 Optional.empty를 반환한다.")
     void findByProductIdReturnEmpty() {
         //when
-        final Optional<PriceInformation> found = lowestPriceInformationRepository.findByProductId(0L);
+        final Optional<PriceInformation> found = repository.findByProductId(0L);
 
         //then
         assertThat(found).isEmpty();
@@ -172,7 +172,7 @@ class LowestPriceInformationRepositoryTest extends BaseTest {
         final String category = "바지";
         final int price = 20_000;
         final String brandName = "brandA";
-        final PriceInformation savedMinimumPriceInformation = lowestPriceInformationRepository.save(
+        final PriceInformation savedMinimumPriceInformation = repository.save(
                 PriceInformation.createWithoutId(
                         productId,
                         categoryId,
@@ -183,10 +183,10 @@ class LowestPriceInformationRepositoryTest extends BaseTest {
                 ));
 
         //when
-        lowestPriceInformationRepository.deleteById(savedMinimumPriceInformation.getId());
+        repository.deleteById(savedMinimumPriceInformation.getId());
 
         //then
-        final Optional<PriceInformation> found = lowestPriceInformationRepository.findByProductId(
+        final Optional<PriceInformation> found = repository.findByProductId(
                 savedMinimumPriceInformation.getId());
         assertThat(found).isEmpty();
     }
@@ -195,21 +195,57 @@ class LowestPriceInformationRepositoryTest extends BaseTest {
     @DisplayName("brandId가 일치하는 모든 priceInformation을 반환한다.")
     void findByBrandId() {
         //given
-        final long targetBrandId = 41L;
-
-        lowestPriceInformationRepository.save(
-                PriceInformation.createWithoutId(1L, 24L, targetBrandId, "바지", 10_000, "brandB"));
-        lowestPriceInformationRepository.save(
-                PriceInformation.createWithoutId(2L,10L, targetBrandId, "액세서리", 10_000, "brandB"));
-        lowestPriceInformationRepository.save(PriceInformation.createWithoutId(3L,24L, 4L, "바지", 10_000, "brandD"));
-        lowestPriceInformationRepository.save(PriceInformation.createWithoutId(4L,24L, 3L, "바지", 10_000, "brandC"));
-        lowestPriceInformationRepository.save(
-                PriceInformation.createWithoutId(5L, 11L, targetBrandId, "아우터", 10_000, "brandB"));
+        final long targetBrandId = 3L;
+        saveLowestPriceInformation(1L, 10L, targetBrandId, "바지", 200, "brandA");
+        saveLowestPriceInformation(2L, 11L, 4L, "액세서리", 100, "brandB");
+        saveLowestPriceInformation(3L, 12L, 5L, "아우터", 300, "brandC");
+        saveLowestPriceInformation(4L, 13L, 6L, "스니커즈", 400, "brandD");
+        saveLowestPriceInformation(5L, 14L, targetBrandId, "모자", 500, "brandE");
+        saveLowestPriceInformation(6L, 15L, targetBrandId, "양말", 600, "brandF");
 
         //when
-        final List<PriceInformation> results = lowestPriceInformationRepository.findByBrandId(targetBrandId);
+        final List<PriceInformation> results = repository.findByBrandId(targetBrandId);
 
         //then
         assertThat(results).hasSize(3);
+    }
+
+    private PriceInformation saveLowestPriceInformation(
+            final long productId,
+            final Long categoryId,
+            final Long brandId,
+            final String category,
+            final int price,
+            final String brandName
+    ) {
+        return repository.save(
+                PriceInformation.createWithoutId(productId, categoryId, brandId, category, price, brandName));
+    }
+
+    @Test
+    @DisplayName("category별로 가장 저렴한 가격정보를 반환한다. 가격정보가 존재하지 않는 카테고리에 대해선 반환하지 않는다.")
+    void findLowestPriceInformationByCategoryIds() {
+        //given
+        saveLowestPriceInformation(1L, 10L, 3L, "바지", 100, "brandA");
+        saveLowestPriceInformation(2L, 10L, 4L, "바지", 200, "brandB");
+        saveLowestPriceInformation(3L, 12L, 3L, "아우터", 300, "brandA");
+        saveLowestPriceInformation(4L, 12L, 4L, "아우터", 400, "brandB");
+        saveLowestPriceInformation(5L, 14L, 4L, "모자", 500, "brandB");
+        saveLowestPriceInformation(6L, 14L, 3L, "모자", 600, "brandA");
+
+        //when
+        final List<PriceInformation> result = repository.findLowestPriceInformationByCategoryIds(
+                List.of(10L, 12L, 14L, 20L));
+
+        //then
+        final List<Integer> prices = result.stream()
+                .map(PriceInformation::getPrice)
+                .toList();
+        final List<Long> productIds = result.stream()
+                .map(PriceInformation::getProductId)
+                .toList();
+        assertThat(result).hasSize(3);
+        assertThat(prices).containsExactlyInAnyOrder(100, 300, 500);
+        assertThat(productIds).containsExactlyInAnyOrder(1L, 3L, 5L);
     }
 }

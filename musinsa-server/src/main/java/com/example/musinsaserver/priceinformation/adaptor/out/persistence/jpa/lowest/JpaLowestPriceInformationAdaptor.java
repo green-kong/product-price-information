@@ -12,4 +12,6 @@ public interface JpaLowestPriceInformationAdaptor extends JpaRepository<JpaLowes
     Optional<JpaLowestPriceInformationEntity> findJpaLowestPriceInformationEntityByProductId(final Long productId);
 
     List<JpaLowestPriceInformationEntity> findJpaLowestPriceInformationEntitiesByBrandId(final Long brandId);
+
+    Optional<JpaLowestPriceInformationEntity> findFirstByCategoryIdOrderByPriceAsc(final Long categoryId);
 }
