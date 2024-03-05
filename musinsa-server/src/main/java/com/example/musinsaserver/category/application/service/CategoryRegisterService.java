@@ -7,6 +7,7 @@ import com.example.musinsaserver.category.application.port.in.CategoryRegisterUs
 import com.example.musinsaserver.category.application.port.in.dto.CategoryRegisterRequest;
 import com.example.musinsaserver.category.application.port.out.persistence.CategoryRepository;
 import com.example.musinsaserver.category.domain.Category;
+import com.example.musinsaserver.category.exception.DuplicatedCategoryNameException;
 
 @Service
 @Transactional(readOnly = true)
@@ -22,7 +23,15 @@ public class CategoryRegisterService implements CategoryRegisterUseCase {
     @Transactional
     public Long save(final CategoryRegisterRequest categoryRegisterRequest) {
         final Category category = categoryRegisterRequest.toCategory();
+        validate(category);
         final Category saved = categoryRepository.save(category);
         return saved.getId();
+    }
+
+    private void validate(final Category category) {
+        categoryRepository.findByName(category.getNameValue())
+                .ifPresent(found -> {
+                    throw new DuplicatedCategoryNameException(category.getNameValue());
+                });
     }
 }
