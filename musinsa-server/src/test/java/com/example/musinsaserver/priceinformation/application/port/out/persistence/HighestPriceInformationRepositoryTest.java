@@ -88,7 +88,7 @@ class HighestPriceInformationRepositoryTest extends BaseTest {
     }
 
     @Test
-    @DisplayName("최가격 정보를 업데이트한다.")
+    @DisplayName("최대 가격 정보를 업데이트한다.")
     void update() {
         //given
         final PriceInformation savedMaximumPriceInformation = repositoy.save(

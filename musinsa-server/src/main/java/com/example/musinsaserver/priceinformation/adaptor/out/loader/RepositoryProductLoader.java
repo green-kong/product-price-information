@@ -38,7 +38,7 @@ public class RepositoryProductLoader implements ProductLoader {
     @Override
     public Optional<ProductLoadDto> loadLowestPriceProductByBrandIdAndCategory(final Long brandId,
                                                                                final Long categoryId) {
-        final Product product = productRepository.findMinimumPriceProductByBrandIdAndCategory(brandId, categoryId)
+        final Product product = productRepository.findLowestPriceProductByBrandIdAndCategory(brandId, categoryId)
                 .orElse(null);
         if (isNull(product)) {
             return Optional.empty();
@@ -56,7 +56,7 @@ public class RepositoryProductLoader implements ProductLoader {
             final Long brandId,
             final Long categoryId
     ) {
-        final Product product = productRepository.findMaximumPriceProductByBrandIdAndCategory(brandId, categoryId)
+        final Product product = productRepository.findHighestPriceProductByBrandIdAndCategory(brandId, categoryId)
                 .orElse(null);
         if (isNull(product)) {
             return Optional.empty();

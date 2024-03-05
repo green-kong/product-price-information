@@ -19,7 +19,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 
-import com.example.musinsaserver.acceptance.fixture.ProductAcceptanceFixture;
 import com.example.musinsaserver.product.application.port.in.dto.ProductPriceUpdateRequest;
 import com.example.musinsaserver.product.application.port.in.dto.RegisterProductRequest;
 import com.example.musinsaserver.product.application.port.out.event.ProductDeleteEventPublisher;
@@ -165,7 +164,7 @@ class ProductAcceptanceTest extends BaseTest {
             when(categoryValidator.isExistedCategory(anyLong())).thenReturn(true);
             doNothing().when(productRegisterEventPublisher).publishRegisterProductEvent(any(ProductRegisterEvent.class));
             doNothing().when(productUpdateEventPublisher).publishUpdateProductEvent(any(ProductUpdateEvent.class));
-            final Long savedProductId = ProductAcceptanceFixture.saveProductAndReturnSavedProductId(10_000, 3L, 1L);
+            final Long savedProductId = 1L;
 
             final ProductPriceUpdateRequest productPriceUpdateRequest = new ProductPriceUpdateRequest(20_000);
 
@@ -214,7 +213,7 @@ class ProductAcceptanceTest extends BaseTest {
             when(brandValidator.isExistedBrand(anyLong())).thenReturn(true);
             when(categoryValidator.isExistedCategory(anyLong())).thenReturn(true);
             doNothing().when(productRegisterEventPublisher).publishRegisterProductEvent(any(ProductRegisterEvent.class));
-            final Long savedProductId = ProductAcceptanceFixture.saveProductAndReturnSavedProductId(10_000, 2L, 1L);
+            final Long savedProductId = 1L;
 
             final ProductPriceUpdateRequest productPriceUpdateRequest = new ProductPriceUpdateRequest(9);
 
@@ -245,7 +244,7 @@ class ProductAcceptanceTest extends BaseTest {
             when(categoryValidator.isExistedCategory(anyLong())).thenReturn(true);
             doNothing().when(productRegisterEventPublisher).publishRegisterProductEvent(any(ProductRegisterEvent.class));
             doNothing().when(productDeleteEventPublisher).publishDeleteProductEvent(any(ProductDeleteEvent.class));
-            final Long savedProductId = ProductAcceptanceFixture.saveProductAndReturnSavedProductId(10_000, 3L, 1L);
+            final Long savedProductId = 1L;
 
             //when
             final ExtractableResponse<Response> response = given().log().all()

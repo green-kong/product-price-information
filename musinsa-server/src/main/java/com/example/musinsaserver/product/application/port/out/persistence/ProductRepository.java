@@ -13,7 +13,7 @@ public interface ProductRepository {
 
     void delete(final Long id);
 
-    Optional<Product> findMinimumPriceProductByBrandIdAndCategory(final Long brandId, final Long categoryId);
+    Optional<Product> findLowestPriceProductByBrandIdAndCategory(final Long brandId, final Long categoryId);
 
-    Optional<Product> findMaximumPriceProductByBrandIdAndCategory(final Long brandId, final Long categoryId);
+    Optional<Product> findHighestPriceProductByBrandIdAndCategory(final Long brandId, final Long categoryId);
 }
