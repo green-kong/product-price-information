@@ -23,7 +23,7 @@ import com.example.musinsaserver.priceinformation.application.port.out.persisten
 import com.example.musinsaserver.priceinformation.domain.PriceInformation;
 import com.example.musinsaserver.priceinformation.exception.InvalidBrandIdException;
 import com.example.musinsaserver.priceinformation.exception.InvalidCategoryIdException;
-import com.example.musinsaserver.priceinformation.exception.InvalidProductIdException;
+import com.example.musinsaserver.priceinformation.exception.NonExistentProductWithBrandIdAndCategoryId;
 import com.example.musinsaserver.support.BaseTest;
 
 class MaximumPriceUpdateUseCaseTest extends BaseTest {
@@ -53,14 +53,15 @@ class MaximumPriceUpdateUseCaseTest extends BaseTest {
         final long categoryId = 1L;
         final Optional<ProductLoadDto> productLoadDto = Optional.of(
                 new ProductLoadDto(newProductId, brandId, newMaximumPrice, categoryId));
-        when(productLoader.loadProduct(anyLong())).thenReturn(productLoadDto);
+        when(productLoader.loadHighestPriceProductByBrandIdAndCategory(anyLong(), anyLong())).thenReturn(
+                productLoadDto);
 
         final PriceInformation currentMaximumPriceInformation = informationRepository.save(
                 PriceInformation.createWithoutId(10L, categoryId, brandId, "바지", 30_000, "brandA")
         );
 
         //when
-        maximumPriceUpdateUseCase.updateMaximumPrice(newProductId);
+        maximumPriceUpdateUseCase.updateMaximumPrice(brandId, categoryId);
 
         //then
         final var updatedMaximum = informationRepository.findById(currentMaximumPriceInformation.getId()).get();
@@ -75,49 +76,12 @@ class MaximumPriceUpdateUseCaseTest extends BaseTest {
     }
 
     @Test
-    @DisplayName("새롭게 등록된 product가 기존 maximumPrice보다 비싸지 않은 경우 maximumPrice를 업데이트 하지 않는다.")
-    void notUpdateMaximumPriceUpdateMoreExpensive() {
-        //given
-        final long brandId = 3L;
-        final long categoryId = 4L;
-        final String category = "아우터";
-        final Optional<ProductLoadDto> productLoadDto = Optional.of(new ProductLoadDto(1L, brandId, 10, categoryId));
-        when(productLoader.loadProduct(anyLong())).thenReturn(productLoadDto);
-
-        final long originalProductId = 10L;
-        final int originalMaximumPrice = 30_000;
-        final PriceInformation currentMaximumPriceInformation = informationRepository.save(
-                PriceInformation.createWithoutId(
-                        originalProductId,
-                        categoryId,
-                        brandId,
-                        category,
-                        originalMaximumPrice,
-                        "brandA"
-                )
-        );
-
-        //when
-        maximumPriceUpdateUseCase.updateMaximumPrice(1L);
-
-        //then
-        final var updatedMaximum = informationRepository.findById(currentMaximumPriceInformation.getId()).get();
-        assertSoftly(softAssertions -> {
-            assertThat(updatedMaximum.getId()).isEqualTo(currentMaximumPriceInformation.getId());
-            assertThat(updatedMaximum.getProductId()).isEqualTo(originalProductId);
-            assertThat(updatedMaximum.getPrice()).isEqualTo(originalMaximumPrice);
-            assertThat(updatedMaximum.getBrandId()).isEqualTo(brandId);
-            assertThat(updatedMaximum.getCategory()).isEqualTo(category);
-            assertThat(updatedMaximum.getBrandName()).isEqualTo("brandA");
-        });
-    }
-
-    @Test
-    @DisplayName("새롭게 등록된 product의 id가 유효하지 않은 경우 예외가 발생한다.")
+    @DisplayName("카테고리id와 브랜드id가 일치하는 product가 없는 경우 예외가 발생한다.")
     void updateMaximumPriceUpdateFailByInvalidProductId() {
         //given
         final long brandId = 3L;
-        when(productLoader.loadProduct(anyLong())).thenReturn(Optional.empty());
+        when(productLoader.loadHighestPriceProductByBrandIdAndCategory(anyLong(), anyLong())).thenReturn(
+                Optional.empty());
 
         final long originalProductId = 10L;
         final int originalMaximumPrice = 30_000;
@@ -128,9 +92,9 @@ class MaximumPriceUpdateUseCaseTest extends BaseTest {
         );
 
         //when & then
-        assertThatThrownBy(() -> maximumPriceUpdateUseCase.updateMaximumPrice(1L))
-                .isInstanceOf(InvalidProductIdException.class)
-                .hasMessageContaining("프로덕트 id가 유효하지 않습니다.");
+        assertThatThrownBy(() -> maximumPriceUpdateUseCase.updateMaximumPrice(brandId, categoryId))
+                .isInstanceOf(NonExistentProductWithBrandIdAndCategoryId.class)
+                .hasMessageContaining("categoryId와 brandId에 해당하는 product가 존재하지 않습니다.");
     }
 
     @Test
@@ -143,16 +107,17 @@ class MaximumPriceUpdateUseCaseTest extends BaseTest {
 
         final Long categoryId = 13L;
         final String category = "아우터";
-        when(categoryLoader.loadCategory(anyLong())).thenReturn(Optional.of(new CategoryLoadDto(categoryId,category)));
+        when(categoryLoader.loadCategory(anyLong())).thenReturn(Optional.of(new CategoryLoadDto(categoryId, category)));
 
         final long newProductId = 1L;
         final int newMaximumPrice = 20_000;
         final Optional<ProductLoadDto> productLoadDto = Optional.of(
                 new ProductLoadDto(newProductId, brandId, newMaximumPrice, categoryId));
-        when(productLoader.loadProduct(anyLong())).thenReturn(productLoadDto);
+        when(productLoader.loadHighestPriceProductByBrandIdAndCategory(anyLong(), anyLong())).thenReturn(
+                productLoadDto);
 
         //when
-        maximumPriceUpdateUseCase.updateMaximumPrice(newProductId);
+        maximumPriceUpdateUseCase.updateMaximumPrice(brandId, categoryId);
 
         //then
         final var maximum = informationRepository.findByBrandIdAndCategoryId(brandId, categoryId).get();
@@ -171,7 +136,7 @@ class MaximumPriceUpdateUseCaseTest extends BaseTest {
         //given
         final Long categoryId = 17L;
         final String category = "아우터";
-        when(categoryLoader.loadCategory(anyLong())).thenReturn(Optional.of(new CategoryLoadDto(categoryId,category)));
+        when(categoryLoader.loadCategory(anyLong())).thenReturn(Optional.of(new CategoryLoadDto(categoryId, category)));
 
         when(brandLoader.loadBrand(anyLong())).thenReturn(Optional.empty());
 
@@ -179,11 +144,12 @@ class MaximumPriceUpdateUseCaseTest extends BaseTest {
         final int newMaximumPrice = 20_000;
         final Optional<ProductLoadDto> productLoadDto = Optional.of(
                 new ProductLoadDto(newProductId, 3L, newMaximumPrice, categoryId));
-        when(productLoader.loadProduct(anyLong())).thenReturn(productLoadDto);
+        when(productLoader.loadHighestPriceProductByBrandIdAndCategory(anyLong(), anyLong())).thenReturn(
+                productLoadDto);
 
         //when & then
         assertThatThrownBy(
-                () -> maximumPriceUpdateUseCase.updateMaximumPrice(newProductId))
+                () -> maximumPriceUpdateUseCase.updateMaximumPrice(0L, categoryId))
                 .isInstanceOf(InvalidBrandIdException.class)
                 .hasMessageContaining("유효하지 않은 브랜드 id 입니다.");
     }
@@ -203,11 +169,12 @@ class MaximumPriceUpdateUseCaseTest extends BaseTest {
         final Long categoryId = 14L;
         final Optional<ProductLoadDto> productLoadDto = Optional.of(
                 new ProductLoadDto(newProductId, 3L, newMaximumPrice, categoryId));
-        when(productLoader.loadProduct(anyLong())).thenReturn(productLoadDto);
+        when(productLoader.loadHighestPriceProductByBrandIdAndCategory(anyLong(), anyLong())).thenReturn(
+                productLoadDto);
 
         //when & then
         assertThatThrownBy(
-                () -> maximumPriceUpdateUseCase.updateMaximumPrice(newProductId))
+                () -> maximumPriceUpdateUseCase.updateMaximumPrice(brandId, categoryId))
                 .isInstanceOf(InvalidCategoryIdException.class)
                 .hasMessageContaining("유효하지 않은 category id 입니다.");
     }

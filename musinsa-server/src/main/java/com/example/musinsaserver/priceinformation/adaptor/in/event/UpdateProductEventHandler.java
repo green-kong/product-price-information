@@ -22,11 +22,11 @@ public class UpdateProductEventHandler {
 
     @EventListener
     public void updateMinimumPrice(final ProductUpdateEvent productUpdateEvent) {
-        minimumPriceUpdateUseCase.updateMinimumPrice(productUpdateEvent.productId());
+        minimumPriceUpdateUseCase.updateMinimumPrice(productUpdateEvent.brandId(), productUpdateEvent.categoryId());
     }
 
     @EventListener
     public void updateMaximumPrice(final ProductUpdateEvent productUpdateEvent) {
-        maximumPriceUpdateUseCase.updateMaximumPrice(productUpdateEvent.productId());
+        maximumPriceUpdateUseCase.updateMaximumPrice(productUpdateEvent.brandId(), productUpdateEvent.categoryId());
     }
 }

@@ -23,11 +23,11 @@ public class RegisterProductEventHandler {
 
     @EventListener
     public void updateMinimumPrice(final ProductRegisterEvent productRegisterEvent) {
-        minimumPriceUpdateUseCase.updateMinimumPrice(productRegisterEvent.productId());
+        minimumPriceUpdateUseCase.updateMinimumPrice(productRegisterEvent.brandId(), productRegisterEvent.categoryId());
     }
 
     @EventListener
     public void updateMaximumPrice(final ProductRegisterEvent productRegisterEvent) {
-        maximumPriceUpdateUseCase.updateMaximumPrice(productRegisterEvent.productId());
+        maximumPriceUpdateUseCase.updateMaximumPrice(productRegisterEvent.brandId(), productRegisterEvent.categoryId());
     }
 }

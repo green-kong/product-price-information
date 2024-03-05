@@ -32,7 +32,7 @@ public class UpdateProductService implements UpdateProductUseCase {
         final Product product = getProductOrThrow(productId);
         product.update(productPriceUpdateRequest.price());
         productRepository.update(product);
-        publisher.publishUpdateProductEvent(new ProductUpdateEvent(productId));
+        publisher.publishUpdateProductEvent(new ProductUpdateEvent(product.getBrandId(), product.getCategoryId()));
     }
 
     private Product getProductOrThrow(final Long productId) {

@@ -1,6 +1,5 @@
 package com.example.musinsaserver.priceinformation.application.service;
 
-import java.util.Optional;
 import java.util.function.Consumer;
 
 import org.springframework.stereotype.Service;
@@ -17,7 +16,7 @@ import com.example.musinsaserver.priceinformation.application.port.out.persisten
 import com.example.musinsaserver.priceinformation.domain.PriceInformation;
 import com.example.musinsaserver.priceinformation.exception.InvalidBrandIdException;
 import com.example.musinsaserver.priceinformation.exception.InvalidCategoryIdException;
-import com.example.musinsaserver.priceinformation.exception.InvalidProductIdException;
+import com.example.musinsaserver.priceinformation.exception.NonExistentProductWithBrandIdAndCategoryId;
 
 @Service
 @Transactional(readOnly = true)
@@ -42,37 +41,30 @@ public class MaximumPriceUpdateService implements MaximumPriceUpdateUseCase {
 
     @Override
     @Transactional
-    public void updateMaximumPrice(final Long productId) {
-        final ProductLoadDto productLoadDto = productLoader.loadProduct(productId)
-                .orElseThrow(() -> new InvalidProductIdException(productId));
-        final Optional<PriceInformation> byBrandIdAndCategoryId = highestPriceInformationRepository.findByBrandIdAndCategoryId(
+    public void updateMaximumPrice(final Long brandId, final Long categoryId) {
+        final ProductLoadDto productLoadDto = getHighestProductBy(brandId, categoryId);
+         highestPriceInformationRepository.findByBrandIdAndCategoryId(
                 productLoadDto.brandId(),
                 productLoadDto.categoryId()
-        );
-        byBrandIdAndCategoryId.ifPresentOrElse(comparePriceAndUpdate(productLoadDto),
-                saveRegisteredProductAsMaximum(productLoadDto));
+        ).ifPresentOrElse(update(productLoadDto), save(productLoadDto));
     }
 
-    private Consumer<PriceInformation> comparePriceAndUpdate(final ProductLoadDto productLoadDto) {
+    private ProductLoadDto getHighestProductBy(final Long brandId, final Long categoryId) {
+        return productLoader.loadHighestPriceProductByBrandIdAndCategory(brandId, categoryId)
+                .orElseThrow(() -> new NonExistentProductWithBrandIdAndCategoryId(brandId, categoryId));
+    }
+
+    private Consumer<PriceInformation> update(final ProductLoadDto productLoadDto) {
         return currentMaximumPriceInformation -> {
-            if (currentMaximumPriceInformation.isCheaperThan(productLoadDto.price())) {
-                updateMaximumPriceInformation(productLoadDto, currentMaximumPriceInformation);
-            }
+            currentMaximumPriceInformation.update(productLoadDto.productId(), productLoadDto.price());
+            highestPriceInformationRepository.updateById(
+                    currentMaximumPriceInformation.getId(),
+                    currentMaximumPriceInformation
+            );
         };
     }
 
-    private void updateMaximumPriceInformation(
-            final ProductLoadDto productLoadDto,
-            final PriceInformation currentMaximumPriceInformation
-    ) {
-        currentMaximumPriceInformation.update(productLoadDto.productId(), productLoadDto.price());
-        highestPriceInformationRepository.updateById(
-                currentMaximumPriceInformation.getId(),
-                currentMaximumPriceInformation
-        );
-    }
-
-    private Runnable saveRegisteredProductAsMaximum(final ProductLoadDto productLoadDto) {
+    private Runnable save(final ProductLoadDto productLoadDto) {
         return () -> {
             final CategoryLoadDto categoryLoadDto = categoryLoader.loadCategory(productLoadDto.categoryId())
                     .orElseThrow(() -> new InvalidCategoryIdException(productLoadDto.categoryId()));

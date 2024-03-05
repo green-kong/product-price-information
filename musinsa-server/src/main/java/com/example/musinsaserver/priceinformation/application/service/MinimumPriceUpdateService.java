@@ -16,7 +16,7 @@ import com.example.musinsaserver.priceinformation.application.port.out.persisten
 import com.example.musinsaserver.priceinformation.domain.PriceInformation;
 import com.example.musinsaserver.priceinformation.exception.InvalidBrandIdException;
 import com.example.musinsaserver.priceinformation.exception.InvalidCategoryIdException;
-import com.example.musinsaserver.priceinformation.exception.InvalidProductIdException;
+import com.example.musinsaserver.priceinformation.exception.NonExistentProductWithBrandIdAndCategoryId;
 
 @Service
 @Transactional(readOnly = true)
@@ -41,36 +41,28 @@ public class MinimumPriceUpdateService implements MinimumPriceUpdateUseCase {
 
     @Override
     @Transactional
-    public void updateMinimumPrice(final Long productId) {
-        final ProductLoadDto productLoadDto = productLoader.loadProduct(productId)
-                .orElseThrow(() -> new InvalidProductIdException(productId));
-        lowestPriceInformationRepository.findByBrandIdAndCategoryId(
-                productLoadDto.brandId(),
-                productLoadDto.categoryId()
-        ).ifPresentOrElse(comparePriceAndUpdate(productLoadDto), saveRegisteredProductAsMinimum(productLoadDto));
+    public void updateMinimumPrice(final Long brandId, final Long categoryId) {
+        final ProductLoadDto productLoadDto = getLowestProductBy(brandId, categoryId);
+        lowestPriceInformationRepository.findByBrandIdAndCategoryId(brandId, categoryId)
+                .ifPresentOrElse(update(productLoadDto), save(productLoadDto));
     }
 
-    private Consumer<PriceInformation> comparePriceAndUpdate(final ProductLoadDto productLoadDto) {
+    private ProductLoadDto getLowestProductBy(final Long brandId, final Long categoryId) {
+        return productLoader.loadLowestPriceProductByBrandIdAndCategory(brandId, categoryId)
+                .orElseThrow(() -> new NonExistentProductWithBrandIdAndCategoryId(brandId, categoryId));
+    }
+
+    private Consumer<PriceInformation> update(final ProductLoadDto productLoadDto) {
         return currentMinimumPriceInformation -> {
-            if (currentMinimumPriceInformation.isMoreExpensiveThan(productLoadDto.price())
-                    || currentMinimumPriceInformation.getProductId().equals(productLoadDto.productId())) {
-                updateMinimumPriceInformation(productLoadDto, currentMinimumPriceInformation);
-            }
+            currentMinimumPriceInformation.update(productLoadDto.productId(), productLoadDto.price());
+            lowestPriceInformationRepository.updateById(
+                    currentMinimumPriceInformation.getId(),
+                    currentMinimumPriceInformation
+            );
         };
     }
 
-    private void updateMinimumPriceInformation(
-            final ProductLoadDto productLoadDto,
-            final PriceInformation currentMinimumPriceInformation
-    ) {
-        currentMinimumPriceInformation.update(productLoadDto.productId(), productLoadDto.price());
-        lowestPriceInformationRepository.updateById(
-                currentMinimumPriceInformation.getId(),
-                currentMinimumPriceInformation
-        );
-    }
-
-    private Runnable saveRegisteredProductAsMinimum(final ProductLoadDto productLoadDto) {
+    private Runnable save(final ProductLoadDto productLoadDto) {
         return () -> {
             final CategoryLoadDto categoryLoadDto = categoryLoader.loadCategory(productLoadDto.categoryId())
                     .orElseThrow(() -> new InvalidCategoryIdException(productLoadDto.productId()));

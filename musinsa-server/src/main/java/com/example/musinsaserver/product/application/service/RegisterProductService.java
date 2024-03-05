@@ -44,7 +44,7 @@ public class RegisterProductService implements RegisterProductUseCase {
         validateCategoryId(categoryId);
         final Product product = registerProductRequest.toProduct();
         final Product savedProduct = productRepository.save(product);
-        publisher.publishRegisterProductEvent(new ProductRegisterEvent(savedProduct.getId()));
+        publisher.publishRegisterProductEvent(new ProductRegisterEvent(brandId, categoryId));
         return savedProduct.getId();
     }
 

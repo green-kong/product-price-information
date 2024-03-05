@@ -23,7 +23,7 @@ import com.example.musinsaserver.priceinformation.application.port.out.persisten
 import com.example.musinsaserver.priceinformation.domain.PriceInformation;
 import com.example.musinsaserver.priceinformation.exception.InvalidBrandIdException;
 import com.example.musinsaserver.priceinformation.exception.InvalidCategoryIdException;
-import com.example.musinsaserver.priceinformation.exception.InvalidProductIdException;
+import com.example.musinsaserver.priceinformation.exception.NonExistentProductWithBrandIdAndCategoryId;
 import com.example.musinsaserver.support.BaseTest;
 
 class MinimumPriceUpdateUseCaseTest extends BaseTest {
@@ -53,14 +53,14 @@ class MinimumPriceUpdateUseCaseTest extends BaseTest {
         final long categoryId = 14L;
         final Optional<ProductLoadDto> productLoadDto = Optional.of(
                 new ProductLoadDto(newProductId, brandId, newMinimumPrice, categoryId));
-        when(productLoader.loadProduct(anyLong())).thenReturn(productLoadDto);
+        when(productLoader.loadLowestPriceProductByBrandIdAndCategory(anyLong(), anyLong())).thenReturn(productLoadDto);
 
         final PriceInformation currentMinimumPriceInformation = informationRepository.save(
                 PriceInformation.createWithoutId(10L, categoryId, brandId, "바지", 30_000, "brandA")
         );
 
         //when
-        minimumPriceUpdateUseCase.updateMinimumPrice(newProductId);
+        minimumPriceUpdateUseCase.updateMinimumPrice(brandId, categoryId);
 
         //then
         final var updatedMinimum = informationRepository.findById(currentMinimumPriceInformation.getId()).get();
@@ -75,54 +75,16 @@ class MinimumPriceUpdateUseCaseTest extends BaseTest {
     }
 
     @Test
-    @DisplayName("새롭게 등록된 product가 기존 minimumPrice보다 저렴하지 않은 경우 minimumPrice를 업데이트 하지 않는다.")
-    void notUpdateMinimumPriceUpdateMoreExpensive() {
-        //given
-        final long brandId = 3L;
-        final long categoryId = 12L;
-        final Optional<ProductLoadDto> productLoadDto = Optional.of(
-                new ProductLoadDto(1L, brandId, 40_000, categoryId));
-        when(productLoader.loadProduct(anyLong())).thenReturn(productLoadDto);
-
-        final long originalProductId = 10L;
-        final int originalMinimumPrice = 30_000;
-        final PriceInformation currentMinimumPriceInformation = informationRepository.save(
-                PriceInformation.createWithoutId(originalProductId, categoryId, brandId, "액세서리", originalMinimumPrice,
-                        "brandA")
-        );
-
-        //when
-        minimumPriceUpdateUseCase.updateMinimumPrice(1L);
-
-        //then
-        final var updatedMinimum = informationRepository.findById(currentMinimumPriceInformation.getId()).get();
-        assertSoftly(softAssertions -> {
-            assertThat(updatedMinimum.getId()).isEqualTo(currentMinimumPriceInformation.getId());
-            assertThat(updatedMinimum.getProductId()).isEqualTo(originalProductId);
-            assertThat(updatedMinimum.getPrice()).isEqualTo(originalMinimumPrice);
-            assertThat(updatedMinimum.getBrandId()).isEqualTo(brandId);
-            assertThat(updatedMinimum.getCategory()).isEqualTo("액세서리");
-            assertThat(updatedMinimum.getBrandName()).isEqualTo("brandA");
-        });
-    }
-
-    @Test
-    @DisplayName("새롭게 등록된 product의 id가 유효하지 않은 경우 예외가 발생한다.")
+    @DisplayName("brnadId와 categoryId가 일치하는 product를 찾지 못한 경우 예외가 발생한다.")
     void updateMinimumPriceUpdateFailByInvalidProductId() {
         //given
-        final long brandId = 3L;
-        when(productLoader.loadProduct(anyLong())).thenReturn(Optional.empty());
-
-        final long originalProductId = 10L;
-        final int originalMinimumPrice = 30_000;
-        informationRepository.save(
-                PriceInformation.createWithoutId(originalProductId, brandId, 3L, "액세서리", originalMinimumPrice, "brandA")
-        );
+        when(productLoader.loadHighestPriceProductByBrandIdAndCategory(anyLong(), anyLong())).thenReturn(
+                Optional.empty());
 
         //when & then
-        assertThatThrownBy(() -> minimumPriceUpdateUseCase.updateMinimumPrice(1L))
-                .isInstanceOf(InvalidProductIdException.class)
-                .hasMessageContaining("프로덕트 id가 유효하지 않습니다.");
+        assertThatThrownBy(() -> minimumPriceUpdateUseCase.updateMinimumPrice(1L, 2L))
+                .isInstanceOf(NonExistentProductWithBrandIdAndCategoryId.class)
+                .hasMessageContaining("categoryId와 brandId에 해당하는 product가 존재하지 않습니다.");
     }
 
     @Test
@@ -141,10 +103,10 @@ class MinimumPriceUpdateUseCaseTest extends BaseTest {
         final int newMinimumPrice = 20_000;
         final Optional<ProductLoadDto> productLoadDto = Optional.of(
                 new ProductLoadDto(newProductId, brandId, newMinimumPrice, categoryId));
-        when(productLoader.loadProduct(anyLong())).thenReturn(productLoadDto);
+        when(productLoader.loadLowestPriceProductByBrandIdAndCategory(anyLong(), anyLong())).thenReturn(productLoadDto);
 
         //when
-        minimumPriceUpdateUseCase.updateMinimumPrice(newProductId);
+        minimumPriceUpdateUseCase.updateMinimumPrice(brandId, categoryId);
 
         //then
         final var minimum = informationRepository.findByBrandIdAndCategoryId(brandId, categoryId).get();
@@ -171,11 +133,11 @@ class MinimumPriceUpdateUseCaseTest extends BaseTest {
         final int newMinimumPrice = 20_000;
         final Optional<ProductLoadDto> productLoadDto = Optional.of(
                 new ProductLoadDto(newProductId, 3L, newMinimumPrice, categoryId));
-        when(productLoader.loadProduct(anyLong())).thenReturn(productLoadDto);
+        when(productLoader.loadLowestPriceProductByBrandIdAndCategory(anyLong(), anyLong())).thenReturn(productLoadDto);
 
         //when & then
         assertThatThrownBy(
-                () -> minimumPriceUpdateUseCase.updateMinimumPrice(newProductId))
+                () -> minimumPriceUpdateUseCase.updateMinimumPrice(0L, categoryId))
                 .isInstanceOf(InvalidBrandIdException.class)
                 .hasMessageContaining("유효하지 않은 브랜드 id 입니다.");
     }
@@ -194,11 +156,11 @@ class MinimumPriceUpdateUseCaseTest extends BaseTest {
         final int newMinimumPrice = 20_000;
         final Optional<ProductLoadDto> productLoadDto = Optional.of(
                 new ProductLoadDto(newProductId, brandId, newMinimumPrice, 2L));
-        when(productLoader.loadProduct(anyLong())).thenReturn(productLoadDto);
+        when(productLoader.loadLowestPriceProductByBrandIdAndCategory(anyLong(), anyLong())).thenReturn(productLoadDto);
 
         //when & then
         assertThatThrownBy(
-                () -> minimumPriceUpdateUseCase.updateMinimumPrice(newProductId))
+                () -> minimumPriceUpdateUseCase.updateMinimumPrice(brandId, 0L))
                 .isInstanceOf(InvalidCategoryIdException.class)
                 .hasMessageContaining("유효하지 않은 category id 입니다.");
     }
