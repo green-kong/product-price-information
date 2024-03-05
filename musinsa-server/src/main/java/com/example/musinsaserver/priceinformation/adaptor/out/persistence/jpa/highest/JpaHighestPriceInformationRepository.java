@@ -71,4 +71,14 @@ public class JpaHighestPriceInformationRepository implements HighestPriceInforma
     public void deleteById(final Long id) {
         highestPriceInformations.deleteById(id);
     }
+
+    @Override
+    public Optional<PriceInformation> findEndPriceInformationByCategoryId(final Long categoryId) {
+        final var jpaEntity = highestPriceInformations.findFirstByCategoryIdOrderByPriceDesc(categoryId)
+                .orElse(null);
+        if (Objects.isNull(jpaEntity)) {
+            return Optional.empty();
+        }
+        return Optional.of(mapper.toPriceInformationDomainEntity(jpaEntity));
+    }
 }

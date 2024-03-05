@@ -9,4 +9,6 @@ public interface JpaHighestPriceInformationAdaptor extends JpaRepository<JpaHigh
             final Long brandId, final Long categoryId);
 
     Optional<JpaHighestPriceInformationEntity> findJpaHighestPriceInformationEntityByProductId(final Long productId);
+
+    Optional<JpaHighestPriceInformationEntity> findFirstByCategoryIdOrderByPriceDesc(final Long categoryId);
 }

@@ -196,12 +196,12 @@ class LowestPriceInformationRepositoryTest extends BaseTest {
     void findByBrandId() {
         //given
         final long targetBrandId = 3L;
-        saveLowestPriceInformation(1L, 10L, targetBrandId, "바지", 200, "brandA");
-        saveLowestPriceInformation(2L, 11L, 4L, "액세서리", 100, "brandB");
-        saveLowestPriceInformation(3L, 12L, 5L, "아우터", 300, "brandC");
-        saveLowestPriceInformation(4L, 13L, 6L, "스니커즈", 400, "brandD");
-        saveLowestPriceInformation(5L, 14L, targetBrandId, "모자", 500, "brandE");
-        saveLowestPriceInformation(6L, 15L, targetBrandId, "양말", 600, "brandF");
+        save(1L, 10L, targetBrandId, "바지", 200, "brandA");
+        save(2L, 11L, 4L, "액세서리", 100, "brandB");
+        save(3L, 12L, 5L, "아우터", 300, "brandC");
+        save(4L, 13L, 6L, "스니커즈", 400, "brandD");
+        save(5L, 14L, targetBrandId, "모자", 500, "brandE");
+        save(6L, 15L, targetBrandId, "양말", 600, "brandF");
 
         //when
         final List<PriceInformation> results = repository.findByBrandId(targetBrandId);
@@ -210,7 +210,7 @@ class LowestPriceInformationRepositoryTest extends BaseTest {
         assertThat(results).hasSize(3);
     }
 
-    private PriceInformation saveLowestPriceInformation(
+    private PriceInformation save(
             final long productId,
             final Long categoryId,
             final Long brandId,
@@ -226,12 +226,12 @@ class LowestPriceInformationRepositoryTest extends BaseTest {
     @DisplayName("category별로 가장 저렴한 가격정보를 반환한다. 가격정보가 존재하지 않는 카테고리에 대해선 반환하지 않는다.")
     void findLowestPriceInformationByCategoryIds() {
         //given
-        saveLowestPriceInformation(1L, 10L, 3L, "바지", 100, "brandA");
-        saveLowestPriceInformation(2L, 10L, 4L, "바지", 200, "brandB");
-        saveLowestPriceInformation(3L, 12L, 3L, "아우터", 300, "brandA");
-        saveLowestPriceInformation(4L, 12L, 4L, "아우터", 400, "brandB");
-        saveLowestPriceInformation(5L, 14L, 4L, "모자", 500, "brandB");
-        saveLowestPriceInformation(6L, 14L, 3L, "모자", 600, "brandA");
+        save(1L, 10L, 3L, "바지", 100, "brandA");
+        save(2L, 10L, 4L, "바지", 200, "brandB");
+        save(3L, 12L, 3L, "아우터", 300, "brandA");
+        save(4L, 12L, 4L, "아우터", 400, "brandB");
+        save(5L, 14L, 4L, "모자", 500, "brandB");
+        save(6L, 14L, 3L, "모자", 600, "brandA");
 
         //when
         final List<PriceInformation> result = repository.findLowestPriceInformationByCategoryIds(
@@ -247,5 +247,25 @@ class LowestPriceInformationRepositoryTest extends BaseTest {
         assertThat(result).hasSize(3);
         assertThat(prices).containsExactlyInAnyOrder(100, 300, 500);
         assertThat(productIds).containsExactlyInAnyOrder(1L, 3L, 5L);
+    }
+
+    @Test
+    @DisplayName("카테고리id가 일치하는 정보중 가장 가격이 저렴한 정보를 반환한다.")
+    void findLowestPriceInformationByCategoryId() {
+        //given
+        final long categoryId = 14L;
+        final PriceInformation save = save(6L, categoryId, 3L, "모자", 600, "brandA");
+        save(7L, categoryId, 5L, "모자", 700, "brandB");
+        save(8L, categoryId, 6L, "모자", 800, "brandC");
+
+        //when
+        final PriceInformation found = repository.findEndPriceInformationByCategoryId(categoryId).get();
+
+        //then
+        assertSoftly(softAssertions -> {
+            assertThat(save.getProductId()).isEqualTo(found.getProductId());
+            assertThat(save.getBrandName()).isEqualTo(found.getBrandName());
+            assertThat(save.getPrice()).isEqualTo(found.getPrice());
+        });
     }
 }

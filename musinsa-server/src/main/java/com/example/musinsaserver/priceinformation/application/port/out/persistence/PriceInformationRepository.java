@@ -16,4 +16,6 @@ public interface PriceInformationRepository {
     Optional<PriceInformation> findByProductId(final Long productId);
 
     void deleteById(final Long id);
+
+    Optional<PriceInformation> findEndPriceInformationByCategoryId(final Long categoryId);
 }

@@ -94,4 +94,14 @@ public class JpaLowestPriceInformationRepository implements LowestPriceInformati
         }
         return priceInformations;
     }
+
+    @Override
+    public Optional<PriceInformation> findEndPriceInformationByCategoryId(final Long categoryId) {
+        final var jpaEntity = informations.findFirstByCategoryIdOrderByPriceAsc(categoryId)
+                .orElse(null);
+        if (Objects.isNull(jpaEntity)) {
+            return Optional.empty();
+        }
+        return Optional.of(mapper.toPriceInformationDomainEntity(jpaEntity));
+    }
 }

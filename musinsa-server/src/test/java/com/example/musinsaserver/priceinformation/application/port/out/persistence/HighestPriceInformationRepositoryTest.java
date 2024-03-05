@@ -193,4 +193,26 @@ class HighestPriceInformationRepositoryTest extends BaseTest {
                 savedMaximumPriceInformation.getId());
         assertThat(found).isEmpty();
     }
+
+    @Test
+    @DisplayName("categoryId가 일치하는 정보중 가격이 제일 비싼 정보를 반환한다.")
+    void findHighestByCategoryId() {
+        //given
+        final Long targetCategoryId = 1L;
+        saveHighest(1L, targetCategoryId, 6L, "바지", 20_000, "b");
+        saveHighest(2L, targetCategoryId, 7L, "바지", 30_000, "c");
+        saveHighest(3L, targetCategoryId, 8L, "바지", 40_000, "d");
+        final PriceInformation target = saveHighest(4L, targetCategoryId, 9L, "바지", 50_000, "f");
+
+        //when
+        final PriceInformation priceInformation = repositoy.findEndPriceInformationByCategoryId(targetCategoryId).get();
+
+        //then
+        assertSoftly(softAssertions -> {
+            assertThat(priceInformation.getProductId()).isEqualTo(4L);
+            assertThat(priceInformation.getCategoryId()).isEqualTo(targetCategoryId);
+            assertThat(priceInformation.getBrandId()).isEqualTo(9L);
+            assertThat(priceInformation.getPrice()).isEqualTo(50_000);
+        });
+    }
 }
