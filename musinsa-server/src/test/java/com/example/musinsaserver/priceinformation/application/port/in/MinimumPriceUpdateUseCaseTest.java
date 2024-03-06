@@ -162,6 +162,6 @@ class MinimumPriceUpdateUseCaseTest extends BaseTest {
         assertThatThrownBy(
                 () -> minimumPriceUpdateUseCase.updateMinimumPrice(brandId, 0L))
                 .isInstanceOf(InvalidCategoryIdException.class)
-                .hasMessageContaining("유효하지 않은 category id 입니다.");
+                .hasMessageContaining("유효하지 않은 name id 입니다.");
     }
 }
