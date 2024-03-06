@@ -1,67 +1,38 @@
 import ContentWrapper from "../components/ContentWrapper";
 import StyledButton from '../components/StyledButton';
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import LowestPriceByCategoriesList from '../components/LowestPriceByCategoriesList';
 import HighestAndLowestPriceByCategoryList from '../components/HighestAndLowestPriceByCategoryList';
 import SpecificBrandLowestPriceByCategoryList from '../components/SpecificBrandLowestPriceByCategoryList';
+import { axiosGetRequestTemplate } from '../axios/BaseAxios';
+import { Category, getAllCategories } from '../axios/RequestGetAllCategories';
+import { Brand, getAllBrands } from '../axios/RequestGetAllBrands';
+import {
+  getLowestPriceByCategory,
+  LOWEST_PRICE_BY_CATEGORIES,
+  LowestPriceByCategoryResponse
+} from '../axios/RequestGetLowestPriceByCategory';
+import {
+  getHighestAndLowestPriceByCategory, HIGHEST_AND_LOWEST_PRICE_BY_CATEGORY,
+  HighestAndLowestPriceByCategory
+} from '../axios/RequestGetHighestAndLowestPriceByCategory';
+import {
+  getSpecificBrandLowestPriceByCategory,
+  SpecificBrandLowestPriceByCategoryResponse
+} from '../axios/RequestGetSpecificBrandLowestPriceByCategory';
 
-interface PriceAndBrandResponse {
-  brand: string;
-  price: number;
-}
-
-export interface HighestAndLowestPriceByCategory {
-  category: string;
-  lowest: PriceAndBrandResponse;
-  highest: PriceAndBrandResponse;
-}
-
-interface Category {
-  id: bigint;
-  name: string;
-}
-
-interface LowestPriceInformation {
-  category: string;
-  brand: string;
-  price: number;
-}
-
-export interface LowestPriceByCategoryResponse {
-  lowestPriceInformationResponses: LowestPriceInformation[];
-  sum: number;
-}
 
 type PriceInformationResponse =
   LowestPriceByCategoryResponse
   | HighestAndLowestPriceByCategory
   | SpecificBrandLowestPriceByCategoryResponse;
 
-const LOWEST_PRICE_BY_CATEGORIES = "LOWEST_PRICE_BY_CATEGORIES";
-const HIGHEST_AND_LOWEST_PRICE_BY_CATEGORY = "HIGHEST_AND_LOWEST_PRICE_BY_CATEGORY";
-const SPECIFIC_BRAND_LOWEST_PRICE_BY_CATEGORY = "SPECIFIC_BRAND_LOWEST_PRICE_BY_CATEGORY";
+
 type RequiredStatus =
   "LOWEST_PRICE_BY_CATEGORIES"
   | "HIGHEST_AND_LOWEST_PRICE_BY_CATEGORY"
   | "SPECIFIC_BRAND_LOWEST_PRICE_BY_CATEGORY";
-
-interface Brand {
-  id: bigint;
-  name: string;
-}
-
-interface CategoryAndPriceResponse {
-  category: string;
-  price: number;
-}
-
-export interface SpecificBrandLowestPriceByCategoryResponse {
-  brand: string;
-  lowestPriceInformationResponses: CategoryAndPriceResponse[];
-  sum: number;
-}
 
 
 const PriceInformation = () => {
@@ -80,47 +51,11 @@ const PriceInformation = () => {
 
   useEffect(() => {
     (async () => {
-      await getLowestPriceByCategory();
-      await getAllCategories();
-      await getAllBrands();
+      await getLowestPriceByCategory(setPriceInformationResponse, setStatus);
+      await getAllCategories(setCategoriesState, setSelectedCategory);
+      await getAllBrands(setBrandsState, setSelectedBrand);
     })();
   }, []);
-
-  const getAllCategories = async () => {
-    const url = 'http://localhost:8080/api/categories';
-    const {data: categories}: { data: Category[] } = await axios.get(url);
-    setCategoriesState(() => categories)
-    setSelectedCategory(() => categories[0])
-  }
-
-
-  const getAllBrands = async () => {
-    const url = 'http://localhost:8080/api/brands'
-    const {data: brands}: { data: Brand[] } = await axios.get(url);
-    setBrandsState(() => brands);
-    setSelectedBrand(() => brands[0])
-  }
-
-  const getLowestPriceByCategory = async () => {
-    const url = 'http://localhost:8080/api/price-informations/categories/lowest';
-    const {data: lowestPriceByCategory}: { data: LowestPriceByCategoryResponse } = await axios.get(url);
-    setPriceInformationResponse(() => lowestPriceByCategory);
-    setStatus(() => LOWEST_PRICE_BY_CATEGORIES);
-  }
-
-  const getHighestAndLowestPriceByCategory = async () => {
-    const url = `http://localhost:8080/api/price-informations/categories/${encodeURIComponent(selectedCategory.name)}/highest-lowest`;
-    const {data: highestAndLowestPriceByCategoryResponse}: { data: HighestAndLowestPriceByCategory } = await axios.get(url);
-    setPriceInformationResponse(() => highestAndLowestPriceByCategoryResponse);
-    setStatus(() => HIGHEST_AND_LOWEST_PRICE_BY_CATEGORY);
-  }
-
-  const getSpecificBrandLowestPriceByCategory = async () => {
-    const url = `http://localhost:8080/api/price-informations/brands/${selectedBrand.id}/lowest`
-    const {data: specificBrandLowestPriceByCategoryResponse}: { data: SpecificBrandLowestPriceByCategoryResponse } = await axios.get(url);
-    setPriceInformationResponse(() => specificBrandLowestPriceByCategoryResponse);
-    setStatus(() => SPECIFIC_BRAND_LOWEST_PRICE_BY_CATEGORY);
-  }
 
   const handleCategoryOptionChange = ({target}: React.ChangeEvent<HTMLSelectElement>) => {
     const id: bigint = target.value;
@@ -134,17 +69,36 @@ const PriceInformation = () => {
     setSelectedBrand(() => ({id, name}))
   };
 
+  const handleSpecificBrandLowestPriceByCategoryButton = () => {
+    return async () => {
+      await getSpecificBrandLowestPriceByCategory(selectedBrand, setPriceInformationResponse, setStatus)
+    };
+  }
+
+  const handleGetLowestPriceByCategoryButton = () => {
+    return async () => {
+      await getLowestPriceByCategory(setPriceInformationResponse, setStatus)
+    };
+  }
+
+  const handleGetHighestAndLowestPriceByCategoryButton = () => {
+    return async () => {
+      await getHighestAndLowestPriceByCategory(setPriceInformationResponse, setStatus, selectedCategory)
+    };
+  }
+
   return (
     <ContentWrapper>
       <ButtonWrapper>
-        <StyledButton onClick={getLowestPriceByCategory}>카테고리 별 최소 가격 정보 조회</StyledButton>
+        <StyledButton onClick={handleGetLowestPriceByCategoryButton()}>카테고리 별 최소 가격 정보 조회</StyledButton>
         <ButtonAndSelectOptionWrapper>
           <StyledSelect onChange={handleCategoryOptionChange} value={selectedCategory.id.toString()}>
             {categoriesState.map(({id, name}: Category) => {
               return <option value={id.toString()} key={id}>{name}</option>
             })}
           </StyledSelect>
-          <StyledButton onClick={getHighestAndLowestPriceByCategory}>
+          <StyledButton
+            onClick={handleGetHighestAndLowestPriceByCategoryButton()}>
             {selectedCategory.name} 카테고리의 최대 / 최소 가격 조회
           </StyledButton>
         </ButtonAndSelectOptionWrapper>
@@ -154,7 +108,9 @@ const PriceInformation = () => {
               return <option value={id.toString()} key={id}>{name}</option>
             })}
           </StyledSelect>
-          <StyledButton onClick={getSpecificBrandLowestPriceByCategory}>{selectedBrand.name} 브랜드의 카테고리별 최소 가격
+          <StyledButton
+            onClick={handleSpecificBrandLowestPriceByCategoryButton()}>{selectedBrand.name} 브랜드의
+            카테고리별 최소 가격
             조회</StyledButton>
         </ButtonAndSelectOptionWrapper>
       </ButtonWrapper>
