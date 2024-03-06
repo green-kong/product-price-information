@@ -11,7 +11,6 @@ const ContentWrapper: React.FC<ContentWrapperProps> = ({children}) => {
 
 const Wrapper = styled.div`
   width: 100%;
-  background-color: tomato;
   margin-top: 30px;
 `
 
