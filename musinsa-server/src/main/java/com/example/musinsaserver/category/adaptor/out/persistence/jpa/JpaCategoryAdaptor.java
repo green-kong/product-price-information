@@ -1,4 +1,4 @@
-package com.example.musinsaserver.category.adaptor.port.out.persistence.jpa;
+package com.example.musinsaserver.category.adaptor.out.persistence.jpa;
 
 import java.util.Optional;
 
