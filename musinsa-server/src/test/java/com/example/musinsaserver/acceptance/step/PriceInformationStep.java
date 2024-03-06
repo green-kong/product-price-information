@@ -29,7 +29,7 @@ public class PriceInformationStep {
         assertSoftly(softAssertions -> {
             assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
             assertThat(parsedResponse.sum()).isEqualTo(expectedSum);
-            assertThat(parsedResponse.brandName()).isEqualTo(brand);
+            assertThat(parsedResponse.brand()).isEqualTo(brand);
             assertThat(parsedResponse.lowestPriceInformationResponses()).hasSize(expectedCount);
         });
     }

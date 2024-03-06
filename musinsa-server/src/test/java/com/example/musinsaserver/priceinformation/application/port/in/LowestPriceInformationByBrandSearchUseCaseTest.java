@@ -50,7 +50,7 @@ class LowestPriceInformationByBrandSearchUseCaseTest extends BaseTest {
         assertSoftly(softAssertions -> {
             assertThat(responses.lowestPriceInformationResponses()).hasSize(3);
             assertThat(responses.sum()).isEqualTo(41_000);
-            assertThat(responses.brandName()).isEqualTo(targetBrandName);
+            assertThat(responses.brand()).isEqualTo(targetBrandName);
         });
     }
 

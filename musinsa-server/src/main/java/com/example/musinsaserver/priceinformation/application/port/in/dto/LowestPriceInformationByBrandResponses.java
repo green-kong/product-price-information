@@ -5,7 +5,7 @@ import java.util.List;
 import com.example.musinsaserver.priceinformation.domain.PriceInformation;
 
 public record LowestPriceInformationByBrandResponses(
-        String brandName,
+        String brand,
         List<LowestPriceInformationByBrandResponse> lowestPriceInformationResponses,
         int sum
 ) {

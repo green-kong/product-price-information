@@ -18,7 +18,7 @@ class BrandTest {
     @DisplayName("Id 없이 Brand를 생성한다.")
     void createWithoutId() {
         //given
-        final String brandName = "brandName";
+        final String brandName = "brand";
 
         //when
         final Brand brand = Brand.createWithoutId(brandName);
@@ -46,7 +46,7 @@ class BrandTest {
     void createWithId() {
         //given
         final Long id = 1L;
-        final String brandName = "brandName";
+        final String brandName = "brand";
 
         //when
         final Brand brand = Brand.createWithId(id, brandName);
