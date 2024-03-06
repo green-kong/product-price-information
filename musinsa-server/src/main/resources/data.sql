@@ -257,38 +257,294 @@ VALUES (1700, 9, 7);
 INSERT INTO products (price, brand_id, category_id)
 VALUES (2400, 9, 8);
 
---최저 가격 정보 초기데이터
-INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
-VALUES (10000, 3, 1, 17, 'C', '상의');
-INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
-VALUES (5000, 5, 2, 34, 'E', '아우터');
-INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
-VALUES (3000, 4, 3, 27, 'D', '바지');
-INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
-VALUES (9000, 7, 4, 52, 'G', '스니커즈');
-INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
-VALUES (2000, 1, 5, 5, 'A', '가방');
-INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
-VALUES (1500, 4, 6, 30, 'D', '모자');
-INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
-VALUES (1700, 9, 7, 71, 'I', '양말');
-INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
-VALUES (1900, 6, 8, 48, 'F', '액세서리');
-
--- 최고 가격정보 초기데이터 삽입
+--최고 가격 정보 초기데이터
 INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
-VALUES (11400, 9, 1, 65, 'I', '상의');
+VALUES (11200, 1, 1, 1, 'A', '상의');
 INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
-VALUES (7200, 6, 2, 42, 'F', '아우터');
+VALUES (5500, 1, 2, 2, 'A', '아우터');
 INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
 VALUES (4200, 1, 3, 3, 'A', '바지');
 INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
-VALUES (9900, 5, 4, 36, 'E', '스니커즈');
+VALUES (9000, 1, 4, 4, 'A', '스니커즈');
 INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
-VALUES (2500, 4, 5, 29, 'D', '가방');
+VALUES (2000, 1, 5, 5, 'A', '가방');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (1700, 1, 6, 6, 'A', '모자');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (1800, 1, 7, 7, 'A', '양말');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (2300, 1, 8, 8, 'A', '액세서리');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (10500, 2, 1, 9, 'B', '상의');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (5900, 2, 2, 10, 'B', '아우터');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (3800, 2, 3, 11, 'B', '바지');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (9100, 2, 4, 12, 'B', '스니커즈');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (2100, 2, 5, 13, 'B', '가방');
 INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
 VALUES (2000, 2, 6, 14, 'B', '모자');
 INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (2000, 2, 7, 15, 'B', '양말');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (2200, 2, 8, 16, 'B', '액세서리');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (10000, 3, 1, 17, 'C', '상의');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (6200, 3, 2, 18, 'C', '아우터');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (3300, 3, 3, 19, 'C', '바지');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (9200, 3, 4, 20, 'C', '스니커즈');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (2200, 3, 5, 21, 'C', '가방');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (1900, 3, 6, 22, 'C', '모자');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (2200, 3, 7, 23, 'C', '양말');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (2100, 3, 8, 24, 'C', '액세서리');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (10100, 4, 1, 25, 'D', '상의');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (5100, 4, 2, 26, 'D', '아우터');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (3000, 4, 3, 27, 'D', '바지');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (9500, 4, 4, 28, 'D', '스니커즈');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (2500, 4, 5, 29, 'D', '가방');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (1500, 4, 6, 30, 'D', '모자');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
 VALUES (2400, 4, 7, 31, 'D', '양말');
 INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (2000, 4, 8, 32, 'D', '액세서리');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (10700, 5, 1, 33, 'E', '상의');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (5000, 5, 2, 34, 'E', '아우터');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (3800, 5, 3, 35, 'E', '바지');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (9900, 5, 4, 36, 'E', '스니커즈');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (2300, 5, 5, 37, 'E', '가방');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (1800, 5, 6, 38, 'E', '모자');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (2100, 5, 7, 39, 'E', '양말');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (2100, 5, 8, 40, 'E', '액세서리');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (11200, 6, 1, 41, 'F', '상의');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (7200, 6, 2, 42, 'F', '아우터');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (4000, 6, 3, 43, 'F', '바지');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (9300, 6, 4, 44, 'F', '스니커즈');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (2100, 6, 5, 45, 'F', '가방');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (1600, 6, 6, 46, 'F', '모자');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (2300, 6, 7, 47, 'F', '양말');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (1900, 6, 8, 48, 'F', '액세서리');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (10500, 7, 1, 49, 'G', '상의');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (5800, 7, 2, 50, 'G', '아우터');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (3900, 7, 3, 51, 'G', '바지');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (9000, 7, 4, 52, 'G', '스니커즈');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (2200, 7, 5, 53, 'G', '가방');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (1700, 7, 6, 54, 'G', '모자');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (2100, 7, 7, 55, 'G', '양말');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (2000, 7, 8, 56, 'G', '액세서리');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (10800, 8, 1, 57, 'H', '상의');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (6300, 8, 2, 58, 'H', '아우터');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (3100, 8, 3, 59, 'H', '바지');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (9700, 8, 4, 60, 'H', '스니커즈');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (2100, 8, 5, 61, 'H', '가방');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (1600, 8, 6, 62, 'H', '모자');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (2000, 8, 7, 63, 'H', '양말');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (2000, 8, 8, 64, 'H', '액세서리');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (11400, 9, 1, 65, 'I', '상의');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (6700, 9, 2, 66, 'I', '아우터');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (3200, 9, 3, 67, 'I', '바지');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (9500, 9, 4, 68, 'I', '스니커즈');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (2400, 9, 5, 69, 'I', '가방');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (1700, 9, 6, 70, 'I', '모자');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (1700, 9, 7, 71, 'I', '양말');
+INSERT INTO highest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (2400, 9, 8, 72, 'I', '액세서리');
+
+-- 최저 가격정보 초기데이터 삽입
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (11200, 1, 1, 1, 'A', '상의');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (5500, 1, 2, 2, 'A', '아우터');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (4200, 1, 3, 3, 'A', '바지');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (9000, 1, 4, 4, 'A', '스니커즈');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (2000, 1, 5, 5, 'A', '가방');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (1700, 1, 6, 6, 'A', '모자');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (1800, 1, 7, 7, 'A', '양말');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (2300, 1, 8, 8, 'A', '액세서리');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (10500, 2, 1, 9, 'B', '상의');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (5900, 2, 2, 10, 'B', '아우터');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (3800, 2, 3, 11, 'B', '바지');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (9100, 2, 4, 12, 'B', '스니커즈');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (2100, 2, 5, 13, 'B', '가방');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (2000, 2, 6, 14, 'B', '모자');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (2000, 2, 7, 15, 'B', '양말');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (2200, 2, 8, 16, 'B', '액세서리');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (10000, 3, 1, 17, 'C', '상의');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (6200, 3, 2, 18, 'C', '아우터');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (3300, 3, 3, 19, 'C', '바지');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (9200, 3, 4, 20, 'C', '스니커즈');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (2200, 3, 5, 21, 'C', '가방');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (1900, 3, 6, 22, 'C', '모자');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (2200, 3, 7, 23, 'C', '양말');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (2100, 3, 8, 24, 'C', '액세서리');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (10100, 4, 1, 25, 'D', '상의');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (5100, 4, 2, 26, 'D', '아우터');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (3000, 4, 3, 27, 'D', '바지');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (9500, 4, 4, 28, 'D', '스니커즈');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (2500, 4, 5, 29, 'D', '가방');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (1500, 4, 6, 30, 'D', '모자');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (2400, 4, 7, 31, 'D', '양말');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (2000, 4, 8, 32, 'D', '액세서리');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (10700, 5, 1, 33, 'E', '상의');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (5000, 5, 2, 34, 'E', '아우터');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (3800, 5, 3, 35, 'E', '바지');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (9900, 5, 4, 36, 'E', '스니커즈');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (2300, 5, 5, 37, 'E', '가방');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (1800, 5, 6, 38, 'E', '모자');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (2100, 5, 7, 39, 'E', '양말');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (2100, 5, 8, 40, 'E', '액세서리');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (11200, 6, 1, 41, 'F', '상의');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (7200, 6, 2, 42, 'F', '아우터');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (4000, 6, 3, 43, 'F', '바지');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (9300, 6, 4, 44, 'F', '스니커즈');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (2100, 6, 5, 45, 'F', '가방');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (1600, 6, 6, 46, 'F', '모자');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (2300, 6, 7, 47, 'F', '양말');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (1900, 6, 8, 48, 'F', '액세서리');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (10500, 7, 1, 49, 'G', '상의');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (5800, 7, 2, 50, 'G', '아우터');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (3900, 7, 3, 51, 'G', '바지');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (9000, 7, 4, 52, 'G', '스니커즈');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (2200, 7, 5, 53, 'G', '가방');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (1700, 7, 6, 54, 'G', '모자');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (2100, 7, 7, 55, 'G', '양말');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (2000, 7, 8, 56, 'G', '액세서리');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (10800, 8, 1, 57, 'H', '상의');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (6300, 8, 2, 58, 'H', '아우터');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (3100, 8, 3, 59, 'H', '바지');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (9700, 8, 4, 60, 'H', '스니커즈');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (2100, 8, 5, 61, 'H', '가방');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (1600, 8, 6, 62, 'H', '모자');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (2000, 8, 7, 63, 'H', '양말');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (2000, 8, 8, 64, 'H', '액세서리');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (11400, 9, 1, 65, 'I', '상의');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (6700, 9, 2, 66, 'I', '아우터');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (3200, 9, 3, 67, 'I', '바지');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (9500, 9, 4, 68, 'I', '스니커즈');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (2400, 9, 5, 69, 'I', '가방');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (1700, 9, 6, 70, 'I', '모자');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
+VALUES (1700, 9, 7, 71, 'I', '양말');
+INSERT INTO lowest_price_informations (price, brand_id, category_id, product_id, brand_name, category)
 VALUES (2400, 9, 8, 72, 'I', '액세서리');
