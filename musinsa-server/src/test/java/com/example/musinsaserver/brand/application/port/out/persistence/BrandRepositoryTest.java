@@ -3,6 +3,7 @@ package com.example.musinsaserver.brand.application.port.out.persistence;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.DisplayName;
@@ -60,5 +61,21 @@ class BrandRepositoryTest extends BaseTest {
 
         //then
         assertThat(brand).isNotPresent();
+    }
+
+    @Test
+    @DisplayName("저장된 모든 브랜드 목록을 조회한다.")
+    void findAll() {
+        //given
+        brandRepository.save(Brand.createWithoutId("brandA"));
+        brandRepository.save(Brand.createWithoutId("brandB"));
+        brandRepository.save(Brand.createWithoutId("brandC"));
+        brandRepository.save(Brand.createWithoutId("brandD"));
+
+        //when
+        final List<Brand> brands = brandRepository.findAll();
+
+        //then
+        assertThat(brands).hasSize(4);
     }
 }

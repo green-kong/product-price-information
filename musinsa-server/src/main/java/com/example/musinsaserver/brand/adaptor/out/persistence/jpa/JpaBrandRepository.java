@@ -1,5 +1,6 @@
 package com.example.musinsaserver.brand.adaptor.out.persistence.jpa;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -44,5 +45,12 @@ public class JpaBrandRepository implements BrandRepository {
             return Optional.empty();
         }
         return Optional.of(mapper.toBrandDomainEntity(jpaBrandEntity));
+    }
+
+    @Override
+    public List<Brand> findAll() {
+        return brands.findAll().stream()
+                .map(mapper::toBrandDomainEntity)
+                .toList();
     }
 }
