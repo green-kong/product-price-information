@@ -1,7 +1,11 @@
 import ContentWrapper from "../components/ContentWrapper";
+import CategoryRegisterForm from '@components/CategoryRegisterForm';
 
 const ProductUpdate = () => {
-  return <ContentWrapper>프로덕트 업데이트</ContentWrapper>
+
+  return <ContentWrapper>
+    <CategoryRegisterForm></CategoryRegisterForm>
+  </ContentWrapper>
 }
 
 export default ProductUpdate;

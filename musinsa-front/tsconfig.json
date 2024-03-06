@@ -25,9 +25,11 @@
       "@/*": ["src/*"],
       "@pages/*": ["src/pages/*"],
       "@apis/*": ["src/apis/*"],
-      "@components/*": ["src/components/*"],
-    }
+      "@components/*": ["src/components/*"]
+    },
+    "allowSyntheticDefaultImports": true
   },
   "include": ["src"],
+  "exclude": ["node_modules"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

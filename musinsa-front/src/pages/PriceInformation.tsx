@@ -1,26 +1,26 @@
-import ContentWrapper from "../components/ContentWrapper";
-import StyledButton from '../components/StyledButton';
+import ContentWrapper from "@components/ContentWrapper";
+import StyledButton from '@components/StyledButton';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import LowestPriceByCategoriesList from '../components/LowestPriceByCategoriesList';
-import HighestAndLowestPriceByCategoryList from '../components/HighestAndLowestPriceByCategoryList';
-import SpecificBrandLowestPriceByCategoryList from '../components/SpecificBrandLowestPriceByCategoryList';
-import { Category, getAllCategories } from '../apis/RequestGetAllCategories';
-import { Brand, getAllBrands } from '../apis/RequestGetAllBrands';
+import LowestPriceByCategoriesList from '@components/LowestPriceByCategoriesList';
+import HighestAndLowestPriceByCategoryList from '@components/HighestAndLowestPriceByCategoryList';
+import SpecificBrandLowestPriceByCategoryList from '@components/SpecificBrandLowestPriceByCategoryList';
+import { Category, getAllCategories } from '@apis/RequestGetAllCategories';
+import { Brand, getAllBrands } from '@apis/RequestGetAllBrands';
 import {
   getLowestPriceByCategory,
   LOWEST_PRICE_BY_CATEGORIES,
   LowestPriceByCategoryResponse
-} from '../apis/RequestGetLowestPriceByCategory';
+} from '@apis/RequestGetLowestPriceByCategory';
 import {
   getHighestAndLowestPriceByCategory,
   HIGHEST_AND_LOWEST_PRICE_BY_CATEGORY,
   HighestAndLowestPriceByCategory
-} from '../apis/RequestGetHighestAndLowestPriceByCategory';
+} from '@apis/RequestGetHighestAndLowestPriceByCategory';
 import {
   getSpecificBrandLowestPriceByCategory,
   SpecificBrandLowestPriceByCategoryResponse
-} from '../apis/RequestGetSpecificBrandLowestPriceByCategory';
+} from '@apis/RequestGetSpecificBrandLowestPriceByCategory';
 
 
 type PriceInformationResponse =
@@ -56,13 +56,13 @@ const PriceInformation = () => {
   }, []);
 
   const handleCategoryOptionChange = ({target}: React.ChangeEvent<HTMLSelectElement>) => {
-    const id: bigint = target.value;
+    const id: bigint = BigInt(target.value);
     const name: string = target.selectedOptions[0].text;
     setSelectedCategory(() => ({id, name}))
   };
 
   const handleBrandOptionChange = ({target}: React.ChangeEvent<HTMLSelectElement>) => {
-    const id: bigint = target.value;
+    const id: bigint = BigInt(target.value);
     const name: string = target.selectedOptions[0].text;
     setSelectedBrand(() => ({id, name}))
   };

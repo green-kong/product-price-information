@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosResponse } from 'axios';
+import axios, { AxiosError } from 'axios';
 
 interface ErrorResponse {
   code: string;
@@ -21,4 +21,20 @@ const axiosGetRequestTemplate = async <T>(url: string, callBack: (data: T) => vo
   }
 }
 
-export { axiosGetRequestTemplate }
+const axiosPostRequestTemplate = async <T>(url: string, data: T, callback: (data: T, id: bigint) => void) => {
+  try {
+    const axiosResponse = await axios.post(BASE_URL + url, data);
+    const locations = axiosResponse.headers['location'].split('/');
+    const id = BigInt(locations[locations.length - 1]);
+    callback(data, id);
+  } catch (error: AxiosError<ErrorResponse>) {
+    const response: ErrorResponse | undefined = error.response?.data;
+    if (response) {
+      alert(`ERROR_CODE : ${response.code}\nMESSAGE : ${response.message}`);
+      return;
+    }
+    alert('ERROR_CODE : unknown\nMESSAGE : unknown error');
+  }
+}
+
+export { axiosGetRequestTemplate, axiosPostRequestTemplate }
