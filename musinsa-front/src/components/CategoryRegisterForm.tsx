@@ -28,6 +28,7 @@ const CategoryRegisterForm = ({setCategories}: CategoryRegisterFormProps) => {
       data,
       (data: RegisterCategoryRequest, id: number) => {
         setCategories(categories => [...categories, {id, name: data.name}]);
+        alert("카테고리를 등록하였습니다.");
       })
   }
 

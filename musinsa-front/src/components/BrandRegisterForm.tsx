@@ -28,6 +28,7 @@ const BrandRegisterForm = ({setBrands}: BrandRegisterFormProps) => {
       data,
       (data: RegisterBrandRequest, id: number) => {
         setBrands(brands => [...brands, {id, name: data.name}]);
+        alert("브랜드를 등록하였습니다.");
       })
   };
 

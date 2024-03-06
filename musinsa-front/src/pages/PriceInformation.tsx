@@ -84,7 +84,6 @@ const PriceInformation = () => {
       await getHighestAndLowestPriceByCategory(setPriceInformationResponse, setStatus, selectedCategory)
     };
   }
-
   return (
     <ContentWrapper>
       <ButtonWrapper>
@@ -102,7 +101,7 @@ const PriceInformation = () => {
         </ButtonAndSelectOptionWrapper>
         <ButtonAndSelectOptionWrapper>
           <StyledSelect onChange={handleBrandOptionChange} value={selectedBrand.id.toString()}>
-            {brandsState.map(({id, name}: Category) => {
+            {brandsState.map(({id, name}: Brand) => {
               return <option value={id.toString()} key={id}>{name}</option>
             })}
           </StyledSelect>

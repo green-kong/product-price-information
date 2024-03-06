@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Category, getAllCategories } from '@apis/RequestGetAllCategories';
 import { Brand, getAllBrands } from '@apis/RequestGetAllBrands';
 import BrandRegisterForm from '@components/BrandRegisterForm';
+import ProductRegisterForm from '@components/ProductRegisterForm';
 
 const ProductUpdate = () => {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -19,9 +20,19 @@ const ProductUpdate = () => {
     })()
   }, []);
 
+
+
   return <ContentWrapper>
     <CategoryRegisterForm setCategories={setCategories}></CategoryRegisterForm>
     <BrandRegisterForm setBrands={setBrandsState}></BrandRegisterForm>
+    <ProductRegisterForm
+      brands={brandsState}
+      categories={categories}
+      selectedBrand={selectedBrand}
+      selectedCategory={selectedCategory}
+      setSelectedBrand={setSelectedBrand}
+      setSelectedCategory={setSelectedCategory}
+    ></ProductRegisterForm>
   </ContentWrapper>
 }
 
