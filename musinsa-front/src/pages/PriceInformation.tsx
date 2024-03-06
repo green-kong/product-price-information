@@ -5,22 +5,22 @@ import styled from 'styled-components';
 import LowestPriceByCategoriesList from '../components/LowestPriceByCategoriesList';
 import HighestAndLowestPriceByCategoryList from '../components/HighestAndLowestPriceByCategoryList';
 import SpecificBrandLowestPriceByCategoryList from '../components/SpecificBrandLowestPriceByCategoryList';
-import { axiosGetRequestTemplate } from '../axios/BaseAxios';
-import { Category, getAllCategories } from '../axios/RequestGetAllCategories';
-import { Brand, getAllBrands } from '../axios/RequestGetAllBrands';
+import { Category, getAllCategories } from '../apis/RequestGetAllCategories';
+import { Brand, getAllBrands } from '../apis/RequestGetAllBrands';
 import {
   getLowestPriceByCategory,
   LOWEST_PRICE_BY_CATEGORIES,
   LowestPriceByCategoryResponse
-} from '../axios/RequestGetLowestPriceByCategory';
+} from '../apis/RequestGetLowestPriceByCategory';
 import {
-  getHighestAndLowestPriceByCategory, HIGHEST_AND_LOWEST_PRICE_BY_CATEGORY,
+  getHighestAndLowestPriceByCategory,
+  HIGHEST_AND_LOWEST_PRICE_BY_CATEGORY,
   HighestAndLowestPriceByCategory
-} from '../axios/RequestGetHighestAndLowestPriceByCategory';
+} from '../apis/RequestGetHighestAndLowestPriceByCategory';
 import {
   getSpecificBrandLowestPriceByCategory,
   SpecificBrandLowestPriceByCategoryResponse
-} from '../axios/RequestGetSpecificBrandLowestPriceByCategory';
+} from '../apis/RequestGetSpecificBrandLowestPriceByCategory';
 
 
 type PriceInformationResponse =
