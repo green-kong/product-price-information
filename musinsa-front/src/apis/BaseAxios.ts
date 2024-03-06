@@ -21,11 +21,11 @@ const axiosGetRequestTemplate = async <T>(url: string, callBack: (data: T) => vo
   }
 }
 
-const axiosPostRequestTemplate = async <T>(url: string, data: T, callback: (data: T, id: bigint) => void) => {
+const axiosPostRequestTemplate = async <T>(url: string, data: T, callback: (data: T, id: number) => void) => {
   try {
     const axiosResponse = await axios.post(BASE_URL + url, data);
     const locations = axiosResponse.headers['location'].split('/');
-    const id = BigInt(locations[locations.length - 1]);
+    const id = Number(locations[locations.length - 1]);
     callback(data, id);
   } catch (error: AxiosError<ErrorResponse>) {
     const response: ErrorResponse | undefined = error.response?.data;

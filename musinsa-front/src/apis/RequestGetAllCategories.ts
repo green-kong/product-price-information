@@ -1,7 +1,7 @@
 import { axiosGetRequestTemplate } from './BaseAxios';
 
 interface Category {
-  id: bigint;
+  id: number;
   name: string;
 }
 

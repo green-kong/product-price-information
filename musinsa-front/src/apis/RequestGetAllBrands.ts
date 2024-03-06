@@ -1,7 +1,7 @@
 import { axiosGetRequestTemplate } from './BaseAxios';
 
 interface Brand {
-  id: bigint;
+  id: number;
   name: string;
 }
 

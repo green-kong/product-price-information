@@ -42,10 +42,10 @@ const PriceInformation = () => {
   });
 
   const [categoriesState, setCategoriesState] = useState<Category[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<Category>({id: 0n, name: ''});
+  const [selectedCategory, setSelectedCategory] = useState<Category>({id: 0, name: ''});
 
   const [brandsState, setBrandsState] = useState<Brand[]>([]);
-  const [selectedBrand, setSelectedBrand] = useState<Brand>({id: 0n, name: ''});
+  const [selectedBrand, setSelectedBrand] = useState<Brand>({id: 0, name: ''});
 
   useEffect(() => {
     (async () => {
@@ -56,13 +56,13 @@ const PriceInformation = () => {
   }, []);
 
   const handleCategoryOptionChange = ({target}: React.ChangeEvent<HTMLSelectElement>) => {
-    const id: bigint = BigInt(target.value);
+    const id: number = Number(target.value);
     const name: string = target.selectedOptions[0].text;
     setSelectedCategory(() => ({id, name}))
   };
 
   const handleBrandOptionChange = ({target}: React.ChangeEvent<HTMLSelectElement>) => {
-    const id: bigint = BigInt(target.value);
+    const id: number = Number(target.value);
     const name: string = target.selectedOptions[0].text;
     setSelectedBrand(() => ({id, name}))
   };

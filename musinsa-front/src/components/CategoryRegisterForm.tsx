@@ -1,12 +1,17 @@
 import { FormInput, RegisterWrapper, StyledForm, SubmitButton, Tilte } from '@components/RegisterElements';
 import React, { useState } from 'react';
 import { axiosPostRequestTemplate } from '@apis/BaseAxios';
+import { Category } from '@apis/RequestGetAllCategories';
 
 interface RegisterCategoryRequest {
   name: string;
 }
 
-const CategoryRegisterForm = () => {
+interface CategoryRegisterFormProps {
+  setCategories: React.Dispatch<React.SetStateAction<Category[]>>
+}
+
+const CategoryRegisterForm = ({setCategories}: CategoryRegisterFormProps) => {
   const [category, setCategory] = useState<string>('');
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,8 +26,8 @@ const CategoryRegisterForm = () => {
     await axiosPostRequestTemplate<RegisterCategoryRequest>(
       url,
       data,
-      (data: RegisterCategoryRequest, id: bigint) => {
-        // 카테고리 리스트 추가
+      (data: RegisterCategoryRequest, id: number) => {
+        setCategories(categories => [...categories, {id, name: data.name}]);
       })
   }
 
