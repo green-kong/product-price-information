@@ -66,7 +66,7 @@ public class PriceInformationStep {
         assertSoftly(softAssertions -> {
             assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
             assertThat(parsedResponse.sum()).isEqualTo(expectedSum);
-            assertThat(parsedResponse.responses()).hasSize(expectedCount);
+            assertThat(parsedResponse.lowestPriceInformationResponses()).hasSize(expectedCount);
         });
     }
 

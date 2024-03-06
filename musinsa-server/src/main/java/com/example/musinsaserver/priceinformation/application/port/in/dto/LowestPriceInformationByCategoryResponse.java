@@ -4,8 +4,10 @@ import java.util.List;
 
 import com.example.musinsaserver.priceinformation.domain.PriceInformation;
 
-public record LowestPriceInformationByCategoryResponse(List<LowestPriceInformationResponse> responses, int sum) {
-
+public record LowestPriceInformationByCategoryResponse(
+        List<LowestPriceInformationResponse> lowestPriceInformationResponses,
+        int sum
+) {
     public static LowestPriceInformationByCategoryResponse from(List<PriceInformation> priceInformations) {
         final int sum = priceInformations.stream()
                 .mapToInt(PriceInformation::getPrice)

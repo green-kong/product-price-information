@@ -52,7 +52,7 @@ class LowestPriceInformationByCategorySearchUseCaseTest extends BaseTest {
         //then
         assertSoftly(softAssertions -> {
             assertThat(result.sum()).isEqualTo(150);
-            assertThat(result.responses()).hasSize(4);
+            assertThat(result.lowestPriceInformationResponses()).hasSize(4);
         });
     }
 
