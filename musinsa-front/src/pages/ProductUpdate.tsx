@@ -3,6 +3,7 @@ import CategoryRegisterForm from '@components/CategoryRegisterForm';
 import { useEffect, useState } from 'react';
 import { Category, getAllCategories } from '@apis/RequestGetAllCategories';
 import { Brand, getAllBrands } from '@apis/RequestGetAllBrands';
+import BrandRegisterForm from '@components/BrandRegisterForm';
 
 const ProductUpdate = () => {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -20,6 +21,7 @@ const ProductUpdate = () => {
 
   return <ContentWrapper>
     <CategoryRegisterForm setCategories={setCategories}></CategoryRegisterForm>
+    <BrandRegisterForm setBrands={setBrandsState}></BrandRegisterForm>
   </ContentWrapper>
 }
 
