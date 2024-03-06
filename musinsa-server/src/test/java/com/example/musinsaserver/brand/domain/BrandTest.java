@@ -38,7 +38,7 @@ class BrandTest {
         //when & then
         assertThatThrownBy(() -> Brand.createWithoutId(invalidName))
                 .isInstanceOf(InvalidBrandNameException.class)
-                .hasMessageContaining("상품의 이름은 한글자 이상이어야 합니다.");
+                .hasMessageContaining("브랜드의 이름은 한글자 이상이어야 합니다.");
     }
 
     @Test
@@ -66,6 +66,6 @@ class BrandTest {
         //when & then
         assertThatThrownBy(() -> Brand.createWithoutId(invalidName))
                 .isInstanceOf(InvalidBrandNameException.class)
-                .hasMessageContaining("상품의 이름은 한글자 이상이어야 합니다.");
+                .hasMessageContaining("브랜드의 이름은 한글자 이상이어야 합니다.");
     }
 }

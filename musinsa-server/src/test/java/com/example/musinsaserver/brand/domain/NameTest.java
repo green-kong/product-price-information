@@ -35,6 +35,6 @@ class NameTest {
         //when & then
         assertThatThrownBy(() -> from(invalidValue))
                 .isInstanceOf(InvalidBrandNameException.class)
-                .hasMessageContaining("상품의 이름은 한글자 이상이어야 합니다.");
+                .hasMessageContaining("브랜드의 이름은 한글자 이상이어야 합니다.");
     }
 }

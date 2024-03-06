@@ -69,6 +69,6 @@ class BrandAcceptanceTest extends BaseTest {
         final ErrorResponse errorResponse = response.body().as(ErrorResponse.class);
         assertThat(response.statusCode()).isEqualTo(BAD_REQUEST.value());
         assertThat(errorResponse.code()).isEqualTo("BRAND0001");
-        assertThat(errorResponse.message()).contains("상품의 이름은 한글자 이상이어야 합니다.");
+        assertThat(errorResponse.message()).contains("브랜드의 이름은 한글자 이상이어야 합니다.");
     }
 }
