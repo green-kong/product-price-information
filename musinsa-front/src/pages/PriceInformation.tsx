@@ -28,12 +28,10 @@ type PriceInformationResponse =
   | HighestAndLowestPriceByCategory
   | SpecificBrandLowestPriceByCategoryResponse;
 
-
 type RequiredStatus =
   "LOWEST_PRICE_BY_CATEGORIES"
   | "HIGHEST_AND_LOWEST_PRICE_BY_CATEGORY"
   | "SPECIFIC_BRAND_LOWEST_PRICE_BY_CATEGORY";
-
 
 const PriceInformation = () => {
   const [status, setStatus] = useState<RequiredStatus>(LOWEST_PRICE_BY_CATEGORIES);
