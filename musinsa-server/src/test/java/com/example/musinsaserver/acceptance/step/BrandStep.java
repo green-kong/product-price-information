@@ -13,7 +13,7 @@ import org.springframework.http.HttpStatus;
 
 import com.example.musinsaserver.acceptance.CucumberClient;
 import com.example.musinsaserver.brand.application.port.in.dto.BrandResponse;
-import com.example.musinsaserver.brand.application.port.in.dto.RegisterBrandRequest;
+import com.example.musinsaserver.brand.application.port.in.dto.BrandRegisterRequest;
 
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
@@ -31,7 +31,7 @@ public class BrandStep {
     public void createBrand(final String brand) {
         final ExtractableResponse<Response> response = given().log().all()
                 .contentType(JSON)
-                .body(new RegisterBrandRequest(brand))
+                .body(new BrandRegisterRequest(brand))
                 .when()
                 .post("/api/brands")
                 .then().log().all()

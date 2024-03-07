@@ -8,7 +8,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.example.musinsaserver.brand.application.port.in.dto.RegisterBrandRequest;
+import com.example.musinsaserver.brand.application.port.in.dto.BrandRegisterRequest;
 import com.example.musinsaserver.brand.application.port.out.persistence.BrandRepository;
 import com.example.musinsaserver.brand.domain.Brand;
 import com.example.musinsaserver.brand.exception.DuplicatedBrandNameException;
@@ -27,10 +27,10 @@ class RegisterBrandUseCaseTest extends BaseTest {
     void registerBrand() {
         //given
         final String brandName = "name";
-        final RegisterBrandRequest registerBrandRequest = new RegisterBrandRequest(brandName);
+        final BrandRegisterRequest brandRegisterRequest = new BrandRegisterRequest(brandName);
 
         //when
-        final Long savedId = registerBrandUseCase.registerBrand(registerBrandRequest);
+        final Long savedId = registerBrandUseCase.registerBrand(brandRegisterRequest);
 
         //then
         final Brand brand = brandRepository.findById(savedId).get();
@@ -45,11 +45,11 @@ class RegisterBrandUseCaseTest extends BaseTest {
     void createBrandFailByDuplicatedName() {
         //given
         final String brandName = "name";
-        final RegisterBrandRequest registerBrandRequest = new RegisterBrandRequest(brandName);
-        registerBrandUseCase.registerBrand(registerBrandRequest);
+        final BrandRegisterRequest brandRegisterRequest = new BrandRegisterRequest(brandName);
+        registerBrandUseCase.registerBrand(brandRegisterRequest);
 
         //when & then
-        assertThatThrownBy(() -> registerBrandUseCase.registerBrand(registerBrandRequest))
+        assertThatThrownBy(() -> registerBrandUseCase.registerBrand(brandRegisterRequest))
                 .isInstanceOf(DuplicatedBrandNameException.class)
                 .hasMessageContaining("이미 존재하는 브랜드 명입니다.");
 

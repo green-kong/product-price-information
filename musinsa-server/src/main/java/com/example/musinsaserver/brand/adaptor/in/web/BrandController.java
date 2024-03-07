@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.musinsaserver.brand.application.port.in.GetAllBrandsUseCase;
 import com.example.musinsaserver.brand.application.port.in.RegisterBrandUseCase;
 import com.example.musinsaserver.brand.application.port.in.dto.BrandResponse;
-import com.example.musinsaserver.brand.application.port.in.dto.RegisterBrandRequest;
+import com.example.musinsaserver.brand.application.port.in.dto.BrandRegisterRequest;
 
 @RestController
 @RequestMapping("api/brands")
-public class BrandController {
+public class BrandController implements BrandControllerDocs {
     private final RegisterBrandUseCase registerBrandUseCase;
     private final GetAllBrandsUseCase getAllBrandsUseCase;
 
@@ -30,8 +30,8 @@ public class BrandController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> registerBrand(@RequestBody final RegisterBrandRequest registerBrandRequest) {
-        final Long brandId = registerBrandUseCase.registerBrand(registerBrandRequest);
+    public ResponseEntity<Void> registerBrand(@RequestBody final BrandRegisterRequest brandRegisterRequest) {
+        final Long brandId = registerBrandUseCase.registerBrand(brandRegisterRequest);
         return ResponseEntity.created(URI.create("/api/brands/" + brandId)).build();
     }
 

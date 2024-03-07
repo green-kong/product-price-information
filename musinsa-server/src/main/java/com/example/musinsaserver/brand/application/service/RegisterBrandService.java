@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.musinsaserver.brand.application.port.in.RegisterBrandUseCase;
-import com.example.musinsaserver.brand.application.port.in.dto.RegisterBrandRequest;
+import com.example.musinsaserver.brand.application.port.in.dto.BrandRegisterRequest;
 import com.example.musinsaserver.brand.application.port.out.persistence.BrandRepository;
 import com.example.musinsaserver.brand.domain.Brand;
 import com.example.musinsaserver.brand.exception.DuplicatedBrandNameException;
@@ -21,8 +21,8 @@ public class RegisterBrandService implements RegisterBrandUseCase {
 
     @Override
     @Transactional
-    public Long registerBrand(final RegisterBrandRequest registerBrandRequest) {
-        final Brand brand = registerBrandRequest.toBrand();
+    public Long registerBrand(final BrandRegisterRequest brandRegisterRequest) {
+        final Brand brand = brandRegisterRequest.toBrand();
         brandRepository.findByName(brand.getNameValue())
                 .ifPresent(found->{
                     throw new DuplicatedBrandNameException(brand.getNameValue());});

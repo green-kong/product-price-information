@@ -15,13 +15,13 @@ import com.example.musinsaserver.priceinformation.application.port.in.dto.Lowest
 
 @RequestMapping("api/price-informations")
 @RestController
-public class PriceInformationController {
+public class PriceInformationControllerController implements PriceInformationControllerDocs {
 
     private final LowestPriceInformationByBrandSearchUseCase lowestPriceInformationByBrandSearchUseCase;
     private final LowestPriceInformationByCategorySearchUseCase lowestPriceInformationByCategorySearchUseCase;
     private final HighestAndLowestPriceInformationSearchUseCase highestAndLowestPriceInformationSearchUseCase;
 
-    public PriceInformationController(
+    public PriceInformationControllerController(
             final LowestPriceInformationByBrandSearchUseCase lowestPriceInformationByBrandSearchUseCase,
             final LowestPriceInformationByCategorySearchUseCase lowestPriceInformationByCategorySearchUseCase,
             final HighestAndLowestPriceInformationSearchUseCase highestAndLowestPriceInformationSearchUseCase

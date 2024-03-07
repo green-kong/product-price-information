@@ -23,7 +23,7 @@ import com.example.musinsaserver.product.application.port.in.dto.RegisterProduct
 
 @RestController
 @RequestMapping("api/products")
-public class ProductController {
+public class ProductController implements ProductControllerDocs {
 
     private final RegisterProductUseCase registerProductUseCase;
     private final UpdateProductUseCase updateProductUseCase;

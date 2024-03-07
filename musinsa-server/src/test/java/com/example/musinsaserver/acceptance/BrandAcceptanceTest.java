@@ -13,7 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
-import com.example.musinsaserver.brand.application.port.in.dto.RegisterBrandRequest;
+import com.example.musinsaserver.brand.application.port.in.dto.BrandRegisterRequest;
 import com.example.musinsaserver.common.dto.ErrorResponse;
 import com.example.musinsaserver.support.BaseTest;
 
@@ -35,12 +35,12 @@ class BrandAcceptanceTest extends BaseTest {
     @DisplayName("브랜드를 저장한다.")
     void registerBrand() {
         //given
-        final RegisterBrandRequest registerBrandRequest = new RegisterBrandRequest("brandA");
+        final BrandRegisterRequest brandRegisterRequest = new BrandRegisterRequest("brandA");
 
         //when
         final ExtractableResponse<Response> response = given().log().all()
                 .contentType(JSON)
-                .body(registerBrandRequest)
+                .body(brandRegisterRequest)
                 .when()
                 .post("/api/brands")
                 .then().log().all()
@@ -54,12 +54,12 @@ class BrandAcceptanceTest extends BaseTest {
     @DisplayName("유효하지 않은 브랜드명으로 브랜드를 생성할 시 400을 응답한다.")
     void registerBrandWithInvalidName() {
         //given
-        final RegisterBrandRequest registerBrandRequest = new RegisterBrandRequest("  ");
+        final BrandRegisterRequest brandRegisterRequest = new BrandRegisterRequest("  ");
 
         //when
         final ExtractableResponse<Response> response = given().log().all()
                 .contentType(JSON)
-                .body(registerBrandRequest)
+                .body(brandRegisterRequest)
                 .when()
                 .post("/api/brands")
                 .then().log().all()

@@ -17,7 +17,7 @@ import com.example.musinsaserver.category.application.port.in.dto.CategoryRespon
 
 @RequestMapping("api/categories")
 @RestController
-public class CategoryController {
+public class CategoryController implements CategoryControllerDocs {
 
     private final CategoryRegisterUseCase categoryRegisterUseCase;
     private final GetAllCategoriesUseCase getAllCategoriesUseCase;
