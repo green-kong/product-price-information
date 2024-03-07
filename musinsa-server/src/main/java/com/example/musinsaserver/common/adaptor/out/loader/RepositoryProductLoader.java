@@ -1,4 +1,4 @@
-package com.example.musinsaserver.priceinformation.adaptor.out.loader;
+package com.example.musinsaserver.common.adaptor.out.loader;
 
 import static java.util.Objects.isNull;
 
@@ -6,8 +6,8 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 
-import com.example.musinsaserver.priceinformation.application.port.out.loader.ProductLoader;
-import com.example.musinsaserver.priceinformation.application.port.out.loader.dto.ProductLoadDto;
+import com.example.musinsaserver.common.application.port.out.loader.ProductLoader;
+import com.example.musinsaserver.common.application.port.out.loader.dto.ProductLoadDto;
 import com.example.musinsaserver.product.application.port.out.persistence.ProductRepository;
 import com.example.musinsaserver.product.domain.Product;
 

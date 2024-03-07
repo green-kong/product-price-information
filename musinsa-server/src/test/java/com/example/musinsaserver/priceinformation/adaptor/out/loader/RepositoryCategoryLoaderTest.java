@@ -13,7 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.example.musinsaserver.category.application.port.out.persistence.CategoryRepository;
 import com.example.musinsaserver.category.domain.Category;
-import com.example.musinsaserver.priceinformation.application.port.out.loader.dto.CategoryLoadDto;
+import com.example.musinsaserver.common.adaptor.out.loader.RepositoryCategoryLoader;
+import com.example.musinsaserver.common.application.port.out.loader.dto.CategoryLoadDto;
 import com.example.musinsaserver.support.BaseTest;
 
 class RepositoryCategoryLoaderTest extends BaseTest {

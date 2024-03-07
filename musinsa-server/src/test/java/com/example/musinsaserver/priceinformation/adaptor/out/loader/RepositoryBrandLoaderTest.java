@@ -11,8 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.example.musinsaserver.brand.application.port.out.persistence.BrandRepository;
 import com.example.musinsaserver.brand.domain.Brand;
-import com.example.musinsaserver.priceinformation.application.port.out.loader.BrandLoader;
-import com.example.musinsaserver.priceinformation.application.port.out.loader.dto.BrandLoadDto;
+import com.example.musinsaserver.common.application.port.out.loader.BrandLoader;
+import com.example.musinsaserver.common.application.port.out.loader.dto.BrandLoadDto;
 import com.example.musinsaserver.support.BaseTest;
 
 class RepositoryBrandLoaderTest extends BaseTest {

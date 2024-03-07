@@ -9,7 +9,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.example.musinsaserver.priceinformation.application.port.out.loader.dto.ProductLoadDto;
+import com.example.musinsaserver.common.adaptor.out.loader.RepositoryProductLoader;
+import com.example.musinsaserver.common.application.port.out.loader.dto.ProductLoadDto;
 import com.example.musinsaserver.product.application.port.out.persistence.ProductRepository;
 import com.example.musinsaserver.product.domain.Product;
 import com.example.musinsaserver.support.BaseTest;

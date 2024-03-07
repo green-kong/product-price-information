@@ -8,12 +8,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.musinsaserver.priceinformation.application.port.in.MinimumPriceUpdateUseCase;
-import com.example.musinsaserver.priceinformation.application.port.out.loader.BrandLoader;
-import com.example.musinsaserver.priceinformation.application.port.out.loader.CategoryLoader;
-import com.example.musinsaserver.priceinformation.application.port.out.loader.ProductLoader;
-import com.example.musinsaserver.priceinformation.application.port.out.loader.dto.BrandLoadDto;
-import com.example.musinsaserver.priceinformation.application.port.out.loader.dto.CategoryLoadDto;
-import com.example.musinsaserver.priceinformation.application.port.out.loader.dto.ProductLoadDto;
+import com.example.musinsaserver.common.application.port.out.loader.BrandLoader;
+import com.example.musinsaserver.common.application.port.out.loader.CategoryLoader;
+import com.example.musinsaserver.common.application.port.out.loader.ProductLoader;
+import com.example.musinsaserver.common.application.port.out.loader.dto.BrandLoadDto;
+import com.example.musinsaserver.common.application.port.out.loader.dto.CategoryLoadDto;
+import com.example.musinsaserver.common.application.port.out.loader.dto.ProductLoadDto;
 import com.example.musinsaserver.priceinformation.application.port.out.persistence.LowestPriceInformationRepository;
 import com.example.musinsaserver.priceinformation.domain.PriceInformation;
 import com.example.musinsaserver.priceinformation.exception.InvalidBrandIdException;

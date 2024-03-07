@@ -13,8 +13,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import com.example.musinsaserver.priceinformation.application.port.out.loader.CategoryLoader;
-import com.example.musinsaserver.priceinformation.application.port.out.loader.dto.CategoryLoadDto;
+import com.example.musinsaserver.common.application.port.out.loader.CategoryLoader;
+import com.example.musinsaserver.common.application.port.out.loader.dto.CategoryLoadDto;
 import com.example.musinsaserver.priceinformation.application.port.out.persistence.HighestPriceInformationRepository;
 import com.example.musinsaserver.priceinformation.application.port.out.persistence.LowestPriceInformationRepository;
 import com.example.musinsaserver.priceinformation.domain.PriceInformation;

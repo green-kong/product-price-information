@@ -1,4 +1,4 @@
-package com.example.musinsaserver.priceinformation.adaptor.out.loader;
+package com.example.musinsaserver.common.adaptor.out.loader;
 
 import static java.util.Objects.isNull;
 
@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 
 import com.example.musinsaserver.category.application.port.out.persistence.CategoryRepository;
 import com.example.musinsaserver.category.domain.Category;
-import com.example.musinsaserver.priceinformation.application.port.out.loader.CategoryLoader;
-import com.example.musinsaserver.priceinformation.application.port.out.loader.dto.CategoryLoadDto;
+import com.example.musinsaserver.common.application.port.out.loader.CategoryLoader;
+import com.example.musinsaserver.common.application.port.out.loader.dto.CategoryLoadDto;
 
 @Component
 public class RepositoryCategoryLoader implements CategoryLoader {
