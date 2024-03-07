@@ -1,17 +1,15 @@
-import { axiosGetRequestTemplate } from './BaseAxios';
+import { ApiResponse, axiosGetRequestTemplate } from './BaseAxios';
 
-interface Brand {
+export interface Brand {
   id: number;
   name: string;
 }
 
-
-const getAllBrands = async (setBrandsState, setSelectedBrand) => {
+export const getAllBrands = async (): Promise<ApiResponse<Brand[]>> => {
   const url = '/brands';
-  await axiosGetRequestTemplate<Brand[]>(url, (brands: Brand[]) => {
-    setBrandsState(() => brands);
-    setSelectedBrand(() => brands[0])
-  })
-}
-
-export { Brand, getAllBrands };
+  const brands = await axiosGetRequestTemplate<Brand[]>(url);
+  if (brands) {
+    return {isSuccess: true, response: brands}
+  }
+  return {isSuccess: false, response: undefined}
+};

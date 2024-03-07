@@ -1,6 +1,6 @@
-import { axiosGetRequestTemplate } from './BaseAxios';
+import { ApiResponse, axiosGetRequestTemplate } from './BaseAxios';
 
-const LOWEST_PRICE_BY_CATEGORIES = "LOWEST_PRICE_BY_CATEGORIES";
+export const LOWEST_PRICE_BY_CATEGORIES = "LOWEST_PRICE_BY_CATEGORIES";
 
 interface LowestPriceInformation {
   category: string;
@@ -8,19 +8,16 @@ interface LowestPriceInformation {
   price: number;
 }
 
-interface LowestPriceByCategoryResponse {
+export interface LowestPriceByCategoryResponse {
   lowestPriceInformationResponses: LowestPriceInformation[];
   sum: number;
 }
 
-const getLowestPriceByCategory = async (setPriceInformationResponse, setStatus) => {
+export const getLowestPriceByCategory = async ():Promise<ApiResponse<LowestPriceByCategoryResponse>> => {
   const url = '/price-informations/categories/lowest';
-  await axiosGetRequestTemplate<LowestPriceByCategoryResponse>(
-    url,
-    (lowestPriceByCategory: LowestPriceByCategoryResponse) => {
-      setPriceInformationResponse(() => lowestPriceByCategory);
-      setStatus(() => LOWEST_PRICE_BY_CATEGORIES);
-    })
+  const data = await axiosGetRequestTemplate<LowestPriceByCategoryResponse>(url);
+  if (data) {
+    return{isSuccess:true, response: data};
+  }
+  return {isSuccess:false, response: undefined};
 }
-
-export { LOWEST_PRICE_BY_CATEGORIES, LowestPriceByCategoryResponse, getLowestPriceByCategory };

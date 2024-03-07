@@ -1,4 +1,4 @@
-import { axiosGetRequestTemplate } from './BaseAxios';
+import { ApiResponse, axiosGetRequestTemplate } from './BaseAxios';
 
 export const SPECIFIC_BRAND_LOWEST_PRICE_BY_CATEGORY = "SPECIFIC_BRAND_LOWEST_PRICE_BY_CATEGORY";
 
@@ -13,12 +13,11 @@ export interface SpecificBrandLowestPriceByCategoryResponse {
   sum: number;
 }
 
-export const getSpecificBrandLowestPriceByCategory = async (selectedBrand, setPriceInformationResponse, setStatus) => {
-  const url = `/price-informations/brands/${selectedBrand.id}/lowest`
-  await axiosGetRequestTemplate<SpecificBrandLowestPriceByCategoryResponse>(
-    url,
-    (specificBrandLowestPriceByCategoryResponse: SpecificBrandLowestPriceByCategoryResponse) => {
-      setPriceInformationResponse(() => specificBrandLowestPriceByCategoryResponse);
-      setStatus(() => SPECIFIC_BRAND_LOWEST_PRICE_BY_CATEGORY);
-    })
+export const getSpecificBrandLowestPriceByCategory = async (brandId: number): Promise<ApiResponse<SpecificBrandLowestPriceByCategoryResponse>> => {
+  const url = `/price-informations/brands/${brandId}/lowest`
+  const data = await axiosGetRequestTemplate<SpecificBrandLowestPriceByCategoryResponse>(url);
+  if (data) {
+    return {isSuccess: true, response: data};
+  }
+  return {isSuccess: false, response: undefined};
 }

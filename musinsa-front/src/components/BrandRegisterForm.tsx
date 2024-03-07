@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
 import { Brand } from '@apis/RequestGetAllBrands';
 import { FormInput, RegisterWrapper, StyledForm, SubmitButton, Tilte } from '@components/RegisterElements';
-import { axiosPostRequestTemplate } from '@apis/BaseAxios';
+import { RegisterBrandRequest, requestPostBrand } from '@apis/RequestPostBrand';
 
-interface RegisterBrandRequest {
-  name: string;
-}
 
 interface BrandRegisterFormProps {
   setBrands: React.Dispatch<React.SetStateAction<Brand[]>>
@@ -21,15 +18,8 @@ const BrandRegisterForm = ({setBrands}: BrandRegisterFormProps) => {
 
   const handleBrandRegisterSubmit = async (event: React.FormEvent<SubmitEvent>) => {
     event.preventDefault();
-    const url = '/brands';
     const data: RegisterBrandRequest = {name: brand};
-    await axiosPostRequestTemplate<RegisterBrandRequest>(
-      url,
-      data,
-      (data: RegisterBrandRequest, id: number) => {
-        setBrands(brands => [...brands, {id, name: data.name}]);
-        alert("브랜드를 등록하였습니다.");
-      })
+    await requestPostBrand(data, setBrands);
   };
 
   return (

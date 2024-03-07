@@ -7,7 +7,7 @@ import BrandRegisterForm from '@components/BrandRegisterForm';
 import ProductRegisterForm from '@components/ProductRegisterForm';
 
 const ProductUpdate = () => {
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categoriesState, setCategoriesState] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<Category>({id: 0, name: ''});
 
   const [brandsState, setBrandsState] = useState<Brand[]>([]);
@@ -15,19 +15,35 @@ const ProductUpdate = () => {
 
   useEffect(() => {
     (async () => {
-      await getAllCategories(setCategories, setSelectedCategory);
-      await getAllBrands(setBrandsState, setSelectedBrand);
+      await setCategories();
+      await setBrands();
     })()
   }, []);
 
+  const setCategories = async () => {
+    const categoriesResponse = await getAllCategories();
+    if (categoriesResponse.isSuccess) {
+      const {response: categories} = categoriesResponse;
+      setCategoriesState(() => categories);
+      setSelectedCategory(() => categories[0])
+    }
+  }
 
+  const setBrands = async () => {
+    const brandsResponse = await getAllBrands();
+    if (brandsResponse.isSuccess) {
+      const {response: brands} = brandsResponse;
+      setBrandsState(() => brands);
+      setSelectedBrand(() => brands[0])
+    }
+  }
 
   return <ContentWrapper>
     <CategoryRegisterForm setCategories={setCategories}></CategoryRegisterForm>
     <BrandRegisterForm setBrands={setBrandsState}></BrandRegisterForm>
     <ProductRegisterForm
       brands={brandsState}
-      categories={categories}
+      categories={categoriesState}
       selectedBrand={selectedBrand}
       selectedCategory={selectedCategory}
       setSelectedBrand={setSelectedBrand}

@@ -1,5 +1,19 @@
 import axios, { AxiosError } from 'axios';
 
+
+interface SuccessResponse<T> {
+  isSuccess: true;
+  response: T;
+}
+
+interface FailResponse {
+  isSuccess: false;
+  response: undefined;
+}
+
+export type ApiResponse<T> = SuccessResponse<T> | FailResponse;
+
+
 interface ErrorResponse {
   code: string;
   message: string;
@@ -7,10 +21,10 @@ interface ErrorResponse {
 
 const BASE_URL = 'http://localhost:8080/api';
 
-const axiosGetRequestTemplate = async <T>(url: string, callBack: (data: T) => void) => {
+export const axiosGetRequestTemplate = async <T>(url: string): Promise<T> => {
   try {
     const {data} = await axios.get<T>(BASE_URL + url);
-    callBack(data);
+    return data;
   } catch (error: AxiosError<ErrorResponse>) {
     const response: ErrorResponse | undefined = error.response?.data;
     if (response) {
@@ -21,7 +35,7 @@ const axiosGetRequestTemplate = async <T>(url: string, callBack: (data: T) => vo
   }
 }
 
-const axiosPostRequestTemplate = async <T>(url: string, data: T, callback: (data: T, id: number) => void) => {
+export const axiosPostRequestTemplate = async <T>(url: string, data: T, callback: (data: T, id: number) => void) => {
   try {
     const axiosResponse = await axios.post(BASE_URL + url, data);
     const locations = axiosResponse.headers['location'].split('/');
@@ -36,5 +50,3 @@ const axiosPostRequestTemplate = async <T>(url: string, data: T, callback: (data
     alert('ERROR_CODE : unknown\nMESSAGE : unknown error');
   }
 }
-
-export { axiosGetRequestTemplate, axiosPostRequestTemplate }

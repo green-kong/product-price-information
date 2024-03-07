@@ -19,6 +19,7 @@ import {
 } from '@apis/RequestGetHighestAndLowestPriceByCategory';
 import {
   getSpecificBrandLowestPriceByCategory,
+  SPECIFIC_BRAND_LOWEST_PRICE_BY_CATEGORY,
   SpecificBrandLowestPriceByCategoryResponse
 } from '@apis/RequestGetSpecificBrandLowestPriceByCategory';
 
@@ -49,11 +50,29 @@ const PriceInformation = () => {
 
   useEffect(() => {
     (async () => {
-      await getLowestPriceByCategory(setPriceInformationResponse, setStatus);
-      await getAllCategories(setCategoriesState, setSelectedCategory);
-      await getAllBrands(setBrandsState, setSelectedBrand);
+      await setLowestPriceByCategory();
+      await setCategories();
+      await setBrands();
     })();
   }, []);
+
+  const setBrands = async () => {
+    const brandsResponse = await getAllBrands();
+    if (brandsResponse.isSuccess) {
+      const {response: brands} = brandsResponse;
+      setBrandsState(() => brands);
+      setSelectedBrand(() => brands[0])
+    }
+  }
+
+  const setCategories = async () => {
+    const categoriesResponse = await getAllCategories();
+    if (categoriesResponse.isSuccess) {
+      const {response: categories} = categoriesResponse;
+      setCategoriesState(() => categories);
+      setSelectedCategory(() => categories[0])
+    }
+  }
 
   const handleCategoryOptionChange = ({target}: React.ChangeEvent<HTMLSelectElement>) => {
     const id: number = Number(target.value);
@@ -69,25 +88,36 @@ const PriceInformation = () => {
 
   const handleSpecificBrandLowestPriceByCategoryButton = () => {
     return async () => {
-      await getSpecificBrandLowestPriceByCategory(selectedBrand, setPriceInformationResponse, setStatus)
+      const result = await getSpecificBrandLowestPriceByCategory(selectedBrand.id);
+      if (result.isSuccess) {
+        setPriceInformationResponse(() => result.response);
+        setStatus(() => SPECIFIC_BRAND_LOWEST_PRICE_BY_CATEGORY);
+      }
     };
   }
 
-  const handleGetLowestPriceByCategoryButton = () => {
-    return async () => {
-      await getLowestPriceByCategory(setPriceInformationResponse, setStatus)
-    };
+  const setLowestPriceByCategory = async () =>{
+    const result = await getLowestPriceByCategory();
+    if (result.isSuccess) {
+      setPriceInformationResponse(() => result.response);
+      setStatus(() => LOWEST_PRICE_BY_CATEGORIES);
+    }
   }
 
   const handleGetHighestAndLowestPriceByCategoryButton = () => {
     return async () => {
-      await getHighestAndLowestPriceByCategory(setPriceInformationResponse, setStatus, selectedCategory)
+      const result = await getHighestAndLowestPriceByCategory(selectedCategory.name);
+      if (result.isSuccess) {
+        setPriceInformationResponse(() => result.response);
+        setStatus(() => HIGHEST_AND_LOWEST_PRICE_BY_CATEGORY);
+      }
     };
   }
+
   return (
     <ContentWrapper>
       <ButtonWrapper>
-        <StyledButton onClick={handleGetLowestPriceByCategoryButton()}>카테고리 별 최소 가격 정보 조회</StyledButton>
+        <StyledButton onClick={setLowestPriceByCategory}>카테고리 별 최소 가격 정보 조회</StyledButton>
         <ButtonAndSelectOptionWrapper>
           <StyledSelect onChange={handleCategoryOptionChange} value={selectedCategory.id.toString()}>
             {categoriesState.map(({id, name}: Category) => {

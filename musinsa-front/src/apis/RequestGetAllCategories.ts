@@ -1,16 +1,16 @@
-import { axiosGetRequestTemplate } from './BaseAxios';
+import { ApiResponse, axiosGetRequestTemplate } from './BaseAxios';
+import { Brand } from '@apis/RequestGetAllBrands';
 
-interface Category {
+export interface Category {
   id: number;
   name: string;
 }
 
-const getAllCategories = async (setCategoriesState, setSelectedCategory) => {
+export const getAllCategories = async (): Promise<ApiResponse<Brand[]>> => {
   const url = '/categories';
-  await axiosGetRequestTemplate<Category[]>(url, (categories: Category[]) => {
-    setCategoriesState(() => categories);
-    setSelectedCategory(() => categories[0]);
-  })
-}
-
-export { Category, getAllCategories };
+  const categories = await axiosGetRequestTemplate<Category[]>(url);
+  if (categories) {
+    return {isSuccess: true, response: categories}
+  }
+  return {isSuccess: false, response: undefined}
+};
