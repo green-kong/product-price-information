@@ -1,5 +1,6 @@
 package com.example.musinsaserver.product.application.port.out.persistence;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.example.musinsaserver.product.domain.Product;
@@ -16,4 +17,6 @@ public interface ProductRepository {
     Optional<Product> findLowestPriceProductByBrandIdAndCategory(final Long brandId, final Long categoryId);
 
     Optional<Product> findHighestPriceProductByBrandIdAndCategory(final Long brandId, final Long categoryId);
+
+    List<Product> findAll();
 }

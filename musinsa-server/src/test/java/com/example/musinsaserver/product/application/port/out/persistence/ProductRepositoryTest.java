@@ -3,6 +3,7 @@ package com.example.musinsaserver.product.application.port.out.persistence;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.DisplayName;
@@ -94,5 +95,21 @@ class ProductRepositoryTest extends BaseTest {
         //then
         final Optional<Product> foundProduct = productRepository.findById(savedProduct.getId());
         assertThat(foundProduct).isEmpty();
+    }
+
+    @Test
+    @DisplayName("모든 product를 조회한다.")
+    void findAll() {
+        //given
+        productRepository.save(Product.createWithoutId(1_000, 3L, 1L));
+        productRepository.save(Product.createWithoutId(2_000, 5L, 2L));
+        productRepository.save(Product.createWithoutId(3_000, 6L, 3L));
+        productRepository.save(Product.createWithoutId(4_000, 1L, 5L));
+
+        //when
+        final List<Product> products = productRepository.findAll();
+
+        //then
+        assertThat(products).hasSize(4);
     }
 }

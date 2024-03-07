@@ -2,6 +2,7 @@ package com.example.musinsaserver.product.adaptor.out.persistence.jpa;
 
 import static java.util.Objects.isNull;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -72,5 +73,13 @@ public class JpaProductRepository implements ProductRepository {
             return Optional.empty();
         }
         return Optional.of(mapper.toProductDomainEntity(jpaProductEntity));
+    }
+
+    @Override
+    public List<Product> findAll() {
+        return products.findAll()
+                .stream()
+                .map(mapper::toProductDomainEntity)
+                .toList();
     }
 }
