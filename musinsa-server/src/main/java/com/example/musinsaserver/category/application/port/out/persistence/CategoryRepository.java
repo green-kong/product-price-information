@@ -15,4 +15,6 @@ public interface CategoryRepository {
     List<Category> findAll();
 
     Optional<Category> findByName(final String name);
+
+    List<Category> findByIds(List<Long> ids);
 }

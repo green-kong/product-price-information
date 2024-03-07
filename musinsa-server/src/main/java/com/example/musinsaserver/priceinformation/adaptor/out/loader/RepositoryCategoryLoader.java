@@ -45,6 +45,14 @@ public class RepositoryCategoryLoader implements CategoryLoader {
     }
 
     @Override
+    public List<CategoryLoadDto> loadCategoriesByIds(final List<Long> categoryIds) {
+        return categoryRepository.findByIds(categoryIds)
+                .stream()
+                .map(category -> new CategoryLoadDto(category.getId(), category.getNameValue()))
+                .toList();
+    }
+
+    @Override
     public Optional<CategoryLoadDto> loadCategory(final String categoryName) {
         final Category category = categoryRepository.findByName(categoryName)
                 .orElse(null);

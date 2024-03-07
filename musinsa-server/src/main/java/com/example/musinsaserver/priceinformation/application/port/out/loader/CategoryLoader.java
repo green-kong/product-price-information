@@ -13,4 +13,6 @@ public interface CategoryLoader {
     int countAllCategories();
 
     List<CategoryLoadDto> loadAllCategories();
+
+    List<CategoryLoadDto> loadCategoriesByIds(List<Long> categoryIds);
 }

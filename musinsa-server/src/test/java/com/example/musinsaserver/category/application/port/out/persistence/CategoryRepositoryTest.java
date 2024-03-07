@@ -5,6 +5,7 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -124,5 +125,30 @@ class CategoryRepositoryTest extends BaseTest {
 
         //then
         assertThat(empty).isEmpty();
+    }
+
+    @Test
+    @DisplayName("아이디목록에 포함된 id와 일치하는 모든 카테고리를 조회한다.")
+    void findByIds() {
+        //given
+        final Category outer = categoryRepository.save(Category.createWithoutId("아우터"));
+        final Category top = categoryRepository.save(Category.createWithoutId("상의"));
+        final Category pants = categoryRepository.save(Category.createWithoutId("바지"));
+        final Category socks = categoryRepository.save(Category.createWithoutId("양말"));
+        final Category sneakers = categoryRepository.save(Category.createWithoutId("스니커즈"));
+        final Category accessories = categoryRepository.save(Category.createWithoutId("액세서리"));
+        final List<Long> targetIds = Stream.of(outer, pants, sneakers, accessories)
+                .map(Category::getId)
+                .toList();
+
+        //when
+        final List<Category> categories = categoryRepository.findByIds(targetIds);
+
+        //then
+        final List<Long> foundIds = categories.stream()
+                .map(Category::getId)
+                .toList();
+        assertThat(categories).hasSize(targetIds.size());
+        assertThat(foundIds).containsExactlyInAnyOrderElementsOf(targetIds);
     }
 }

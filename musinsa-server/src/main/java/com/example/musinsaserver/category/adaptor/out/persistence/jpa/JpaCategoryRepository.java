@@ -59,4 +59,12 @@ public class JpaCategoryRepository implements CategoryRepository {
         }
         return Optional.of(mapper.toCategoryDomainEntity(jpaCategoryEntity));
     }
+
+    @Override
+    public List<Category> findByIds(final List<Long> ids) {
+        return categories.findByIdIn(ids)
+                .stream()
+                .map(mapper::toCategoryDomainEntity)
+                .toList();
+    }
 }
