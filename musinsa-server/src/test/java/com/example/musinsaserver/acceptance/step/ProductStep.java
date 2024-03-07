@@ -2,13 +2,20 @@ package com.example.musinsaserver.acceptance.step;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 
 import com.example.musinsaserver.acceptance.CucumberClient;
 import com.example.musinsaserver.product.application.port.in.dto.ProductPriceUpdateRequest;
+import com.example.musinsaserver.product.application.port.in.dto.ProductResponse;
 import com.example.musinsaserver.product.application.port.in.dto.RegisterProductRequest;
 
+import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.http.ContentType;
@@ -70,5 +77,36 @@ public class ProductStep {
     public void checkResponse(final int expectedStatusCode) {
         final ExtractableResponse<Response> response = cucumberClient.getResponse();
         assertThat(response.statusCode()).isEqualTo(expectedStatusCode);
+    }
+
+    @When("모든 프로덕트를 조회한다.")
+    public void findAllProducts() {
+        final ExtractableResponse<Response> response = given().log().all()
+                .when()
+                .get("/api/products")
+                .then().log().all()
+                .extract();
+        cucumberClient.setResponse(response);
+    }
+
+    @Then("응답은 아래 목록의 프로덕트를 모두 포함한다.")
+    public void checkFindAllProductsResponse(DataTable dataTable) {
+        final List<List<String>> lists = dataTable.asLists(String.class);
+        final List<ProductResponse> expected = new ArrayList<>();
+        for (int i = 0; i < lists.size(); i++) {
+            final Long productId = cucumberClient.getData("product" + (i + 1));
+            final List<String> datas = lists.get(i);
+            final String brand = datas.get(0);
+            final String category = datas.get(1);
+            final int price = Integer.parseInt(datas.get(2));
+            expected.add(new ProductResponse(productId, price, brand, category));
+        }
+
+        final ExtractableResponse<Response> response = cucumberClient.getResponse();
+        final ProductResponse[] parsedResponse = response.as(ProductResponse[].class);
+        assertSoftly(softAssertions -> {
+            assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+            assertThat(parsedResponse).containsExactlyInAnyOrderElementsOf(expected);
+        });
     }
 }
