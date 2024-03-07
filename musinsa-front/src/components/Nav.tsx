@@ -9,7 +9,7 @@ const Nav: React.FC = () => {
           <NavItem>전체 상품</NavItem>
         </Link>
         <Link to="/products">
-          <NavItem>데이터 수정</NavItem>
+          <NavItem>데이터 생성</NavItem>
         </Link>
         <Link to="/price-informations">
           <NavItem>가격 정보 조회</NavItem>
@@ -24,19 +24,20 @@ const NavWrapper = styled.div`
   justify-content: center;
   align-items: center;
   border-bottom: 1px solid black;
-`;
+`
 
 const NavList = styled.ul`
   width: 700px;
   display: flex;
   justify-content: space-between;
-`;
+`
 
 const NavItem = styled.li`
-  margin: 0 1px;
-  background-color: transparent;
+  width: 100px;
   padding: 12px;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   color: black;
   cursor: pointer;
 
@@ -44,6 +45,6 @@ const NavItem = styled.li`
     background-color: #565656;
     color: white;
   }
-`;
+`
 
 export default Nav;

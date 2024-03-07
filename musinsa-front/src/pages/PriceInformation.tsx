@@ -5,23 +5,23 @@ import styled from 'styled-components';
 import LowestPriceByCategoriesList from '@components/LowestPriceByCategoriesList';
 import HighestAndLowestPriceByCategoryList from '@components/HighestAndLowestPriceByCategoryList';
 import SpecificBrandLowestPriceByCategoryList from '@components/SpecificBrandLowestPriceByCategoryList';
-import { Category, getAllCategories } from '@apis/RequestGetAllCategories';
-import { Brand, getAllBrands } from '@apis/RequestGetAllBrands';
+import { Category, getAllCategories } from '@apis/get/RequestGetAllCategories';
+import { Brand, getAllBrands } from '@apis/get/RequestGetAllBrands';
 import {
   getLowestPriceByCategory,
   LOWEST_PRICE_BY_CATEGORIES,
   LowestPriceByCategoryResponse
-} from '@apis/RequestGetLowestPriceByCategory';
+} from '@apis/get/RequestGetLowestPriceByCategory';
 import {
   getHighestAndLowestPriceByCategory,
   HIGHEST_AND_LOWEST_PRICE_BY_CATEGORY,
   HighestAndLowestPriceByCategory
-} from '@apis/RequestGetHighestAndLowestPriceByCategory';
+} from '@apis/get/RequestGetHighestAndLowestPriceByCategory';
 import {
   getSpecificBrandLowestPriceByCategory,
   SPECIFIC_BRAND_LOWEST_PRICE_BY_CATEGORY,
   SpecificBrandLowestPriceByCategoryResponse
-} from '@apis/RequestGetSpecificBrandLowestPriceByCategory';
+} from '@apis/get/RequestGetSpecificBrandLowestPriceByCategory';
 
 
 type PriceInformationResponse =

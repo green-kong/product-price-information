@@ -1,4 +1,4 @@
-import { ApiResponse, axiosGetRequestTemplate } from './BaseAxios';
+import { ApiResponse, axiosGetRequestTemplate } from '../BaseAxios';
 
 export interface Brand {
   id: number;

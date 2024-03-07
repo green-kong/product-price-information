@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Brand } from '@apis/RequestGetAllBrands';
+import { Brand } from '@apis/get/RequestGetAllBrands';
 import { FormInput, RegisterWrapper, StyledForm, SubmitButton, Tilte } from '@components/RegisterElements';
-import { RegisterBrandRequest, requestPostBrand } from '@apis/RequestPostBrand';
+import { RegisterBrandRequest, requestPostBrand } from '@apis/post/RequestPostBrand';
 
 
 interface BrandRegisterFormProps {

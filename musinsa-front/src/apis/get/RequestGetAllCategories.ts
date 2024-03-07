@@ -1,5 +1,5 @@
-import { ApiResponse, axiosGetRequestTemplate } from './BaseAxios';
-import { Brand } from '@apis/RequestGetAllBrands';
+import { ApiResponse, axiosGetRequestTemplate } from '../BaseAxios';
+import { Brand } from '@apis/get/RequestGetAllBrands';
 
 export interface Category {
   id: number;

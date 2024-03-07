@@ -1,9 +1,9 @@
 import { FormInput, RegisterWrapper, StyledForm, SubmitButton, Tilte } from '@components/RegisterElements';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Category } from '@apis/RequestGetAllCategories';
-import { Brand } from '@apis/RequestGetAllBrands';
-import { RegisterProductRequest, requestPostProduct } from '@apis/RequestPostProduct';
+import { Category } from '@apis/get/RequestGetAllCategories';
+import { Brand } from '@apis/get/RequestGetAllBrands';
+import { RegisterProductRequest, requestPostProduct } from '@apis/post/RequestPostProduct';
 
 interface ProductRegisterFormProps {
   categories: Category[];

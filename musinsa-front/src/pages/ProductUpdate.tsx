@@ -1,8 +1,8 @@
 import ContentWrapper from "../components/ContentWrapper";
 import CategoryRegisterForm from '@components/CategoryRegisterForm';
 import { useEffect, useState } from 'react';
-import { Category, getAllCategories } from '@apis/RequestGetAllCategories';
-import { Brand, getAllBrands } from '@apis/RequestGetAllBrands';
+import { Category, getAllCategories } from '@apis/get/RequestGetAllCategories';
+import { Brand, getAllBrands } from '@apis/get/RequestGetAllBrands';
 import BrandRegisterForm from '@components/BrandRegisterForm';
 import ProductRegisterForm from '@components/ProductRegisterForm';
 

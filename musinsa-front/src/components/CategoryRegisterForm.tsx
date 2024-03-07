@@ -1,7 +1,7 @@
 import { FormInput, RegisterWrapper, StyledForm, SubmitButton, Tilte } from '@components/RegisterElements';
 import React, { useState } from 'react';
-import { Category } from '@apis/RequestGetAllCategories';
-import { RegisterCategoryRequest, requestPostCategory } from '@apis/RequestPostCategory';
+import { Category } from '@apis/get/RequestGetAllCategories';
+import { RegisterCategoryRequest, requestPostCategory } from '@apis/post/RequestPostCategory';
 
 interface CategoryRegisterFormProps {
   setCategories: React.Dispatch<React.SetStateAction<Category[]>>;

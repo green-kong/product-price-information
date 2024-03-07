@@ -1,4 +1,4 @@
-import { ApiResponse, axiosGetRequestTemplate } from './BaseAxios';
+import { ApiResponse, axiosGetRequestTemplate } from '../BaseAxios';
 
 export const LOWEST_PRICE_BY_CATEGORIES = "LOWEST_PRICE_BY_CATEGORIES";
 
