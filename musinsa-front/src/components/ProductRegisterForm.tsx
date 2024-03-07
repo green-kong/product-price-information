@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Category } from '@apis/RequestGetAllCategories';
 import { Brand } from '@apis/RequestGetAllBrands';
-import { axiosPostRequestTemplate } from '@apis/BaseAxios';
+import { RegisterProductRequest, requestPostProduct } from '@apis/RequestPostProduct';
 
 interface ProductRegisterFormProps {
   categories: Category[];
@@ -14,11 +14,6 @@ interface ProductRegisterFormProps {
   setSelectedCategory: React.Dispatch<React.SetStateAction<Category>>
 }
 
-interface RegisterProductRequest {
-  price: number;
-  brandId: number;
-  categoryId: number;
-}
 
 const ProductRegisterForm = (props: ProductRegisterFormProps) => {
   const {categories, brands, setSelectedBrand, setSelectedCategory, selectedCategory, selectedBrand} = props;
@@ -35,7 +30,7 @@ const ProductRegisterForm = (props: ProductRegisterFormProps) => {
       brandId: selectedBrand.id,
       categoryId: selectedCategory.id,
     })
-  }, [selectedBrand, setSelectedCategory])
+  }, [selectedBrand, selectedCategory])
 
   const handleBrandOptionChange = ({target}: React.ChangeEvent<HTMLSelectElement>) => {
     const id: number = Number(target.value);
@@ -58,13 +53,10 @@ const ProductRegisterForm = (props: ProductRegisterFormProps) => {
 
   const handleProductRegisterSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const url = '/products';
-    await axiosPostRequestTemplate<RegisterProductRequest>(
-      url,
-      registerProductRequest,
-      () => {
-        alert("상품을 등록하였습니다.");
-      })
+    const result = await requestPostProduct(registerProductRequest);
+    if (result.isSuccess) {
+      alert("상품을 등록하였습니다.");
+    }
   }
 
   return (

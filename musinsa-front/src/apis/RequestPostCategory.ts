@@ -1,21 +1,14 @@
-import { axiosPostRequestTemplate } from '@apis/BaseAxios';
-import React from 'react';
-import { Category } from '@apis/RequestGetAllCategories';
+import { ApiResponse, axiosPostRequestTemplate } from '@apis/BaseAxios';
 
 export interface RegisterCategoryRequest {
   name: string;
 }
 
-export const requestPostCategory = async (
-  data: RegisterCategoryRequest,
-  setCategories: React.Dispatch<React.SetStateAction<Category[]>>
-) => {
+export const requestPostCategory = async (data: RegisterCategoryRequest): Promise<ApiResponse<number>> => {
   const url = '/categories';
-  await axiosPostRequestTemplate<RegisterCategoryRequest>(
-    url,
-    data,
-    (data: RegisterCategoryRequest, id: number) => {
-      setCategories(categories => [...categories, {id, name: data.name}]);
-      alert("카테고리를 등록하였습니다.");
-    });
+  const id = await axiosPostRequestTemplate<RegisterCategoryRequest>(url, data);
+  if (id) {
+    return {isSuccess: true, response: id};
+  }
+  return {isSuccess: false, response: undefined};
 };

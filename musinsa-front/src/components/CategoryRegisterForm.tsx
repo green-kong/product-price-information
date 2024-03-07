@@ -18,7 +18,11 @@ const CategoryRegisterForm = ({setCategories}: CategoryRegisterFormProps) => {
   const handleCategoryRegisterSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data: RegisterCategoryRequest = {name: category};
-    await requestPostCategory(data, setCategories);
+    const result = await requestPostCategory(data);
+    if (result.isSuccess) {
+      setCategories(categories => [...categories, {id: result.response, name: data.name}]);
+      alert("카테고리를 등록하였습니다.");
+    }
   }
 
   return (

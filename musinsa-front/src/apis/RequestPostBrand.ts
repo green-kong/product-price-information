@@ -1,19 +1,14 @@
-import { axiosPostRequestTemplate } from '@apis/BaseAxios';
-import React from 'react';
-import { Brand } from '@apis/RequestGetAllBrands';
+import { ApiResponse, axiosPostRequestTemplate } from '@apis/BaseAxios';
 
 export interface RegisterBrandRequest {
   name: string;
 }
 
-
-export const requestPostBrand = async (data: RegisterBrandRequest, setBrands: React.Dispatch<React.SetStateAction<Brand[]>>) => {
+export const requestPostBrand = async (data: RegisterBrandRequest): Promise<ApiResponse<number>> => {
   const url = '/brands';
-  await axiosPostRequestTemplate<RegisterBrandRequest>(
-    url,
-    data,
-    (data: RegisterBrandRequest, id: number) => {
-      setBrands(brands => [...brands, {id, name: data.name}]);
-      alert("브랜드를 등록하였습니다.");
-    })
+  const id = await axiosPostRequestTemplate<RegisterBrandRequest>(url, data);
+  if (id) {
+    return {isSuccess: true, response: id};
+  }
+  return {isSuccess: false, response: undefined};
 }

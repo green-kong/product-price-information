@@ -35,12 +35,11 @@ export const axiosGetRequestTemplate = async <T>(url: string): Promise<T> => {
   }
 }
 
-export const axiosPostRequestTemplate = async <T>(url: string, data: T, callback: (data: T, id: number) => void) => {
+export const axiosPostRequestTemplate = async <T>(url: string, data: T): Promise<number> => {
   try {
     const axiosResponse = await axios.post(BASE_URL + url, data);
     const locations = axiosResponse.headers['location'].split('/');
-    const id = Number(locations[locations.length - 1]);
-    callback(data, id);
+    return Number(locations[locations.length - 1]);
   } catch (error: AxiosError<ErrorResponse>) {
     const response: ErrorResponse | undefined = error.response?.data;
     if (response) {
@@ -49,4 +48,4 @@ export const axiosPostRequestTemplate = async <T>(url: string, data: T, callback
     }
     alert('ERROR_CODE : unknown\nMESSAGE : unknown error');
   }
-}
+};

@@ -19,7 +19,11 @@ const BrandRegisterForm = ({setBrands}: BrandRegisterFormProps) => {
   const handleBrandRegisterSubmit = async (event: React.FormEvent<SubmitEvent>) => {
     event.preventDefault();
     const data: RegisterBrandRequest = {name: brand};
-    await requestPostBrand(data, setBrands);
+    const result = await requestPostBrand(data);
+    if (result.isSuccess) {
+      setBrands(brands => [...brands, {id: result.response, name: data.name}]);
+      alert("브랜드를 등록하였습니다.");
+    }
   };
 
   return (
