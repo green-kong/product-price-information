@@ -3,6 +3,8 @@ package com.example.musinsaserver.priceinformation.adaptor.out.loader;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
+import java.util.List;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,4 +39,25 @@ class RepositoryBrandLoaderTest extends BaseTest {
         });
     }
 
+
+    @Test
+    @DisplayName("저장된 브랜드 중 id가 일치하는 모든 브랜드를 조회한다.")
+    void findByIds() {
+        //given
+        final Brand brandA = brandRepository.save(Brand.createWithoutId("brandA"));
+        final Brand brandB = brandRepository.save(Brand.createWithoutId("brandB"));
+        final Brand brandC = brandRepository.save(Brand.createWithoutId("brandC"));
+        final Brand brandD = brandRepository.save(Brand.createWithoutId("brandD"));
+        final List<Long> targetIds = List.of(brandD.getId(), brandC.getId(), brandB.getId());
+
+        //when
+        final List<BrandLoadDto> brandLoadDtos = brandLoader.loadBrandByIds(targetIds);
+
+        //then
+        final List<Long> foundIds = brandLoadDtos.stream()
+                .map(BrandLoadDto::brandId)
+                .toList();
+        assertThat(brandLoadDtos).hasSize(targetIds.size());
+        assertThat(foundIds).containsExactlyInAnyOrderElementsOf(targetIds);
+    }
 }

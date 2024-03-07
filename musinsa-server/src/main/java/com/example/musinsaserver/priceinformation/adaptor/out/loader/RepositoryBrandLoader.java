@@ -2,6 +2,7 @@ package com.example.musinsaserver.priceinformation.adaptor.out.loader;
 
 import static java.util.Objects.isNull;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Component;
@@ -28,5 +29,13 @@ public class RepositoryBrandLoader implements BrandLoader {
             return Optional.empty();
         }
         return Optional.of(new BrandLoadDto(brand.getId(), brand.getNameValue()));
+    }
+
+    @Override
+    public List<BrandLoadDto> loadBrandByIds(final List<Long> brandIds) {
+        final List<Brand> brands = brandRepository.findByIds(brandIds);
+        return brands.stream()
+                .map(brand -> new BrandLoadDto(brand.getId(), brand.getNameValue()))
+                .toList();
     }
 }

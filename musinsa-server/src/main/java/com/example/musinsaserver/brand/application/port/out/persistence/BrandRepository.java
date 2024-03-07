@@ -13,4 +13,6 @@ public interface BrandRepository {
     Optional<Brand> findById(final Long id);
 
     Optional<Brand> findByName(final String name);
+
+    List<Brand> findByIds(List<Long> ids);
 }

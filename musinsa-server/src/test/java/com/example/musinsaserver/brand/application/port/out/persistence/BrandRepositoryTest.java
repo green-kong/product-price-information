@@ -78,4 +78,25 @@ class BrandRepositoryTest extends BaseTest {
         //then
         assertThat(brands).hasSize(4);
     }
+
+    @Test
+    @DisplayName("저장된 브랜드 중 id가 일치하는 모든 브랜드를 조회한다.")
+    void findByIds() {
+        //given
+        final Brand brandA = brandRepository.save(Brand.createWithoutId("brandA"));
+        final Brand brandB = brandRepository.save(Brand.createWithoutId("brandB"));
+        final Brand brandC = brandRepository.save(Brand.createWithoutId("brandC"));
+        final Brand brandD = brandRepository.save(Brand.createWithoutId("brandD"));
+        final List<Long> targetIds = List.of(brandA.getId(), brandD.getId(), brandB.getId());
+
+        //when
+        final List<Brand> brands = brandRepository.findByIds(targetIds);
+
+        //then
+        final List<Long> foundIds = brands.stream()
+                .map(Brand::getId)
+                .toList();
+        assertThat(brands).hasSize(targetIds.size());
+        assertThat(foundIds).containsExactlyInAnyOrderElementsOf(targetIds);
+    }
 }

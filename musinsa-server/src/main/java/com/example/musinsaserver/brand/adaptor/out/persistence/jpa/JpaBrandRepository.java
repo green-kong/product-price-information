@@ -48,6 +48,14 @@ public class JpaBrandRepository implements BrandRepository {
     }
 
     @Override
+    public List<Brand> findByIds(final List<Long> ids) {
+        return brands.findByIdIn(ids)
+                .stream()
+                .map(mapper::toBrandDomainEntity)
+                .toList();
+    }
+
+    @Override
     public List<Brand> findAll() {
         return brands.findAll().stream()
                 .map(mapper::toBrandDomainEntity)
