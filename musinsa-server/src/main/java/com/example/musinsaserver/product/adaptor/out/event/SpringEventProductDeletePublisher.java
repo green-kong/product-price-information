@@ -3,8 +3,8 @@ package com.example.musinsaserver.product.adaptor.out.event;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
-import com.example.musinsaserver.product.application.port.out.event.ProductDeleteEventPublisher;
 import com.example.musinsaserver.common.events.ProductDeleteEvent;
+import com.example.musinsaserver.product.application.port.out.event.ProductDeleteEventPublisher;
 
 @Component
 public class SpringEventProductDeletePublisher implements ProductDeleteEventPublisher {

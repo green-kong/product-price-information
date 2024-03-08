@@ -10,7 +10,7 @@ import com.example.musinsaserver.brand.domain.Brand;
 import com.example.musinsaserver.brand.exception.DuplicatedBrandNameException;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 public class RegisterBrandService implements RegisterBrandUseCase {
 
     private final BrandRepository brandRepository;
@@ -20,7 +20,6 @@ public class RegisterBrandService implements RegisterBrandUseCase {
     }
 
     @Override
-    @Transactional
     public Long registerBrand(final BrandRegisterRequest brandRegisterRequest) {
         final Brand brand = brandRegisterRequest.toBrand();
         brandRepository.findByName(brand.getNameValue())

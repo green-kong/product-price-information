@@ -6,8 +6,8 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 
-import com.example.musinsaserver.brand.application.port.in.dto.BrandResponse;
 import com.example.musinsaserver.brand.application.port.in.dto.BrandRegisterRequest;
+import com.example.musinsaserver.brand.application.port.in.dto.BrandResponse;
 import com.example.musinsaserver.common.dto.ErrorResponse;
 
 import io.swagger.v3.oas.annotations.Operation;

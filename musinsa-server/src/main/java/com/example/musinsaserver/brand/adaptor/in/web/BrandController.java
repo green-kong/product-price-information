@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.musinsaserver.brand.application.port.in.GetAllBrandsUseCase;
 import com.example.musinsaserver.brand.application.port.in.RegisterBrandUseCase;
-import com.example.musinsaserver.brand.application.port.in.dto.BrandResponse;
 import com.example.musinsaserver.brand.application.port.in.dto.BrandRegisterRequest;
+import com.example.musinsaserver.brand.application.port.in.dto.BrandResponse;
 
 @RestController
 @RequestMapping("api/brands")

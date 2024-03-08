@@ -1,22 +1,20 @@
 package com.example.musinsaserver.priceinformation.application.service;
 
-import static org.springframework.transaction.annotation.Propagation.REQUIRES_NEW;
-
 import java.util.Optional;
 import java.util.function.Consumer;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.musinsaserver.priceinformation.application.port.in.MinimumPriceRefreshUseCase;
 import com.example.musinsaserver.common.loader.ProductLoader;
 import com.example.musinsaserver.common.loader.dto.ProductLoadDto;
+import com.example.musinsaserver.priceinformation.application.port.in.MinimumPriceRefreshUseCase;
 import com.example.musinsaserver.priceinformation.application.port.out.persistence.LowestPriceInformationRepository;
 import com.example.musinsaserver.priceinformation.domain.PriceInformation;
 import com.example.musinsaserver.priceinformation.exception.ProductIsNotDeletedException;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 public class MinimumPriceRefreshService implements MinimumPriceRefreshUseCase {
 
     private final LowestPriceInformationRepository lowestPriceInformationRepository;
@@ -29,7 +27,6 @@ public class MinimumPriceRefreshService implements MinimumPriceRefreshUseCase {
     }
 
     @Override
-    @Transactional(propagation = REQUIRES_NEW)
     public void refreshMinimumPriceInformation(final Long productId) {
         validateProductId(productId);
         lowestPriceInformationRepository.findByProductId(productId)

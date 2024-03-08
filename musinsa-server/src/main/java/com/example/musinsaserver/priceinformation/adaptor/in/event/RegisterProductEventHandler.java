@@ -6,9 +6,9 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionalEventListener;
 
+import com.example.musinsaserver.common.events.ProductRegisterEvent;
 import com.example.musinsaserver.priceinformation.application.port.in.MaximumPriceUpdateUseCase;
 import com.example.musinsaserver.priceinformation.application.port.in.MinimumPriceUpdateUseCase;
-import com.example.musinsaserver.common.events.ProductRegisterEvent;
 
 @Component
 public class RegisterProductEventHandler {

@@ -1,22 +1,20 @@
 package com.example.musinsaserver.priceinformation.application.service;
 
-import static org.springframework.transaction.annotation.Propagation.REQUIRES_NEW;
-
 import java.util.Optional;
 import java.util.function.Consumer;
 
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.musinsaserver.priceinformation.application.port.in.MaximumPriceRefreshUseCase;
 import com.example.musinsaserver.common.loader.ProductLoader;
 import com.example.musinsaserver.common.loader.dto.ProductLoadDto;
+import com.example.musinsaserver.priceinformation.application.port.in.MaximumPriceRefreshUseCase;
 import com.example.musinsaserver.priceinformation.application.port.out.persistence.HighestPriceInformationRepository;
 import com.example.musinsaserver.priceinformation.domain.PriceInformation;
 import com.example.musinsaserver.priceinformation.exception.ProductIsNotDeletedException;
 
 @Component
-@Transactional(readOnly = true)
+@Transactional
 public class MaximumPriceRefreshService implements MaximumPriceRefreshUseCase {
 
     private final HighestPriceInformationRepository highestPriceInformationRepository;
@@ -31,7 +29,6 @@ public class MaximumPriceRefreshService implements MaximumPriceRefreshUseCase {
     }
 
     @Override
-    @Transactional(propagation = REQUIRES_NEW)
     public void refreshMaximumPriceInformation(final Long productId) {
         validateProductId(productId);
         highestPriceInformationRepository.findByProductId(productId)

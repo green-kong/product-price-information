@@ -10,7 +10,7 @@ import com.example.musinsaserver.category.domain.Category;
 import com.example.musinsaserver.category.exception.DuplicatedCategoryNameException;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 public class CategoryRegisterService implements CategoryRegisterUseCase {
 
     private final CategoryRepository categoryRepository;
@@ -20,7 +20,6 @@ public class CategoryRegisterService implements CategoryRegisterUseCase {
     }
 
     @Override
-    @Transactional
     public Long save(final CategoryRegisterRequest categoryRegisterRequest) {
         final Category category = categoryRegisterRequest.toCategory();
         validate(category);

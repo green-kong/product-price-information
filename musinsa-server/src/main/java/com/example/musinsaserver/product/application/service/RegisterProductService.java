@@ -3,19 +3,19 @@ package com.example.musinsaserver.product.application.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.musinsaserver.common.events.ProductRegisterEvent;
+import com.example.musinsaserver.common.validator.BrandValidator;
+import com.example.musinsaserver.common.validator.CategoryValidator;
 import com.example.musinsaserver.product.application.port.in.RegisterProductUseCase;
 import com.example.musinsaserver.product.application.port.in.dto.RegisterProductRequest;
 import com.example.musinsaserver.product.application.port.out.event.ProductRegisterEventPublisher;
-import com.example.musinsaserver.common.events.ProductRegisterEvent;
 import com.example.musinsaserver.product.application.port.out.persistence.ProductRepository;
-import com.example.musinsaserver.common.validator.BrandValidator;
-import com.example.musinsaserver.common.validator.CategoryValidator;
 import com.example.musinsaserver.product.domain.Product;
-import com.example.musinsaserver.product.exception.NonExistentCategoryException;
 import com.example.musinsaserver.product.exception.NonExistentBrandException;
+import com.example.musinsaserver.product.exception.NonExistentCategoryException;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 public class RegisterProductService implements RegisterProductUseCase {
 
     private final ProductRepository productRepository;
@@ -36,7 +36,6 @@ public class RegisterProductService implements RegisterProductUseCase {
     }
 
     @Override
-    @Transactional
     public Long registerProduct(final RegisterProductRequest registerProductRequest) {
         final Long brandId = registerProductRequest.brandId();
         final Long categoryId = registerProductRequest.categoryId();
