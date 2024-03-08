@@ -4,7 +4,7 @@ import com.example.musinsaserver.brand.domain.Brand;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-public record BrandRegisterRequest(@Schema(description = "브랜드 이름", minLength = 2) String name) {
+public record BrandRegisterRequest(@Schema(description = "브랜드 이름", minLength = 1) String name) {
     public Brand toBrand() {
         return Brand.createWithoutId(name);
     }
