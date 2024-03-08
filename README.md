@@ -41,6 +41,8 @@ npm run dev
 ```
 
 서버가 실행되면, [API 문서](http://localhost:8080/api/docs)를 확인할 수 있습니다.
+프론트 접속 주소는 [http://localhost:5173](http://localhost:5173)입니다.
+
 ##  종료
 ```sh
 # 프로젝트 로트 디렉토리
