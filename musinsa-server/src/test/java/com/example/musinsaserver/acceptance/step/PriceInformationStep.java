@@ -35,7 +35,8 @@ public class PriceInformationStep {
     }
 
     @When("{string}의 카테고리 별 가장 저렴한 상품들의 정보를 반환한다.")
-    public void getLowestPriceProductInformationByBrand(final String brand) {
+    public void getLowestPriceProductInformationByBrand(final String brand) throws InterruptedException {
+        Thread.sleep(100);
         final Long brandId = cucumberClient.getData(brand);
         final ExtractableResponse<Response> response = given().log().all()
                 .pathParam("brandId", brandId)
@@ -48,7 +49,8 @@ public class PriceInformationStep {
     }
 
     @When("전체 상품 중 카테고리별 가장 저렴한 상품 정보를 반환한다.")
-    public void lowestPriceProductByCategory() {
+    public void lowestPriceProductByCategory() throws InterruptedException {
+        Thread.sleep(100);
         final ExtractableResponse<Response> response = given().log().all()
                 .when()
                 .get("/api/price-informations/categories/lowest")
@@ -71,7 +73,8 @@ public class PriceInformationStep {
     }
 
     @When("{string} 카테고리의 최소가격정보와 최대가격정보를 반환한다.")
-    public void searchHighestAndLowest(String category) {
+    public void searchHighestAndLowest(String category) throws InterruptedException {
+        Thread.sleep(100);
         final ExtractableResponse<Response> response = given().log().all()
                 .pathParam("categoryName", category)
                 .when()

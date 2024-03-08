@@ -7,6 +7,7 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
@@ -39,9 +40,12 @@ public class ProductStep {
                 .post("/api/products")
                 .then().log().all()
                 .extract();
-        final String[] locations = response.header("Location").split("/");
-        final long productId = Long.parseLong(locations[locations.length - 1]);
-        cucumberClient.addData("product" + productId, productId);
+        final String location = response.header("Location");
+        if (!Strings.isBlank(location)) {
+            final String[] locations = location.split("/");
+            final long productId = Long.parseLong(locations[locations.length - 1]);
+            cucumberClient.addData("product" + productId, productId);
+        }
         cucumberClient.setResponse(response);
     }
 

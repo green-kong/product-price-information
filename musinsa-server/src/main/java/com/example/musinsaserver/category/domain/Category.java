@@ -24,8 +24,4 @@ public class Category {
     public Long getId() {
         return id;
     }
-
-    public Name getName() {
-        return name;
-    }
 }

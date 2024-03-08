@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,6 +40,15 @@ class RepositoryBrandLoaderTest extends BaseTest {
         });
     }
 
+    @Test
+    @DisplayName("id와 일치하는 브랜드가 없는경우 empty를 반환한다.")
+    void loadBrandReturnEmpty() {
+        //when
+        final Optional<BrandLoadDto> brandLoadDto = brandLoader.loadBrand(0L);
+
+        //then
+        assertThat(brandLoadDto).isEmpty();
+    }
 
     @Test
     @DisplayName("저장된 브랜드 중 id가 일치하는 모든 브랜드를 조회한다.")

@@ -42,10 +42,6 @@ public class Product {
         return categoryId;
     }
 
-    public Price getPrice() {
-        return price;
-    }
-
     public Long getBrandId() {
         return brandId;
     }

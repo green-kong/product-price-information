@@ -33,7 +33,7 @@ class CategoryTest {
     }
 
     @Test
-    @DisplayName("id를 포함한 않은 카테고리를 생성한다.")
+    @DisplayName("id를 포함한 카테고리를 생성한다.")
     void createCategoryWithId() {
         //given
         final long id = 1L;
