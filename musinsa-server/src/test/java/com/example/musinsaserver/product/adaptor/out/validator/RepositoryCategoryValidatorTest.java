@@ -6,6 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.example.musinsaserver.category.adaptor.in.validator.RepositoryCategoryValidator;
 import com.example.musinsaserver.category.application.port.out.persistence.CategoryRepository;
 import com.example.musinsaserver.category.domain.Category;
 import com.example.musinsaserver.support.BaseTest;

@@ -1,4 +1,4 @@
-package com.example.musinsaserver.common.adaptor.out.loader;
+package com.example.musinsaserver.brand.adaptor.in.loader;
 
 import static java.util.Objects.isNull;
 
@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 
 import com.example.musinsaserver.brand.application.port.out.persistence.BrandRepository;
 import com.example.musinsaserver.brand.domain.Brand;
-import com.example.musinsaserver.common.application.port.out.loader.BrandLoader;
-import com.example.musinsaserver.common.application.port.out.loader.dto.BrandLoadDto;
+import com.example.musinsaserver.common.loader.BrandLoader;
+import com.example.musinsaserver.common.loader.dto.BrandLoadDto;
 
 @Component
 public class RepositoryBrandLoader implements BrandLoader {

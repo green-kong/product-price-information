@@ -15,10 +15,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.example.musinsaserver.product.application.port.in.dto.RegisterProductRequest;
 import com.example.musinsaserver.product.application.port.out.event.ProductRegisterEventPublisher;
-import com.example.musinsaserver.product.application.port.out.event.dto.ProductRegisterEvent;
+import com.example.musinsaserver.common.events.ProductRegisterEvent;
 import com.example.musinsaserver.product.application.port.out.persistence.ProductRepository;
-import com.example.musinsaserver.product.application.port.out.validator.BrandValidator;
-import com.example.musinsaserver.product.application.port.out.validator.CategoryValidator;
+import com.example.musinsaserver.common.validator.BrandValidator;
+import com.example.musinsaserver.common.validator.CategoryValidator;
 import com.example.musinsaserver.product.domain.Product;
 import com.example.musinsaserver.product.exception.NonExistentBrandException;
 import com.example.musinsaserver.product.exception.NonExistentCategoryException;

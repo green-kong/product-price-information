@@ -5,8 +5,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.musinsaserver.priceinformation.application.port.in.HighestAndLowestPriceInformationSearchUseCase;
 import com.example.musinsaserver.priceinformation.application.port.in.dto.HighestAndLowestPriceInformationByCategoryResponse;
-import com.example.musinsaserver.common.application.port.out.loader.CategoryLoader;
-import com.example.musinsaserver.common.application.port.out.loader.dto.CategoryLoadDto;
+import com.example.musinsaserver.common.loader.CategoryLoader;
+import com.example.musinsaserver.common.loader.dto.CategoryLoadDto;
 import com.example.musinsaserver.priceinformation.application.port.out.persistence.HighestPriceInformationRepository;
 import com.example.musinsaserver.priceinformation.application.port.out.persistence.LowestPriceInformationRepository;
 import com.example.musinsaserver.priceinformation.domain.PriceInformation;

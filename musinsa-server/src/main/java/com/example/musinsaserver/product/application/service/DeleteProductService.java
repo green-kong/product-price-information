@@ -5,7 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.musinsaserver.product.application.port.in.DeleteProductUseCase;
 import com.example.musinsaserver.product.application.port.out.event.ProductDeleteEventPublisher;
-import com.example.musinsaserver.product.application.port.out.event.dto.ProductDeleteEvent;
+import com.example.musinsaserver.common.events.ProductDeleteEvent;
 import com.example.musinsaserver.product.application.port.out.persistence.ProductRepository;
 import com.example.musinsaserver.product.domain.Product;
 import com.example.musinsaserver.product.exception.NonExistentProductException;

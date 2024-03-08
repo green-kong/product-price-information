@@ -6,6 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.example.musinsaserver.brand.adaptor.in.validator.RepositoryBrandValidator;
 import com.example.musinsaserver.brand.application.port.out.persistence.BrandRepository;
 import com.example.musinsaserver.brand.domain.Brand;
 import com.example.musinsaserver.support.BaseTest;

@@ -9,10 +9,10 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.musinsaserver.common.application.port.out.loader.BrandLoader;
-import com.example.musinsaserver.common.application.port.out.loader.CategoryLoader;
-import com.example.musinsaserver.common.application.port.out.loader.dto.BrandLoadDto;
-import com.example.musinsaserver.common.application.port.out.loader.dto.CategoryLoadDto;
+import com.example.musinsaserver.common.loader.BrandLoader;
+import com.example.musinsaserver.common.loader.CategoryLoader;
+import com.example.musinsaserver.common.loader.dto.BrandLoadDto;
+import com.example.musinsaserver.common.loader.dto.CategoryLoadDto;
 import com.example.musinsaserver.product.application.port.in.GetAllProductsUseCase;
 import com.example.musinsaserver.product.application.port.in.dto.ProductResponse;
 import com.example.musinsaserver.product.application.port.out.persistence.ProductRepository;

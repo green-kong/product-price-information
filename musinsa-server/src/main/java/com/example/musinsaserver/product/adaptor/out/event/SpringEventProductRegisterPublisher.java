@@ -4,7 +4,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import com.example.musinsaserver.product.application.port.out.event.ProductRegisterEventPublisher;
-import com.example.musinsaserver.product.application.port.out.event.dto.ProductRegisterEvent;
+import com.example.musinsaserver.common.events.ProductRegisterEvent;
 
 @Component
 public class SpringEventProductRegisterPublisher implements ProductRegisterEventPublisher {

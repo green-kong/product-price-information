@@ -1,4 +1,4 @@
-package com.example.musinsaserver.product.adaptor.out.validator;
+package com.example.musinsaserver.category.adaptor.in.validator;
 
 import java.util.Optional;
 
@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 import com.example.musinsaserver.category.application.port.out.persistence.CategoryRepository;
 import com.example.musinsaserver.category.domain.Category;
-import com.example.musinsaserver.product.application.port.out.validator.CategoryValidator;
+import com.example.musinsaserver.common.validator.CategoryValidator;
 
 @Component
 public class RepositoryCategoryValidator implements CategoryValidator {

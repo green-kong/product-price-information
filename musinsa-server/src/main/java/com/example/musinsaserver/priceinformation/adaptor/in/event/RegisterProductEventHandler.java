@@ -8,7 +8,7 @@ import org.springframework.transaction.event.TransactionalEventListener;
 
 import com.example.musinsaserver.priceinformation.application.port.in.MaximumPriceUpdateUseCase;
 import com.example.musinsaserver.priceinformation.application.port.in.MinimumPriceUpdateUseCase;
-import com.example.musinsaserver.product.application.port.out.event.dto.ProductRegisterEvent;
+import com.example.musinsaserver.common.events.ProductRegisterEvent;
 
 @Component
 public class RegisterProductEventHandler {

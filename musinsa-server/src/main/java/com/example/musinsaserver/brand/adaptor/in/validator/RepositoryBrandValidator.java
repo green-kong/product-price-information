@@ -1,4 +1,4 @@
-package com.example.musinsaserver.product.adaptor.out.validator;
+package com.example.musinsaserver.brand.adaptor.in.validator;
 
 import java.util.Optional;
 
@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 import com.example.musinsaserver.brand.application.port.out.persistence.BrandRepository;
 import com.example.musinsaserver.brand.domain.Brand;
-import com.example.musinsaserver.product.application.port.out.validator.BrandValidator;
+import com.example.musinsaserver.common.validator.BrandValidator;
 
 @Component
 public class RepositoryBrandValidator implements BrandValidator {

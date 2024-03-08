@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.musinsaserver.product.application.port.in.UpdateProductUseCase;
 import com.example.musinsaserver.product.application.port.in.dto.ProductPriceUpdateRequest;
 import com.example.musinsaserver.product.application.port.out.event.ProductUpdateEventPublisher;
-import com.example.musinsaserver.product.application.port.out.event.dto.ProductUpdateEvent;
+import com.example.musinsaserver.common.events.ProductUpdateEvent;
 import com.example.musinsaserver.product.application.port.out.persistence.ProductRepository;
 import com.example.musinsaserver.product.domain.Product;
 import com.example.musinsaserver.product.exception.NonExistentProductException;

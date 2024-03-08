@@ -1,8 +1,8 @@
-package com.example.musinsaserver.common.application.port.out.loader;
+package com.example.musinsaserver.common.loader;
 
 import java.util.Optional;
 
-import com.example.musinsaserver.common.application.port.out.loader.dto.ProductLoadDto;
+import com.example.musinsaserver.common.loader.dto.ProductLoadDto;
 
 public interface ProductLoader {
 
